@@ -1,0 +1,554 @@
+---
+title: Migration Guide
+description: Migrate between versions of Luminescent UI with step-by-step instructions for breaking changes
+---
+
+## Overview
+
+This guide covers breaking changes and migration steps between major versions of Luminescent UI. Always read the full changelog before upgrading.
+
+## Version 6.x to Latest
+
+### 6.4.21 - Alpha Variable Removal
+
+<Warning>
+The `--lum-default-alpha` variable has been removed. Alpha values are now set directly in color variables.
+</Warning>
+
+**What Changed:**
+- Removed `--lum-default-alpha` CSS variable
+- Alpha values now use Tailwind's `--alpha()` helper directly
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Update CSS variables">
+    Remove any references to `--lum-default-alpha`:
+    
+    ```css Before
+    @theme {
+      --lum-default-alpha: 80;
+    }
+    ```
+    
+    ```css After
+    /* No longer needed - remove this variable */
+    ```
+  </Step>
+  
+  <Step title="Use alpha in color utilities">
+    Apply alpha directly using the `/` syntax:
+    
+    ```tsx
+    {/* Alpha is now part of the color utility */}
+    <div className="lum-bg-gray-800/80">
+      Semi-transparent background
+    </div>
+    ```
+  </Step>
+</Steps>
+
+### 6.1.0 - Depth System Introduction
+
+**What's New:**
+- Added `--lum-depth` variable for depth-based styling
+- `lum-bg-*` classes now support depth-aware borders and shadows
+- Enhanced `lum-toggle-bg` utility with depth effects
+
+**Migration:**
+
+No breaking changes, but you can now enable depth effects:
+
+```css global.css
+@theme {
+  --lum-depth: 0; /* Default - no depth effects */
+}
+
+/* Or enable depth */
+@theme {
+  --lum-depth: 1; /* Depth effects enabled */
+}
+```
+
+<Note>
+Depth effects include:
+- Borders that fade out based on depth value
+- Inset shadows for depth perception
+- Drop shadows for elevation
+</Note>
+
+## Version 5.x to 6.x
+
+### 5.2.0 - Toggle Component Label Change
+
+<Warning>
+The Toggle component's `label` prop has been removed. Labels are now passed as children.
+</Warning>
+
+**Migration Steps:**
+
+<CodeGroup>
+```tsx Before (v5.1.x)
+<Toggle id="toggle-input" label="Enable notifications" />
+```
+
+```tsx After (v5.2.0+)
+<Toggle id="toggle-input">
+  Enable notifications
+</Toggle>
+```
+</CodeGroup>
+
+**Why This Change?**
+- More flexible content in labels (icons, badges, etc.)
+- Consistent with other component APIs
+- Better TypeScript type inference
+
+## Version 4.x to 5.x
+
+### 5.0.0 - Text Color Variables
+
+**What Changed:**
+- Updated text color variables to use semantic naming
+- New variables: `--color-lum-text` and `--color-lum-text-secondary`
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Update theme variables">
+    ```css Before
+    @theme {
+      --color-text-primary: var(--color-gray-50);
+      --color-text-muted: var(--color-gray-400);
+    }
+    ```
+    
+    ```css After
+    @theme {
+      --color-lum-text: var(--color-gray-50);
+      --color-lum-text-secondary: var(--color-gray-400);
+    }
+    ```
+  </Step>
+  
+  <Step title="Update utility classes">
+    Replace old text color classes:
+    
+    ```tsx Before
+    <p className="text-gray-50">Primary text</p>
+    <p className="text-gray-400">Secondary text</p>
+    ```
+    
+    ```tsx After
+    <p className="text-lum-text">Primary text</p>
+    <p className="text-lum-text-secondary">Secondary text</p>
+    ```
+  </Step>
+</Steps>
+
+### 5.0.0 - Additional Color Variables
+
+**New Variables Added:**
+
+```css
+@theme {
+  --color-lum-card-bg: var(--color-gray-900);
+  --color-lum-input-bg: var(--color-gray-800);
+  --color-lum-input-hover-bg: var(--color-gray-700);
+  --color-lum-accent: var(--color-blue-500);
+}
+```
+
+**Benefits:**
+- Easier theme customization
+- Consistent color usage across components
+- Better dark/light mode support
+
+## Version 3.x to 4.x
+
+### 4.2.0 - SelectMenu Full Width
+
+<Warning>
+The SelectMenu component now takes full width of its parent by default.
+</Warning>
+
+**What Changed:**
+- SelectMenu is now `width: 100%` by default
+- Added `align` prop: `'left'`, `'center'`, or `'right'`
+- Added theme colors to formatting
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Update width if needed">
+    If you want the old behavior (auto width):
+    
+    ```tsx Before
+    <SelectMenu options={options} />
+    ```
+    
+    ```tsx After
+    <SelectMenu className="w-auto" options={options} />
+    ```
+  </Step>
+  
+  <Step title="Use align prop for positioning">
+    ```tsx
+    <SelectMenu 
+      options={options} 
+      align="right" {/* or 'left', 'center' */}
+    />
+    ```
+  </Step>
+</Steps>
+
+### 4.0.0 - lum-bg Import Change
+
+<Warning>
+Major change: `lum-bg` plugin no longer requires separate import.
+</Warning>
+
+**What Changed:**
+- `lum-bg` utilities are now included in the main CSS file
+- Simplified import structure
+- Toggle component rewritten to use new `lum-bg` classes
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Update CSS imports">
+    ```css Before
+    @import '@luminescent/ui/css';
+    @plugin '@luminescent/ui/lum-bg';
+    ```
+    
+    ```css After
+    @import '@luminescent/ui/css';
+    ```
+  </Step>
+  
+  <Step title="Update Toggle components">
+    The Toggle component now uses utility classes for styling:
+    
+    ```tsx Before
+    <Toggle 
+      id="toggle-input" 
+      label="Toggle" 
+      onColor="green" 
+      offColor="slate" 
+    />
+    ```
+    
+    ```tsx After
+    <Toggle 
+      id="toggle-input" 
+      className="lum-toggle-bg-slate-600 peer-checked:lum-toggle-bg-green-600"
+    >
+      Toggle
+    </Toggle>
+    ```
+  </Step>
+  
+  <Step title="Configure theme variables">
+    New customization options available:
+    
+    ```css global.css
+    @theme {
+      --lum-btn-p-x: 2;
+      --lum-input-p-x: 1.5;
+      --lum-border-radius: var(--radius-md);
+      --lum-border-mix: 20%;
+      --color-lum-border: var(--color-gray-400);
+    }
+    ```
+  </Step>
+</Steps>
+
+**New Features in 4.0.0:**
+
+<Accordion title="rounded-lum Utility">
+Apply the default border radius to any element:
+
+```tsx
+<div className="rounded-lum">
+  Uses theme border radius
+</div>
+
+{/* Nested elements */}
+<div className="rounded-lum p-2">
+  <div className="rounded-lum-2">
+    Adjusted for padding
+  </div>
+</div>
+```
+</Accordion>
+
+<Accordion title="border-gradient Utility">
+Create gradient borders:
+
+```tsx
+<div className="border-gradient-1 before:from-blue-500 before:to-purple-500">
+  Gradient border
+</div>
+
+<div className="border-gradient-2 before:bg-gradient-to-r before:from-blue-500 before:to-purple-500">
+  Directional gradient
+</div>
+```
+</Accordion>
+
+<Accordion title="Hoverable Cards (Qwik Only)">
+Mouse-tracking effect for interactive cards:
+
+```tsx
+import { Hoverable } from '@luminescent/ui-qwik';
+
+<div 
+  className="lum-card lum-hoverable" 
+  onMouseMove$={(e, el) => Hoverable.onMouseMove$(e, el)} 
+  onMouseLeave$={(e, el) => Hoverable.onMouseLeave$(e, el)}
+>
+  Follows mouse cursor
+</div>
+```
+</Accordion>
+
+<Accordion title="lum-hoverable Class">
+Pop-out effect on hover:
+
+```tsx
+<div className="lum-card lum-hoverable">
+  Scales up on hover
+</div>
+```
+</Accordion>
+
+## Version 2.x to 3.x
+
+### 3.0.1 - Import Restructuring
+
+**What Changed:**
+- Renamed imports for clarity
+- New formatting import for default element styling
+- Icon size property renamed from `width` to `size`
+- Dropdown renamed to SelectMenu
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Update CSS imports">
+    ```css Before
+    @import '@luminescent/ui/css';
+    @plugin '@luminescent/ui';
+    ```
+    
+    ```css After
+    @import '@luminescent/ui';
+    @plugin '@luminescent/ui/lum-bg';
+    ```
+  </Step>
+  
+  <Step title="Add formatting (optional)">
+    For default element styling:
+    
+    ```css
+    @import '@luminescent/ui/formatting';
+    ```
+  </Step>
+  
+  <Step title="Update icon components">
+    ```tsx Before
+    <LogoLuminescent width={20} />
+    ```
+    
+    ```tsx After
+    <LogoLuminescent size={20} />
+    ```
+  </Step>
+  
+  <Step title="Migrate Dropdown to SelectMenu">
+    ```tsx Before
+    <Dropdown display={<p>Dropdown uwu</p>}>
+      Dropdown
+      <button q:slot="extra-buttons" className="lum-btn lum-bg-transparent">
+        Option 4
+      </button>
+    </Dropdown>
+    ```
+    
+    ```tsx After
+    <SelectMenu customDropdown>
+      Select Menu
+      <p q:slot="dropdown">
+        Select Menu uwu
+      </p>
+      <button q:slot="extra-buttons" className="lum-btn lum-bg-transparent">
+        Option 4
+      </button>
+    </SelectMenu>
+    ```
+  </Step>
+  
+  <Step title="Update to Lucide icons">
+    Icons now use Lucide. Update any custom icon usage accordingly.
+  </Step>
+</Steps>
+
+## Version 1.x to 2.x
+
+### 2.1.0 - Header Component Removal
+
+<Warning>
+The `Header` component has been removed. Use semantic HTML with utility classes instead.
+</Warning>
+
+**Migration Steps:**
+
+<Accordion title="Simple Header">
+```tsx Before
+<Header>
+  This is a header
+</Header>
+```
+
+```tsx After
+<h2 className="text-xl font-bold whitespace-nowrap text-white sm:text-2xl">
+  This is a header
+</h2>
+```
+</Accordion>
+
+<Accordion title="Header with Anchor">
+```tsx Before
+<Header id="anchor" anchor>
+  This is a header with an anchor
+</Header>
+```
+
+```tsx After
+<Anchor id="anchor">
+  <h2 className="text-xl font-bold whitespace-nowrap text-white sm:text-2xl">
+    This is a header with an anchor
+  </h2>
+</Anchor>
+```
+</Accordion>
+
+<Accordion title="Header with Subheader">
+```tsx Before
+<Header subheader="This is a subheader">
+  This is a header with a subheader
+</Header>
+```
+
+```tsx After
+<h2 className="text-xl font-bold whitespace-nowrap text-white sm:text-2xl">
+  This is a header with a subheader
+</h2>
+<h3 className="text-sm text-lum-text-secondary">
+  This is a subheader
+</h3>
+```
+</Accordion>
+
+### 2.0.0 - Tailwind CSS v4 Migration
+
+<Warning>
+This is a major breaking change requiring Tailwind CSS v4.
+</Warning>
+
+**What Changed:**
+- Updated to Tailwind CSS v4
+- Replaced `lum-pad` classes with numeric values
+- New padding utility naming convention
+
+**Migration Steps:**
+
+<Steps>
+  <Step title="Upgrade Tailwind CSS">
+    ```bash
+    npm install tailwindcss@next @tailwindcss/postcss@next
+    ```
+  </Step>
+  
+  <Step title="Update padding utilities">
+    Replace old `lum-pad` classes:
+    
+    | Before | After | Suggested |
+    |--------|-------|----------|
+    | `lum-pad-xs` | `px-2.5 py-1.5` | `lum-btn-p-1` |
+    | `lum-pad-sm` | `px-3 py-2` | `lum-btn-p-2` |
+    | `lum-pad-md` | - | `lum-btn-p-2` |
+    | `lum-pad-lg` | `px-7 py-4` | `lum-btn-p-3` |
+    | `lum-pad-xl` | - | `lum-btn-p-4` |
+    | `lum-pad-2xl` | - | `lum-btn-p-5` |
+    | `lum-pad-3xl` | - | `lum-btn-p-6` |
+    | `lum-pad-4xl` | - | `lum-btn-p-7` |
+    | `lum-pad-5xl` | - | `lum-btn-p-8` |
+  </Step>
+  
+  <Step title="Update equal padding classes">
+    | Before | After |
+    |--------|-------|
+    | `lum-pad-equal-xs` | `p-1.5` |
+    | `lum-pad-equal-sm` | `p-2` |
+    | `lum-pad-equal-md` | `p-2` |
+    | `lum-pad-equal-lg` | `p-4` |
+    | `lum-pad-equal-xl` | `p-4` |
+    | `lum-pad-equal-2xl` | `p-5` |
+    | `lum-pad-equal-3xl` | `p-6` |
+    | `lum-pad-equal-4xl` | `p-7` |
+    | `lum-pad-equal-5xl` | `p-8` |
+  </Step>
+</Steps>
+
+## General Migration Tips
+
+<Tip>
+**Test Incrementally**
+
+Don't migrate everything at once. Update components one at a time and test thoroughly.
+</Tip>
+
+<Tip>
+**Use Search & Replace**
+
+Many migrations can be automated with find-and-replace across your codebase:
+
+```bash
+# Example: Update Toggle labels
+find . -name "*.tsx" -exec sed -i 's/label="\([^"]*\)"/>{\1}</g' {} +
+```
+</Tip>
+
+<Tip>
+**Check the Changelog**
+
+Always review the full changelog at the [GitHub repository](https://github.com/LuminescentDev/ui/blob/main/CHANGELOG.md) for additional context and minor changes.
+</Tip>
+
+<Tip>
+**Update Dependencies**
+
+After migrating, ensure all related packages are up to date:
+
+```bash
+npm update @luminescent/ui @luminescent/ui-qwik
+```
+</Tip>
+
+## Need Help?
+
+If you encounter issues during migration:
+
+1. Check the [GitHub Issues](https://github.com/LuminescentDev/ui/issues)
+2. Review component-specific documentation
+3. Join the community discussions
+4. Create a new issue with your migration problem
+
+## Related Resources
+
+- [CHANGELOG](https://github.com/LuminescentDev/ui/blob/main/CHANGELOG.md) - Full version history
+- [Installation Guide](/installation) - Setup instructions
+- [Qwik Components](/components/qwik/dropdown) - Updated Qwik component examples
+- [React Components](/components/react/dropdown) - Updated React component examples

@@ -1,0 +1,310 @@
+---
+title: "Button Utility"
+description: "Complete button utility with animations, states, and smart padding"
+---
+
+## Overview
+
+The `lum-btn` utility creates fully-styled, accessible buttons with smooth animations, hover effects, and adaptive padding.
+
+## CSS Implementation
+
+```css
+@utility lum-btn {
+  @apply flex items-center 
+         motion-safe:transition duration-300 hover:duration-75 active:duration-75 ease-out 
+         disabled:opacity-50 
+         hover:drop-shadow-lg active:drop-shadow-lg 
+         motion-safe:active:scale-95 
+         whitespace-nowrap touch-manipulation select-none 
+         lum-btn-p-2 text-base 
+         lum-bg-lum-input-bg 
+         hover:lum-bg-lum-input-hover-bg 
+         active:lum-bg-lum-input-hover-bg;
+  border-radius: var(--lum-border-radius);
+  corner-shape: superellipse(var(--lum-border-superellipse));
+}
+```
+
+## Usage
+
+<CodeGroup>
+
+```html Basic Button
+<button class="lum-btn">
+  Click me
+</button>
+```
+
+```html With Icon
+<button class="lum-btn">
+  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+  </svg>
+  Settings
+</button>
+```
+
+```html Custom Color
+<button class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-700 active:lum-bg-blue-700">
+  Primary Action
+</button>
+```
+
+```html Disabled State
+<button class="lum-btn" disabled>
+  Disabled
+</button>
+```
+
+</CodeGroup>
+
+## Applied Classes
+
+The `lum-btn` utility applies the following Tailwind classes:
+
+### Layout
+- `flex items-center` - Flexbox with centered items
+- `whitespace-nowrap` - Prevents text wrapping
+
+### Animation
+- `motion-safe:transition` - Smooth transitions (respects reduced-motion)
+- `duration-300` - 300ms transition by default
+- `hover:duration-75` - Faster 75ms transition on hover
+- `active:duration-75` - Faster 75ms transition on active
+- `ease-out` - Easing function
+- `motion-safe:active:scale-95` - Slight scale down on click
+
+### Effects
+- `hover:drop-shadow-lg` - Large drop shadow on hover
+- `active:drop-shadow-lg` - Large drop shadow on active
+- `disabled:opacity-50` - 50% opacity when disabled
+
+### Interaction
+- `touch-manipulation` - Optimized for touch devices
+- `select-none` - Prevents text selection
+
+### Styling
+- `lum-btn-p-2` - Smart padding utility (see below)
+- `text-base` - Base font size
+- `lum-bg-lum-input-bg` - Background color
+- `hover:lum-bg-lum-input-hover-bg` - Hover background
+- `active:lum-bg-lum-input-hover-bg` - Active background
+- `border-radius: var(--lum-border-radius)` - Rounded corners
+- `corner-shape: superellipse` - Smooth superellipse corners
+
+## lum-btn-p-* (Padding Utility)
+
+Smart padding utility that creates adaptive padding with a 2:1 horizontal to vertical ratio.
+
+### CSS Implementation
+
+```css
+@utility lum-btn-p-* {
+  padding: calc(var(--spacing) * --value(integer))
+           calc(var(--spacing) * --value(integer) * var(--lum-btn-p-x))
+           calc(var(--spacing) * --value(integer))
+           calc(var(--spacing) * --value(integer) * var(--lum-btn-p-x));
+
+  gap: calc(
+    var(--spacing) * --value(integer) * clamp(0.65, 4 / --value(integer), 1)
+  );
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Small Button
+<button class="lum-btn lum-btn-p-1">
+  Small
+</button>
+```
+
+```html Default Button
+<button class="lum-btn lum-btn-p-2">
+  Default (already applied)
+</button>
+```
+
+```html Large Button
+<button class="lum-btn lum-btn-p-3">
+  Large
+</button>
+```
+
+```html Extra Large Button
+<button class="lum-btn lum-btn-p-4">
+  Extra Large
+</button>
+```
+
+</CodeGroup>
+
+### Padding Scale
+
+<ParamField path="lum-btn-p-1" type="utility">
+  Small: 0.25rem vertical, 0.5rem horizontal (4px/8px)
+</ParamField>
+
+<ParamField path="lum-btn-p-2" type="utility">
+  Default: 0.5rem vertical, 1rem horizontal (8px/16px)
+</ParamField>
+
+<ParamField path="lum-btn-p-3" type="utility">
+  Large: 0.75rem vertical, 1.5rem horizontal (12px/24px)
+</ParamField>
+
+<ParamField path="lum-btn-p-4" type="utility">
+  Extra Large: 1rem vertical, 2rem horizontal (16px/32px)
+</ParamField>
+
+<Note>
+  The gap between button content (text and icons) is automatically calculated based on padding size with adaptive scaling.
+</Note>
+
+## CSS Variables
+
+<ParamField path="--lum-btn-p-x" type="number" default="2">
+  Horizontal padding multiplier (creates 2:1 horizontal to vertical ratio)
+</ParamField>
+
+<ParamField path="--lum-border-radius" type="length" default="var(--radius-lg)">
+  Border radius for button corners
+</ParamField>
+
+<ParamField path="--lum-border-superellipse" type="number" default="1">
+  Superellipse corner smoothing (0 = circle, 1 = squircle, 2+ = rounded square)
+</ParamField>
+
+<ParamField path="--color-lum-input-bg" type="color" default="var(--color-gray-800)">
+  Default button background color
+</ParamField>
+
+<ParamField path="--color-lum-input-hover-bg" type="color" default="var(--color-gray-700)">
+  Hover and active background color
+</ParamField>
+
+## States
+
+### Hover State
+
+```html
+<button class="lum-btn">
+  <!-- On hover: -->
+  <!-- - Lighter background (gray-700) -->
+  <!-- - Drop shadow appears -->
+  <!-- - Faster 75ms transition -->
+  Hover me
+</button>
+```
+
+### Active State
+
+```html
+<button class="lum-btn">
+  <!-- On click/active: -->
+  <!-- - Scales down to 95% -->
+  <!-- - Lighter background (gray-700) -->
+  <!-- - Drop shadow appears -->
+  <!-- - Faster 75ms transition -->
+  Click me
+</button>
+```
+
+### Disabled State
+
+```html
+<button class="lum-btn" disabled>
+  <!-- When disabled: -->
+  <!-- - 50% opacity -->
+  <!-- - No hover/active effects -->
+  <!-- - Cursor: not-allowed (browser default) -->
+  Disabled
+</button>
+```
+
+### Focus State
+
+```html
+<button class="lum-btn">
+  <!-- On focus (from lum-bg utility): -->
+  <!-- - Accent border appears -->
+  <!-- - No outline -->
+  Focus me with Tab
+</button>
+```
+
+<Warning>
+  The button inherits focus styles from the `lum-bg` utility. Make sure you don't override these with `focus:outline-none` unless you provide alternative focus indicators for accessibility.
+</Warning>
+
+## Customization Examples
+
+<CodeGroup>
+
+```html Primary Button
+<button class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-500 active:lum-bg-blue-500 text-white">
+  Primary Action
+</button>
+```
+
+```html Success Button
+<button class="lum-btn lum-bg-green-600 hover:lum-bg-green-500 active:lum-bg-green-500 text-white">
+  Save Changes
+</button>
+```
+
+```html Danger Button
+<button class="lum-btn lum-bg-red-600 hover:lum-bg-red-500 active:lum-bg-red-500 text-white">
+  Delete
+</button>
+```
+
+```html Ghost Button
+<button class="lum-btn lum-bg-transparent hover:lum-bg-gray-800 active:lum-bg-gray-800 border border-gray-700">
+  Cancel
+</button>
+```
+
+```html Icon Only Button
+<button class="lum-btn lum-btn-p-2 aspect-square">
+  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+  </svg>
+</button>
+```
+
+```html Button Group
+<div class="flex gap-2">
+  <button class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-500 active:lum-bg-blue-500">
+    Confirm
+  </button>
+  <button class="lum-btn">
+    Cancel
+  </button>
+</div>
+```
+
+</CodeGroup>
+
+## Accessibility
+
+<Note>
+  The `lum-btn` utility includes several accessibility features:
+  - Respects `prefers-reduced-motion` with `motion-safe:` variants
+  - Touch-optimized with `touch-manipulation`
+  - Prevents accidental text selection with `select-none`
+  - Includes disabled state with visual feedback
+  - Inherits focus styles from `lum-bg` utility
+</Note>
+
+## Best Practices
+
+1. Always use semantic `<button>` elements for actions
+2. Add `type="button"` to prevent form submission
+3. Include descriptive text or `aria-label` for icon-only buttons
+4. Don't override focus styles without providing alternatives
+5. Use appropriate color contrast for text
+6. Consider loading states with `disabled` attribute

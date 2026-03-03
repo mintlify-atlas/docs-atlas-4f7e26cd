@@ -1,0 +1,132 @@
+---
+title: RangeInput
+description: A custom-styled range slider with visual feedback and tick marks
+---
+
+The RangeInput component provides a beautifully styled range slider with a filled track, draggable handle, hover tooltip, and optional tick marks.
+
+## Import
+
+```typescript
+import { RangeInput, RangeInputRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx With Label
+<RangeInput
+  id="volume"
+  value={volume.value}
+  min={0}
+  max={100}
+  onInput$={(e, input) => {
+    volume.value = parseInt(input.value);
+  }}
+>
+  Volume
+</RangeInput>
+```
+
+```tsx Raw (No Label)
+<RangeInputRaw
+  value={brightness.value}
+  min={0}
+  max={255}
+  onInput$={(e, input) => {
+    brightness.value = parseInt(input.value);
+  }}
+/>
+```
+</CodeGroup>
+
+## RangeInput Props
+
+<ParamField path="id" type="string" required>
+  HTML id for the input field and label association.
+</ParamField>
+
+<ParamField path="value" type="number">
+  The current value. Defaults to `min` if not provided.
+</ParamField>
+
+<ParamField path="min" type="number" default="0">
+  Minimum value of the range.
+</ParamField>
+
+<ParamField path="max" type="number" default="10">
+  Maximum value of the range.
+</ParamField>
+
+<ParamField path="onInput$" type="QRL<(event, element) => void>">
+  Callback fired when the value changes. Receives the input event and the input element.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'input'>">
+  All standard HTML input attributes are supported (except `type` and standard `class`).
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Basic Range
+<RangeInput
+  id="opacity"
+  value={opacity.value}
+  min={0}
+  max={1}
+  onInput$={(e, input) => {
+    opacity.value = parseFloat(input.value);
+  }}
+>
+  Opacity
+</RangeInput>
+```
+
+```tsx Custom Range
+<RangeInput
+  id="temperature"
+  value={temp.value}
+  min={-20}
+  max={40}
+  onInput$={(e, input) => {
+    temp.value = parseInt(input.value);
+  }}
+>
+  Temperature (°C)
+</RangeInput>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The component displays tick marks between min and max values (excluding endpoints). A tooltip showing the current value appears above the handle on hover. The filled portion of the track updates in real-time as you drag.
+</Note>
+
+## Visual Features
+
+- **Filled Track**: The track fills from left to right based on current value percentage
+- **Tick Marks**: Subtle vertical lines indicate step positions (if more than 2 values)
+- **Draggable Handle**: Circular handle with accent color
+- **Hover Tooltip**: Current value displays above handle on hover
+- **Touch Support**: Full touch event support with `touch-manipulation`
+
+## Styling
+
+- The actual range input is invisible (`opacity-0`) but remains interactive
+- Custom track and handle styled with Luminescent UI design tokens
+- Smooth transitions on hover with `transition-all`
+- Handle positioned absolutely and translates based on value percentage
+- Tooltip appears with smooth opacity transition
+
+## Accessibility
+
+- Native `<input type="range">` provides keyboard support (arrow keys)
+- Label is associated with input via `for` attribute
+- The range input remains focusable despite custom styling
+- `select-none` on label prevents text selection during drag

@@ -1,0 +1,295 @@
+---
+title: CSS Variables Reference
+description: Complete reference of all CSS custom properties and theme variables in Luminescent UI
+---
+
+Luminescent UI uses CSS custom properties (CSS variables) defined in the `@theme` block for comprehensive theming control.
+
+## Color Variables
+
+### Luminescent Palette
+
+The signature color scale using OKLCH color space:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--color-luminescent-50` | `oklch(97.1% 0.014 379.198)` | Lightest shade |
+| `--color-luminescent-100` | `oklch(94.8% 0.028 306.258)` | Very light |
+| `--color-luminescent-200` | `oklch(89.9% 0.061 307.231)` | Light |
+| `--color-luminescent-300` | `oklch(82.3% 0.12 310.018)` | Light-medium |
+| `--color-luminescent-400` | `oklch(71.8% 0.202 313.761)` | Medium-light |
+| `--color-luminescent-500` | `oklch(0.66 0.241 318.308)` | Base/Medium |
+| `--color-luminescent-600` | `oklch(59.2% 0.249 324.584)` | Medium-dark |
+| `--color-luminescent-700` | `oklch(52.5% 0.223 327.958)` | Dark |
+| `--color-luminescent-800` | `oklch(45.9% 0.187 327.815)` | Very dark |
+| `--color-luminescent-900` | `oklch(40.8% 0.153 326.432)` | Darkest |
+| `--color-luminescent-950` | `oklch(28.4% 0.109 327.907)` | Near-black |
+
+<Note>
+OKLCH provides better perceptual uniformity than RGB/HSL. The three values are: Lightness (0-100%), Chroma (saturation), and Hue (0-360 degrees).
+</Note>
+
+### Semantic Colors
+
+Semantic tokens that map to specific UI elements:
+
+| Variable | Default Value | Usage |
+|----------|---------------|-------|
+| `--color-lum-border` | `var(--color-gray-300)` | Component borders |
+| `--color-lum-gradient` | `var(--color-gray-950)` | Gradient overlay target color |
+| `--color-lum-card-bg` | `var(--color-gray-900)` | Card and panel backgrounds |
+| `--color-lum-input-bg` | `var(--color-gray-800)` | Input and button default state |
+| `--color-lum-input-hover-bg` | `var(--color-gray-700)` | Input and button hover state |
+| `--color-lum-accent` | `var(--color-blue-500)` | Focus rings, primary actions |
+| `--color-lum-text` | `var(--color-gray-50)` | Primary text color |
+| `--color-lum-text-secondary` | `var(--color-gray-400)` | Secondary/muted text |
+
+## Spacing Variables
+
+### Button Padding
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-btn-p-x` | `2` | Horizontal padding multiplier for buttons |
+
+<Tip>
+Button padding is calculated as: `padding: calc(var(--spacing) * value) calc(var(--spacing) * value * var(--lum-btn-p-x))`
+
+Adjust `--lum-btn-p-x` to make buttons wider or narrower.
+</Tip>
+
+### Input Padding
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-input-p-x` | `1.5` | Horizontal padding multiplier for inputs |
+
+## Border Variables
+
+### Border Radius
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-border-radius` | `var(--radius-lg)` | Base border radius for all components |
+| `--lum-border-superellipse` | `1` | Superellipse shape factor (0-1) |
+
+<Note>
+Superellipse creates smooth, iOS-like rounded corners. A value of `1` is fully applied, while `0` reverts to standard circular corners.
+</Note>
+
+### Border Styling
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-border-mix` | `20%` | How much border color mixes with backgrounds |
+
+## Depth & Shadow
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-depth` | `0` | Controls shadow depth (0 = flat, 1 = full depth) |
+
+<Note>
+When `--lum-depth` is increased:
+- Borders fade out
+- Inset and drop shadows fade in
+- Creates a 3D pressed/embossed effect
+</Note>
+
+```css
+/* Flat appearance (default) */
+--lum-depth: 0;
+
+/* Subtle depth */
+--lum-depth: 0.5;
+
+/* Full depth effect */
+--lum-depth: 1;
+```
+
+## Gradient Variables
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+| `--lum-gradient-mix` | `20%` | How much gradient color mixes in |
+| `--lum-gradient-angle` | `180deg` | Direction of gradient (0-360deg) |
+
+<CodeGroup>
+
+```css Top to Bottom (Default)
+--lum-gradient-angle: 180deg;
+```
+
+```css Left to Right
+--lum-gradient-angle: 90deg;
+```
+
+```css Diagonal
+--lum-gradient-angle: 135deg;
+```
+
+</CodeGroup>
+
+## Customizing Variables
+
+### Global Customization
+
+Override variables globally in your CSS:
+
+```css
+@theme {
+  /* Rounder corners */
+  --lum-border-radius: var(--radius-xl);
+  
+  /* More prominent borders */
+  --lum-border-mix: 40%;
+  
+  /* Wider buttons */
+  --lum-btn-p-x: 3;
+  
+  /* Depth effect */
+  --lum-depth: 0.3;
+  
+  /* Purple accent */
+  --color-lum-accent: var(--color-purple-500);
+}
+```
+
+### Scoped Customization
+
+Apply variables to specific sections:
+
+```tsx
+<section 
+  style={{
+    '--lum-border-radius': 'var(--radius-2xl)',
+    '--color-lum-accent': 'oklch(0.7 0.2 150)',
+    '--lum-gradient-angle': '90deg'
+  }}
+>
+  {/* Components here use custom values */}
+</section>
+```
+
+### Per-Component Customization
+
+```tsx
+<button 
+  className="lum-btn lum-bg-blue-600"
+  style={{ '--lum-depth': '0.8' }}
+>
+  Pressed appearance
+</button>
+```
+
+## Utility Classes Reference
+
+### Background Utilities
+
+| Utility | Variables Used | Description |
+|---------|----------------|-------------|
+| `lum-bg-*` | `--lum-border-mix`, `--lum-depth`, `--color-lum-border`, `--color-lum-accent` | Solid background with auto borders |
+| `lum-grad-bg-*` | All background vars + `--lum-gradient-mix`, `--lum-gradient-angle` | Gradient background |
+| `lum-toggle-bg-*` | All background vars | Interactive background that lightens on hover |
+| `lum-bg` | Same as `lum-bg-*` but requires custom `--bg-color` | Generic background utility |
+
+### Border Utilities
+
+| Utility | Variables Used | Description |
+|---------|----------------|-------------|
+| `rounded-lum` | `--lum-border-radius`, `--lum-border-superellipse` | Rounded corners |
+| `rounded-lum-*` | Same + offset calculation | Rounded corners with spacing offset |
+| `border-gradient-*` | Gradient colors | Gradient border effect |
+
+### Component Utilities
+
+| Utility | Variables Used | Description |
+|---------|----------------|-------------|
+| `lum-btn` | `--lum-btn-p-x`, border/background vars | Complete button styling |
+| `lum-input` | `--lum-input-p-x`, border/background vars | Complete input styling |
+| `lum-card` | Border/background vars | Card container styling |
+| `lum-btn-p-*` | `--lum-btn-p-x` | Button padding only |
+| `lum-input-p-*` | `--lum-input-p-x` | Input padding only |
+
+### Helper Utilities
+
+| Utility | Description |
+|---------|-------------|
+| `lum-hoverable` | Adds scale and shadow on hover |
+| `lum-loading` | Animated loading spinner |
+
+## Examples
+
+### Complete Theme Override
+
+```css
+@theme {
+  /* Colors */
+  --color-lum-accent: oklch(0.75 0.25 150);
+  --color-lum-card-bg: var(--color-gray-850);
+  --color-lum-input-bg: var(--color-gray-800);
+  --color-lum-input-hover-bg: var(--color-gray-750);
+  --color-lum-border: var(--color-gray-400);
+  
+  /* Spacing */
+  --lum-btn-p-x: 2.5;
+  --lum-input-p-x: 2;
+  
+  /* Borders */
+  --lum-border-radius: var(--radius-xl);
+  --lum-border-superellipse: 0.7;
+  --lum-border-mix: 30%;
+  
+  /* Effects */
+  --lum-depth: 0.2;
+  --lum-gradient-mix: 25%;
+  --lum-gradient-angle: 135deg;
+}
+```
+
+### Depth Effect Demo
+
+```tsx
+<div className="space-y-4">
+  <div className="lum-card" style={{ '--lum-depth': '0' }}>
+    Flat (depth: 0)
+  </div>
+  <div className="lum-card" style={{ '--lum-depth': '0.5' }}>
+    Subtle depth (depth: 0.5)
+  </div>
+  <div className="lum-card" style={{ '--lum-depth': '1' }}>
+    Full depth (depth: 1)
+  </div>
+</div>
+```
+
+### Gradient Angles
+
+```tsx
+<div className="grid grid-cols-2 gap-4">
+  <div 
+    className="lum-grad-bg-purple-600 p-8 rounded-lum"
+    style={{ '--lum-gradient-angle': '180deg' }}
+  >
+    ↓ 180deg
+  </div>
+  <div 
+    className="lum-grad-bg-purple-600 p-8 rounded-lum"
+    style={{ '--lum-gradient-angle': '90deg' }}
+  >
+    → 90deg
+  </div>
+  <div 
+    className="lum-grad-bg-purple-600 p-8 rounded-lum"
+    style={{ '--lum-gradient-angle': '0deg' }}
+  >
+    ↑ 0deg
+  </div>
+  <div 
+    className="lum-grad-bg-purple-600 p-8 rounded-lum"
+    style={{ '--lum-gradient-angle': '45deg' }}
+  >
+    ↗ 45deg
+  </div>
+</div>
+```

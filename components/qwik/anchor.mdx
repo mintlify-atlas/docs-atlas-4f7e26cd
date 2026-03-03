@@ -1,0 +1,50 @@
+---
+title: Anchor
+description: A wrapper component that adds a clickable link icon to headings for easy sharing
+---
+
+The Anchor component wraps content (typically headings) and adds a link icon that appears on hover. When clicked, it copies the current URL with the anchor hash to the clipboard.
+
+## Import
+
+```typescript
+import { Anchor } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+<Anchor id="getting-started">
+  <h2>Getting Started</h2>
+</Anchor>
+```
+
+## Props
+
+<ParamField path="id" type="string">
+  The anchor ID used to generate the hash link. When provided, displays a clickable link icon.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'div'>">
+  All standard HTML div attributes are supported (except the standard `class` prop).
+</ParamField>
+
+## Behavior
+
+<Note>
+  When the link icon is clicked, it copies the full URL including the anchor hash to the clipboard. The link icon has low opacity by default and becomes fully visible on hover.
+</Note>
+
+## Styling
+
+The component applies these default classes:
+- `group flex items-center gap-2 scroll-mt-32` - Groups items with flex layout and scroll margin for fixed headers
+
+The link icon has:
+- `opacity-10` - Low opacity by default
+- `group-hover:opacity-100` - Full opacity on parent hover
+- Smooth transition animations with `duration-300` and faster `duration-75` on hover

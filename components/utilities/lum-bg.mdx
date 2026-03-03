@@ -1,0 +1,289 @@
+---
+title: "Background Utilities"
+description: "Luminescent UI background utilities with smart borders and depth effects"
+---
+
+## Overview
+
+Luminescent UI provides powerful background utilities that automatically generate complementary borders using color mixing. These utilities support depth effects, focus states, and opacity modifiers.
+
+## lum-bg-*
+
+Applies a background color with an automatically generated border that intelligently mixes with the background.
+
+### CSS Implementation
+
+```css
+@utility lum-bg-* {
+  /* Base color logic */
+  --alpha: --modifier(integer);
+  --bg-color: --alpha(--value([color]) / calc(var(--alpha, 100) * 1%));
+  --bg-color: --alpha(--value(--color-*) / calc(var(--alpha, 100) * 1%));
+  --border-color: color-mix(in oklab, var(--color-lum-border) var(--lum-border-mix), var(--bg-color));
+
+  @apply border border-transparent outline-none;
+
+  &:focus {
+    border-color: var(--color-lum-accent);
+  }
+
+  /* Border fades out when depth is active */
+  border-color: color-mix(
+    in oklab,
+    var(--border-color),
+    transparent calc(var(--lum-depth) * 100%)
+  );
+
+  /* Shadow fades in when depth is active */
+  box-shadow:
+    inset 0 calc(1px * var(--lum-depth)) calc(2px * var(--lum-depth)) var(--border-color),
+    0 calc(1px * var(--lum-depth)) calc(2px * var(--lum-depth)) rgba(0, 0, 0, 0.05),
+    0 calc(1px * var(--lum-depth)) calc(3px * var(--lum-depth)) rgba(0, 0, 0, 0.1);
+
+  background-color: var(--bg-color);
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Basic
+<div class="lum-bg-blue-500 p-4">
+  Blue background with auto border
+</div>
+```
+
+```html With Opacity
+<div class="lum-bg-purple-600/50 p-4">
+  50% opacity purple background
+</div>
+```
+
+```html With Depth
+<div class="lum-bg-green-500 p-4 [--lum-depth:1]">
+  Background with depth shadow effect
+</div>
+```
+
+```html Custom Colors
+<div class="lum-bg-luminescent-400 p-4">
+  Using Luminescent brand color
+</div>
+```
+
+</CodeGroup>
+
+### Parameters
+
+<ParamField path="color" type="string" required>
+  Any Tailwind color value (e.g., `blue-500`, `red-600`, `luminescent-400`)
+</ParamField>
+
+<ParamField path="opacity" type="number" default="100">
+  Opacity modifier using `/` syntax (e.g., `/50` for 50% opacity)
+</ParamField>
+
+### CSS Variables Used
+
+<ParamField path="--color-lum-border" type="color" default="var(--color-gray-300)">
+  Base border color used in color mixing
+</ParamField>
+
+<ParamField path="--lum-border-mix" type="percentage" default="20%">
+  Mix percentage for border color generation
+</ParamField>
+
+<ParamField path="--lum-depth" type="number" default="0">
+  Depth effect intensity (0 = no depth, 1 = full depth with shadows)
+</ParamField>
+
+<ParamField path="--color-lum-accent" type="color" default="var(--color-blue-500)">
+  Border color on focus state
+</ParamField>
+
+## lum-grad-bg-*
+
+Applies a gradient background with an automatically generated border and gradient endpoint.
+
+### CSS Implementation
+
+```css
+@utility lum-grad-bg-* {
+  /* Base color logic */
+  --alpha: --modifier(integer);
+  --bg-color: --alpha(--value([color]) / calc(var(--alpha, 100) * 1%));
+  --bg-color: --alpha(--value(--color-*) / calc(var(--alpha, 100) * 1%));
+  --border-color: color-mix(in oklab, var(--color-lum-border) var(--lum-border-mix), var(--bg-color));
+  --gradient-color: color-mix(in oklab, var(--color-lum-gradient) var(--lum-gradient-mix), var(--bg-color));
+
+  @apply border border-transparent outline-none;
+
+  &:focus {
+    border-color: var(--color-lum-accent);
+  }
+
+  /* Border fades out when depth is active */
+  border-color: color-mix(
+    in oklab,
+    var(--border-color),
+    transparent calc(var(--lum-depth) * 100%)
+  );
+
+  /* Shadow fades in when depth is active */
+  box-shadow:
+    inset 0 calc(1px * var(--lum-depth)) calc(2px * var(--lum-depth)) var(--border-color),
+    0 calc(1px * var(--lum-depth)) calc(2px * var(--lum-depth)) rgba(0, 0, 0, 0.05),
+    0 calc(1px * var(--lum-depth)) calc(3px * var(--lum-depth)) rgba(0, 0, 0, 0.1);
+
+  background: 
+    linear-gradient(
+      var(--lum-gradient-angle),
+      var(--bg-color),
+      var(--gradient-color)
+    );
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Basic
+<div class="lum-grad-bg-purple-500 p-4">
+  Gradient background from purple to darker
+</div>
+```
+
+```html Custom Angle
+<div class="lum-grad-bg-blue-600 p-4 [--lum-gradient-angle:45deg]">
+  Diagonal gradient
+</div>
+```
+
+```html Subtle Gradient
+<div class="lum-grad-bg-pink-500 p-4 [--lum-gradient-mix:10%]">
+  Very subtle gradient effect
+</div>
+```
+
+```html With Depth
+<div class="lum-grad-bg-indigo-500 p-4 [--lum-depth:1]">
+  Gradient with depth shadow
+</div>
+```
+
+</CodeGroup>
+
+### Parameters
+
+<ParamField path="color" type="string" required>
+  Starting color for the gradient (e.g., `blue-500`, `purple-600`)
+</ParamField>
+
+<ParamField path="opacity" type="number" default="100">
+  Opacity modifier using `/` syntax
+</ParamField>
+
+### CSS Variables Used
+
+<ParamField path="--color-lum-gradient" type="color" default="var(--color-gray-950)">
+  Color mixed with base color to create gradient endpoint
+</ParamField>
+
+<ParamField path="--lum-gradient-mix" type="percentage" default="20%">
+  Mix percentage for gradient endpoint color
+</ParamField>
+
+<ParamField path="--lum-gradient-angle" type="angle" default="180deg">
+  Gradient direction (0deg = top, 90deg = right, 180deg = bottom, 270deg = left)
+</ParamField>
+
+<ParamField path="--lum-border-mix" type="percentage" default="20%">
+  Mix percentage for border color generation
+</ParamField>
+
+<ParamField path="--lum-depth" type="number" default="0">
+  Depth effect intensity
+</ParamField>
+
+## lum-bg (Base)
+
+Applies the border and depth effects without setting a background color. Useful when you want to manually set `--bg-color`.
+
+### Usage
+
+```html
+<div class="lum-bg [--bg-color:theme(colors.custom.500)] p-4">
+  Custom background color with lum effects
+</div>
+```
+
+<Note>
+  The `lum-bg` utility expects `--bg-color` to be set manually via inline styles or CSS variables.
+</Note>
+
+## States
+
+### Focus State
+
+All `lum-bg-*` and `lum-grad-bg-*` utilities automatically apply an accent border on focus:
+
+```html
+<button class="lum-bg-blue-500 p-4 focus:outline-none">
+  Click to see focus border
+</button>
+```
+
+### Depth Effect
+
+Control the depth effect by setting the `--lum-depth` variable:
+
+```html
+<!-- No depth (default) -->
+<div class="lum-bg-blue-500 p-4">Flat</div>
+
+<!-- Partial depth -->
+<div class="lum-bg-blue-500 p-4 [--lum-depth:0.5]">Subtle depth</div>
+
+<!-- Full depth -->
+<div class="lum-bg-blue-500 p-4 [--lum-depth:1]">Full depth</div>
+```
+
+<Warning>
+  When `--lum-depth` is 1, the border becomes transparent and is replaced by inset/outset shadows.
+</Warning>
+
+## Color Mixing Logic
+
+The utilities use `color-mix()` in OKLAB color space for perceptually uniform color blending:
+
+- **Border Color**: Mixes `--color-lum-border` with the background color at `--lum-border-mix` percentage
+- **Gradient Color**: Mixes `--color-lum-gradient` with the background color at `--lum-gradient-mix` percentage
+- **Depth Transition**: Fades border to transparent as `--lum-depth` increases
+
+## Examples
+
+<CodeGroup>
+
+```html Card with Gradient
+<div class="lum-grad-bg-indigo-600 rounded-lum p-6 max-w-sm">
+  <h3 class="text-xl font-bold mb-2">Premium Feature</h3>
+  <p class="text-gray-300">Beautiful gradient background with smart borders.</p>
+</div>
+```
+
+```html Interactive Button
+<button class="lum-bg-emerald-500 rounded-lum px-6 py-3 font-medium
+               hover:[--lum-depth:0.3] transition-all">
+  Hover for depth effect
+</button>
+```
+
+```html Subtle Background
+<div class="lum-bg-slate-800/80 rounded-lum p-4 backdrop-blur">
+  Semi-transparent background
+</div>
+```
+
+</CodeGroup>

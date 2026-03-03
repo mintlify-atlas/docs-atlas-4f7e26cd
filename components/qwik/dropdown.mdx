@@ -1,0 +1,86 @@
+---
+title: Dropdown
+description: A button with an animated chevron icon that indicates expandable content
+---
+
+The Dropdown component is a styled button with a chevron icon that rotates to indicate open/closed state. It's commonly used as a trigger for dropdown menus and expandable panels.
+
+## Import
+
+```typescript
+import { Dropdown } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+import { useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const isOpen = useSignal(false);
+  
+  return (
+    <Dropdown
+      opened={isOpen.value}
+      onClick$={() => isOpen.value = !isOpen.value}
+    >
+      Select an option
+    </Dropdown>
+  );
+});
+```
+
+## Props
+
+<ParamField path="opened" type="boolean">
+  Controls the chevron rotation. When true, the chevron rotates 180 degrees.
+</ParamField>
+
+<ParamField path="hover" type="boolean">
+  When true, the chevron rotates on hover instead of requiring the `opened` prop.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'button'>">
+  All standard HTML button attributes are supported (except the standard `class` prop).
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Controlled State
+<Dropdown
+  opened={isOpen.value}
+  onClick$={() => isOpen.value = !isOpen.value}
+>
+  Toggle Menu
+</Dropdown>
+```
+
+```tsx Hover Effect
+<Dropdown hover>
+  Hover to rotate
+</Dropdown>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The chevron icon automatically rotates 180 degrees when opened or on hover/focus. The rotation uses smooth transitions with motion-safe support. Focus-within also triggers rotation for keyboard accessibility.
+</Note>
+
+## Styling
+
+The component includes:
+- `group lum-btn` - Button styling with group context
+- `flex-1 text-left` - Left-aligned text that fills available space
+- Chevron icon with smooth `ease-out` transitions
+- Faster transition on hover/focus (`duration-75` vs `duration-300`)
+
+## Accessibility
+
+The button type is set to `button` by default to prevent form submission. The component responds to both hover and focus-within states for keyboard navigation.

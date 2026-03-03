@@ -1,0 +1,113 @@
+---
+title: Sidebar
+description: A sticky sidebar navigation component with title slot and scrollable content
+---
+
+The Sidebar component provides a fixed sidebar navigation that's hidden on mobile and visible on large screens. Perfect for documentation sites and dashboards.
+
+## Import
+
+```typescript
+import { Sidebar } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+<Sidebar>
+  <div q:slot="title">
+    <h3>Documentation</h3>
+  </div>
+  <nav>
+    <a href="/docs/intro">Introduction</a>
+    <a href="/docs/setup">Setup</a>
+    <a href="/docs/api">API Reference</a>
+  </nav>
+</Sidebar>
+```
+
+## Props
+
+<ParamField path="position" type="'left' | 'right'">
+  Position of the sidebar. Defaults to `left`. Determines which side border is shown.
+</ParamField>
+
+<ParamField path="floating" type="boolean">
+  Enables floating mode (currently unused in implementation but reserved for future use).
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'aside'>">
+  All standard HTML aside attributes are supported (except standard `class`).
+</ParamField>
+
+## Slots
+
+<ParamField path="title" type="slot">
+  Content displayed at the top of the sidebar with a bottom border separator. Typically used for a heading or logo.
+</ParamField>
+
+<ParamField path="default" type="slot">
+  Main sidebar content. Usually contains navigation links or a table of contents.
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Left Sidebar
+<Sidebar>
+  <div q:slot="title">
+    <h2>Menu</h2>
+  </div>
+  <ul>
+    <li><a href="/home">Home</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</Sidebar>
+```
+
+```tsx Right Sidebar
+<Sidebar position="right">
+  <div q:slot="title">
+    <h3>Table of Contents</h3>
+  </div>
+  <nav>
+    <a href="#intro">Introduction</a>
+    <a href="#usage">Usage</a>
+    <a href="#examples">Examples</a>
+  </nav>
+</Sidebar>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The sidebar is hidden on screens smaller than `lg` (1024px) using `hidden lg:flex`. It becomes sticky when scrolling with `sticky` positioning and `top-0`. The sidebar has a height of `100dvh` (dynamic viewport height) to fill the screen.
+</Note>
+
+## Layout Details
+
+- **Responsive**: Hidden on mobile/tablet, visible on `lg+` screens
+- **Sticky**: Stays in viewport when scrolling (`sticky top-0`)
+- **Z-index**: Set to 40 for proper layering
+- **Padding**: `px-6` horizontal, `pt-20` top (leaves space for fixed nav), `pb-0` bottom
+- **Border**: Right border for left position, left border for right position
+- **ID**: Inner nav has `id="docs-sidebar"` for anchor linking
+
+## Styling
+
+- Uses `lum-card` styling for consistent theming
+- Title area has subtle bottom border (`border-lum-border/10`)
+- Content area has gap spacing and responsive margins
+- Rounded corners removed with `rounded-none`
+- Minimum height on inner nav ensures proper layout
+
+## Accessibility
+
+- Semantic `<aside>` element for landmark navigation
+- Inner `<nav>` element with ID for skip links
+- Title slot uses flex layout with proper spacing

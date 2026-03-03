@@ -1,0 +1,320 @@
+---
+title: OKLCH Color System
+description: Understanding OKLCH colors and color mixing in Luminescent UI
+---
+
+Luminescent UI uses the OKLCH color space for all color definitions and mixing operations. OKLCH provides perceptually uniform colors and predictable mixing results.
+
+## What is OKLCH?
+
+OKLCH is a perceptual color space with three components:
+
+- **L (Lightness)**: 0% (black) to 100% (white)
+- **C (Chroma)**: 0 (gray) to ~0.4 (highly saturated)
+- **H (Hue)**: 0-360 degrees around the color wheel
+
+```css Example
+oklch(66% 0.241 318.308)
+  │    │     │      │
+  │    │     │      └─ Hue: 318° (purple-pink)
+  │    │     └──────── Chroma: 0.241 (moderate saturation)
+  │    └────────────── Lightness: 66%
+  └─────────────────── Format: oklch()
+```
+
+<Info>
+  OKLCH produces perceptually uniform colors, meaning a lightness value of 50% will appear equally bright regardless of hue.
+</Info>
+
+## Luminescent Color Palette
+
+The built-in `luminescent` color scale uses OKLCH for consistent perceptual brightness across all shades:
+
+<CodeGroup>
+```css Lighter Shades
+--color-luminescent-50: oklch(97.1% 0.014 379.198);
+--color-luminescent-100: oklch(94.8% 0.028 306.258);
+--color-luminescent-200: oklch(89.9% 0.061 307.231);
+--color-luminescent-300: oklch(82.3% 0.12 310.018);
+--color-luminescent-400: oklch(71.8% 0.202 313.761);
+```
+
+```css Middle Shades
+--color-luminescent-500: oklch(0.66 0.241 318.308);
+--color-luminescent-600: oklch(59.2% 0.249 324.584);
+--color-luminescent-700: oklch(52.5% 0.223 327.958);
+```
+
+```css Darker Shades
+--color-luminescent-800: oklch(45.9% 0.187 327.815);
+--color-luminescent-900: oklch(40.8% 0.153 326.432);
+--color-luminescent-950: oklch(28.4% 0.109 327.907);
+```
+</CodeGroup>
+
+**Notice the patterns:**
+- Lightness decreases consistently (97.1% → 28.4%)
+- Chroma peaks at middle shades (500-600)
+- Hue shifts slightly warmer toward darker shades
+
+## Color Mixing with color-mix()
+
+Luminescent UI uses CSS `color-mix()` in OKLAB color space for all color operations.
+
+<Note>
+  OKLAB is used for mixing (instead of OKLCH) because it provides more predictable results when interpolating between colors.
+</Note>
+
+### Border Color Mixing
+
+All `lum-bg-*` utilities automatically mix the background color with the border color:
+
+```css Implementation
+--border-color: color-mix(
+  in oklab,
+  var(--color-lum-border) var(--lum-border-mix),
+  var(--bg-color)
+);
+```
+
+**Breakdown:**
+1. Mix `--color-lum-border` (default: `gray-300`) at `--lum-border-mix` percentage (default: 20%)
+2. With the background color (80%)
+3. Result: Border that harmonizes with the background
+
+```html Example
+<div class="lum-bg-blue-500">
+  <!-- Border is 20% gray-300 + 80% blue-500 -->
+</div>
+```
+
+### Gradient Color Mixing
+
+The `lum-grad-bg-*` utilities create gradients by mixing with a dark color:
+
+```css Implementation
+--gradient-color: color-mix(
+  in oklab,
+  var(--color-lum-gradient) var(--lum-gradient-mix),
+  var(--bg-color)
+);
+
+background: linear-gradient(
+  var(--lum-gradient-angle),
+  var(--bg-color),
+  var(--gradient-color)
+);
+```
+
+<Tabs>
+  <Tab title="Default Mix">
+    ```html
+    <div class="lum-grad-bg-purple-600">
+      <!-- Gradient from purple-600 to 20% gray-950 + 80% purple-600 -->
+    </div>
+    ```
+  </Tab>
+  <Tab title="Strong Mix">
+    ```html
+    <div class="lum-grad-bg-purple-600 [--lum-gradient-mix:40%]">
+      <!-- Gradient with 40% gray-950 for stronger darkening -->
+    </div>
+    ```
+  </Tab>
+  <Tab title="Custom Color">
+    ```html
+    <div class="lum-grad-bg-purple-600 [--color-lum-gradient:theme(colors.blue.950)]">
+      <!-- Gradient mixed with blue instead of gray -->
+    </div>
+    ```
+  </Tab>
+</Tabs>
+
+### Toggle Hover Mixing
+
+The `lum-toggle-bg-*` utilities lighten on hover by mixing with white:
+
+```css Implementation
+background-color: color-mix(
+  in oklab,
+  white 10%,
+  var(--bg-color)
+);
+```
+
+```html Example
+<button class="lum-toggle-bg-green-500">
+  <!-- Hover state: 10% white + 90% green-500 -->
+</button>
+```
+
+## Depth-Based Color Mixing
+
+When `--lum-depth` is set to `1`, borders fade to transparent:
+
+```css Implementation
+border-color: color-mix(
+  in oklab,
+  var(--border-color),
+  transparent calc(var(--lum-depth) * 100%)
+);
+```
+
+<CodeGroup>
+```html No Depth
+<div class="lum-bg-blue-500">
+  <!-- --lum-depth: 0 → border is fully visible -->
+</div>
+```
+
+```html With Depth
+<div class="lum-bg-blue-500 [--lum-depth:1]">
+  <!-- --lum-depth: 1 → border is 100% transparent -->
+</div>
+```
+</CodeGroup>
+
+## Creating Custom OKLCH Colors
+
+### Using Tailwind's Theme
+
+Define OKLCH colors in your Tailwind config:
+
+```js tailwind.config.js
+export default {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          50: 'oklch(98% 0.01 250)',
+          100: 'oklch(95% 0.03 250)',
+          200: 'oklch(90% 0.06 250)',
+          300: 'oklch(83% 0.12 250)',
+          400: 'oklch(73% 0.18 250)',
+          500: 'oklch(63% 0.24 250)',
+          600: 'oklch(53% 0.24 250)',
+          700: 'oklch(45% 0.20 250)',
+          800: 'oklch(38% 0.16 250)',
+          900: 'oklch(32% 0.12 250)',
+          950: 'oklch(22% 0.08 250)',
+        },
+      },
+    },
+  },
+};
+```
+
+### Inline OKLCH Colors
+
+Use arbitrary values with Tailwind:
+
+```html
+<div class="lum-bg-[oklch(0.7_0.25_350)]">
+  Custom OKLCH background
+</div>
+
+<div style="--bg-color: oklch(0.8 0.15 180)" class="lum-bg">
+  Via CSS variable
+</div>
+```
+
+<Warning>
+  When using OKLCH in arbitrary values, replace spaces with underscores: `oklch(0.7_0.25_350)`
+</Warning>
+
+## Color Mixing Best Practices
+
+### 1. Consistent Color Space
+
+Always use OKLAB for mixing:
+
+```css Good
+color-mix(in oklab, blue 50%, red 50%)
+```
+
+```css Avoid
+color-mix(in srgb, blue 50%, red 50%)
+```
+
+### 2. Perceptual Adjustments
+
+Create lighter/darker variants perceptually:
+
+```css Lighten
+color-mix(in oklab, white 20%, var(--base-color))
+```
+
+```css Darken
+color-mix(in oklab, black 20%, var(--base-color))
+```
+
+### 3. Desaturation
+
+Mix with gray to reduce chroma:
+
+```css
+color-mix(in oklab, gray 30%, var(--vivid-color))
+```
+
+### 4. Harmonic Mixing
+
+Mix complementary colors for natural-looking results:
+
+```css
+--accent-subtle: color-mix(
+  in oklab,
+  var(--color-lum-accent) 15%,
+  var(--color-lum-card-bg)
+);
+```
+
+## Color Utilities Reference
+
+| Utility | Color Mixing |
+|---------|-------------|
+| `lum-bg-*` | Border: 20% `--color-lum-border` + 80% background |
+| `lum-grad-bg-*` | Gradient end: 20% `--color-lum-gradient` + 80% background |
+| `lum-toggle-bg-*` | Hover: 10% white + 90% background |
+| `border-color` with depth | Depth: mix with transparent based on `--lum-depth` |
+
+## Advanced Examples
+
+### Custom Color Mixing
+
+```html
+<div class="lum-bg-indigo-600 [--lum-border-mix:30%] [--color-lum-border:theme(colors.purple.300)]">
+  Indigo background with purple border hint
+</div>
+```
+
+### Multi-tone Gradients
+
+```html
+<div class="lum-grad-bg-pink-500 [--lum-gradient-mix:50%] [--color-lum-gradient:theme(colors.orange.700)]">
+  Pink to orange gradient
+</div>
+```
+
+### Interactive Color Shifts
+
+```html
+<button class="lum-toggle-bg-cyan-600 hover:[--lum-border-mix:40%]">
+  Hover enhances border contrast
+</button>
+```
+
+## Browser Support
+
+<Info>
+  OKLCH and `color-mix()` are supported in modern browsers (Chrome 111+, Safari 16.4+, Firefox 113+). Older browsers will fall back to transparent or the base color.
+</Info>
+
+For broader support, consider using a PostCSS plugin to convert OKLCH to fallback colors:
+
+```js postcss.config.js
+export default {
+  plugins: {
+    '@csstools/postcss-oklab-function': {},
+  },
+};
+```

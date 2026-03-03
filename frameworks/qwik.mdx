@@ -1,0 +1,237 @@
+---
+title: Qwik Integration
+description: Learn how to integrate Luminescent UI components into your Qwik applications with full TypeScript support and reactive components.
+---
+
+Luminescent UI provides a comprehensive Qwik component library with pre-built components, utility functions, and logo icons optimized for Qwik's resumability model.
+
+## Installation
+
+<Steps>
+  <Step title="Install dependencies">
+    Install both the core Luminescent UI package and the Qwik-specific package:
+
+    <CodeGroup>
+      ```bash pnpm
+      pnpm install @luminescent/ui @luminescent/ui-qwik
+      ```
+
+      ```bash npm
+      npm install @luminescent/ui @luminescent/ui-qwik
+      ```
+
+      ```bash yarn
+      yarn add @luminescent/ui @luminescent/ui-qwik
+      ```
+    </CodeGroup>
+
+    <Note>
+      The Qwik package requires Node.js >= 23.11.0 and pnpm >= 10.10.0
+    </Note>
+  </Step>
+
+  <Step title="Configure Tailwind CSS">
+    Add the Luminescent UI imports to your Tailwind CSS file:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    
+    @config "@luminescent/ui-qwik/config";
+    @source "../node_modules/@luminescent/ui-qwik";
+    ```
+
+    <Note>
+      The `@config` directive loads Qwik-specific Tailwind configuration, while `@source` enables JIT compilation for component classes.
+    </Note>
+  </Step>
+
+  <Step title="Optional: Add Markdown formatting">
+    For automatic formatting of Markdown elements, add this import:
+
+    ```css app.css
+    @import "@luminescent/ui/formatting";
+    ```
+  </Step>
+</Steps>
+
+## Available Components
+
+Luminescent UI for Qwik exports three main categories of components:
+
+### Elements
+
+Interactive UI components with full Qwik reactivity:
+
+- **Anchor** - Enhanced link component with routing support
+- **Blobs** - Animated background blob elements
+- **ColorPicker** - Interactive color selection component
+- **Dropdown** - Dropdown menu with keyboard navigation
+- **Nav** - Navigation component with responsive behavior
+- **NumberInput** - Number input with increment/decrement controls
+- **RangeInput** - Slider input component
+- **SelectMenu** - Custom select dropdown
+- **Sidebar** - Collapsible sidebar navigation
+- **Toggle** - Checkbox and toggle switch component
+
+### Functions
+
+Utility functions for enhanced interactions:
+
+- **Hoverable** - 3D hover effect with perspective transforms
+
+### Logos
+
+Pre-built SVG logo components:
+
+- Birdflop, Discord, Fabric, Forge, Luminescent, Paper, Pterodactyl, Purpur, Velocity, Waterfall
+
+## Import Patterns
+
+<CodeGroup>
+  ```typescript Named Imports
+  import { Toggle, Nav, Sidebar } from '@luminescent/ui-qwik';
+  import { Hoverable } from '@luminescent/ui-qwik';
+  import { Discord, Luminescent } from '@luminescent/ui-qwik';
+  ```
+
+  ```typescript Namespace Import
+  import * as LumUI from '@luminescent/ui-qwik';
+  
+  // Use as:
+  <LumUI.Toggle />
+  ```
+
+  ```typescript Specific Categories
+  import type { PropsOf } from '@builder.io/qwik';
+  import { Toggle } from '@luminescent/ui-qwik';
+  ```
+</CodeGroup>
+
+## Usage Examples
+
+### Toggle Component
+
+Create toggle switches with optional labels:
+
+```tsx component.tsx
+import { component$, useSignal } from '@builder.io/qwik';
+import { Toggle } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  const isEnabled = useSignal(false);
+  
+  return (
+    <div>
+      <Toggle
+        id="feature-toggle"
+        checked={isEnabled.value}
+        onChange$={(e) => {
+          isEnabled.value = (e.target as HTMLInputElement).checked;
+        }}
+      >
+        Enable Feature
+      </Toggle>
+      
+      {/* Checkbox variant */}
+      <Toggle
+        id="checkbox-toggle"
+        checkbox
+        checked={isEnabled.value}
+      >
+        Checkbox Style
+      </Toggle>
+      
+      {/* Round variant */}
+      <Toggle
+        id="round-toggle"
+        round
+        checked={isEnabled.value}
+      >
+        Round Toggle
+      </Toggle>
+    </div>
+  );
+});
+```
+
+### Navigation Component
+
+Build responsive navigation menus:
+
+```tsx nav.tsx
+import { component$ } from '@builder.io/qwik';
+import { Nav } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <Nav>
+      <a href="/">Home</a>
+      <a href="/docs">Documentation</a>
+      <a href="/components">Components</a>
+    </Nav>
+  );
+});
+```
+
+### Hoverable Effect
+
+Add 3D perspective hover effects to any element:
+
+```tsx card.tsx
+import { component$ } from '@builder.io/qwik';
+import { Hoverable } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div
+      class="lum-card p-6"
+      {...Hoverable}
+    >
+      <h3>Interactive Card</h3>
+      <p>Hover over me for a 3D effect!</p>
+    </div>
+  );
+});
+```
+
+<Note>
+  The Hoverable object spreads event handlers (`onMouseMove$` and `onMouseLeave$`) that apply perspective transforms on hover.
+</Note>
+
+### Logo Components
+
+Use pre-built logo SVGs with customizable sizing:
+
+```tsx logos.tsx
+import { component$ } from '@builder.io/qwik';
+import { Luminescent, Discord, Paper } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div class="flex gap-4 items-center">
+      <Luminescent class="h-8 w-8" />
+      <Discord class="h-8 w-8" />
+      <Paper class="h-8 w-8" />
+    </div>
+  );
+});
+```
+
+## TypeScript Support
+
+All components include full TypeScript definitions. Component props extend native HTML element props:
+
+```typescript types.ts
+import type { PropsOf } from '@builder.io/qwik';
+import type { Toggle } from '@luminescent/ui-qwik';
+
+// Toggle extends Omit<PropsOf<'input'>, ...>
+type ToggleProps = Parameters<typeof Toggle>[0];
+```
+
+## Next Steps
+
+- Explore the [Component Documentation](https://ui.luminescent.dev/docs) for detailed usage
+- View [Markdown Formatting](https://ui.luminescent.dev/docs/markdown) examples
+- Check out the [Tailwind Classes](https://ui.luminescent.dev/docs/classes) reference

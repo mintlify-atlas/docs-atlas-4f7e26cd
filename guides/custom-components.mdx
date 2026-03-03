@@ -1,0 +1,513 @@
+---
+title: Building Custom Components
+description: Learn how to build custom components using Luminescent UI utilities and design patterns
+---
+
+## Overview
+
+Luminescent UI provides a powerful set of utility classes that you can combine to create custom components that match your design needs while maintaining consistency with the design system.
+
+## Understanding Core Utilities
+
+### Background Utilities
+
+The `lum-bg-*` utility is the foundation for creating components with Luminescent UI's depth-aware styling.
+
+<CodeGroup>
+```tsx Basic Usage
+<div className="lum-bg-gray-800">
+  Basic background with border
+</div>
+```
+
+```tsx With Alpha
+<div className="lum-bg-gray-800/50">
+  Semi-transparent background
+</div>
+```
+
+```tsx Gradient Background
+<div className="lum-grad-bg-blue-600">
+  Gradient background with depth effects
+</div>
+```
+</CodeGroup>
+
+<Note>
+The `lum-bg-*` utilities automatically include:
+- Border with color mixing
+- Focus states with accent color
+- Depth-aware shadows (controlled by `--lum-depth`)
+- Smooth transitions
+</Note>
+
+### Button & Input Utilities
+
+Pre-configured utilities for interactive elements:
+
+```tsx
+// Button utility - includes padding, transitions, and hover effects
+<button className="lum-btn">
+  Click me
+</button>
+
+// Input utility - optimized for form fields
+<input className="lum-input" type="text" />
+
+// Card utility - for content containers
+<div className="lum-card">
+  <h2>Card Title</h2>
+  <p>Card content</p>
+</div>
+```
+
+## Custom Component Patterns
+
+### Pattern 1: Custom Button Variants
+
+Create reusable button variants by combining utilities:
+
+<Steps>
+  <Step title="Define the base component">
+    ```tsx Button.tsx
+    export function Button({ 
+      variant = 'default',
+      size = 'md',
+      children,
+      ...props 
+    }) {
+      const baseClasses = 'lum-btn rounded-lum';
+      
+      const variants = {
+        default: 'lum-bg-lum-input-bg hover:lum-bg-lum-input-hover-bg',
+        primary: 'lum-bg-blue-600 hover:lum-bg-blue-700',
+        danger: 'lum-bg-red-600 hover:lum-bg-red-700',
+        ghost: 'lum-bg-transparent hover:lum-bg-gray-800/50',
+      };
+      
+      const sizes = {
+        sm: 'lum-btn-p-1 text-sm',
+        md: 'lum-btn-p-2 text-base',
+        lg: 'lum-btn-p-3 text-lg',
+      };
+      
+      return (
+        <button 
+          className={`${baseClasses} ${variants[variant]} ${sizes[size]}`}
+          {...props}
+        >
+          {children}
+        </button>
+      );
+    }
+    ```
+  </Step>
+  
+  <Step title="Use your custom button">
+    ```tsx Usage
+    <Button variant="primary" size="lg">
+      Primary Action
+    </Button>
+    
+    <Button variant="danger">
+      Delete
+    </Button>
+    
+    <Button variant="ghost" size="sm">
+      Cancel
+    </Button>
+    ```
+  </Step>
+</Steps>
+
+### Pattern 2: Interactive Cards
+
+Create cards with hover effects and depth:
+
+```tsx InteractiveCard.tsx
+interface CardProps {
+  hoverable?: boolean;
+  gradient?: boolean;
+  children: React.ReactNode;
+}
+
+export function InteractiveCard({ 
+  hoverable = false, 
+  gradient = false,
+  children 
+}: CardProps) {
+  const baseClasses = 'lum-card rounded-lum';
+  const hoverClasses = hoverable ? 'lum-hoverable cursor-pointer' : '';
+  const bgClasses = gradient 
+    ? 'lum-grad-bg-gray-800' 
+    : 'lum-bg-lum-card-bg';
+  
+  return (
+    <div className={`${baseClasses} ${bgClasses} ${hoverClasses}`}>
+      {children}
+    </div>
+  );
+}
+```
+
+<Tip>
+Use the `lum-hoverable` utility to add a subtle pop-out effect on hover. It includes:
+- Scale transformation (102%)
+- Drop shadow
+- Smooth transitions
+</Tip>
+
+### Pattern 3: Custom Input Components
+
+<Accordion title="Text Input with Label">
+```tsx InputField.tsx
+interface InputFieldProps {
+  label: string;
+  error?: string;
+  helperText?: string;
+  required?: boolean;
+}
+
+export function InputField({ 
+  label, 
+  error, 
+  helperText,
+  required,
+  ...props 
+}: InputFieldProps) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-sm font-medium text-lum-text">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      
+      <input
+        className={`lum-input rounded-lum ${
+          error ? 'border-red-500' : ''
+        }`}
+        {...props}
+      />
+      
+      {error && (
+        <span className="text-sm text-red-500">{error}</span>
+      )}
+      
+      {helperText && !error && (
+        <span className="text-sm text-lum-text-secondary">{helperText}</span>
+      )}
+    </div>
+  );
+}
+```
+</Accordion>
+
+<Accordion title="Select Menu Component">
+```tsx Select.tsx
+export function Select({ 
+  label, 
+  options, 
+  value, 
+  onChange,
+  ...props 
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-sm font-medium text-lum-text">
+        {label}
+      </label>
+      
+      <select
+        className="lum-input rounded-lum cursor-pointer"
+        value={value}
+        onChange={onChange}
+        {...props}
+      >
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+```
+</Accordion>
+
+## Extending the Design System
+
+### Custom Theme Variables
+
+You can customize Luminescent UI's design tokens in your CSS:
+
+```css global.css
+@theme {
+  /* Spacing & Layout */
+  --lum-btn-p-x: 2.5;              /* Horizontal button padding multiplier */
+  --lum-input-p-x: 1.5;            /* Horizontal input padding multiplier */
+  --lum-border-radius: 12px;       /* Base border radius */
+  --lum-border-superellipse: 1;    /* Superellipse corner shape (0-1) */
+  
+  /* Visual Effects */
+  --lum-border-mix: 20%;           /* Border color mixing percentage */
+  --lum-depth: 0;                  /* Depth effect intensity (0 or 1) */
+  --lum-gradient-mix: 20%;         /* Gradient mixing percentage */
+  --lum-gradient-angle: 180deg;    /* Default gradient angle */
+  
+  /* Colors */
+  --color-lum-border: var(--color-gray-300);
+  --color-lum-gradient: var(--color-gray-950);
+  --color-lum-card-bg: var(--color-gray-900);
+  --color-lum-input-bg: var(--color-gray-800);
+  --color-lum-input-hover-bg: var(--color-gray-700);
+  --color-lum-accent: var(--color-blue-500);
+  --color-lum-text: var(--color-gray-50);
+  --color-lum-text-secondary: var(--color-gray-400);
+}
+```
+
+<Warning>
+Changing theme variables will affect all components using Luminescent UI utilities. Test thoroughly across your application.
+</Warning>
+
+### Custom Padding Utilities
+
+Create custom padding scales for your components:
+
+```css
+/* Custom button padding */
+.my-btn {
+  @apply lum-btn-p-3;  /* Large button */
+}
+
+/* Custom input padding */
+.my-input {
+  @apply lum-input-p-2; /* Standard input */
+}
+```
+
+Available padding utilities:
+- `lum-btn-p-1` through `lum-btn-p-8` (buttons with gap scaling)
+- `lum-input-p-1` through `lum-input-p-8` (inputs without gap)
+
+### Nested Border Radius
+
+For nested elements with consistent border radius:
+
+```tsx
+<div className="lum-card p-4 rounded-lum">
+  {/* Nested element with adjusted radius */}
+  <div className="lum-bg-gray-800 p-2 rounded-lum-2">
+    Inner content
+  </div>
+</div>
+```
+
+The `rounded-lum-*` utility subtracts padding to maintain visual consistency.
+
+## Advanced Techniques
+
+### Gradient Borders
+
+Create components with gradient borders:
+
+```tsx
+<div className="border-gradient-2 before:from-blue-500 before:to-purple-500 lum-card">
+  <h3>Gradient Border Card</h3>
+  <p>Beautiful gradient border effect</p>
+</div>
+```
+
+### Depth-Aware Components
+
+Enable depth effects for elevation-based designs:
+
+<Steps>
+  <Step title="Enable depth globally">
+    ```css global.css
+    @theme {
+      --lum-depth: 1; /* Enable depth effects */
+    }
+    ```
+  </Step>
+  
+  <Step title="Use depth-aware utilities">
+    ```tsx
+    {/* These will now show depth effects */}
+    <div className="lum-bg-gray-800">Elevated background</div>
+    <button className="lum-btn">Elevated button</button>
+    <div className="lum-card">Elevated card</div>
+    ```
+  </Step>
+</Steps>
+
+<Note>
+Depth effects include:
+- Fading borders (fade out as depth increases)
+- Inset shadows for depth perception
+- Drop shadows for elevation
+</Note>
+
+### Loading States
+
+Add loading indicators to components:
+
+```tsx
+function LoadingCard({ isLoading, children }) {
+  return (
+    <div className="lum-card">
+      {isLoading ? (
+        <div className="flex items-center justify-between">
+          <div className="flex-1">{children}</div>
+          <div className="lum-loading w-5 h-5" />
+        </div>
+      ) : (
+        children
+      )}
+    </div>
+  );
+}
+```
+
+## Component Composition
+
+### Composable Card System
+
+```tsx CardSystem.tsx
+// Base Card
+export function Card({ className = '', children, ...props }) {
+  return (
+    <div className={`lum-card rounded-lum ${className}`} {...props}>
+      {children}
+    </div>
+  );
+}
+
+// Card Header
+Card.Header = function CardHeader({ children }) {
+  return (
+    <div className="flex items-center justify-between">
+      {children}
+    </div>
+  );
+};
+
+// Card Title
+Card.Title = function CardTitle({ children }) {
+  return (
+    <h2 className="text-xl font-bold text-lum-text sm:text-2xl">
+      {children}
+    </h2>
+  );
+};
+
+// Card Description
+Card.Description = function CardDescription({ children }) {
+  return (
+    <p className="text-sm text-lum-text-secondary">
+      {children}
+    </p>
+  );
+};
+
+// Card Content
+Card.Content = function CardContent({ children }) {
+  return <div className="space-y-4">{children}</div>;
+};
+
+// Card Footer
+Card.Footer = function CardFooter({ children }) {
+  return (
+    <div className="flex items-center gap-2 pt-2 border-t border-gray-700">
+      {children}
+    </div>
+  );
+};
+```
+
+### Usage Example
+
+```tsx
+<Card>
+  <Card.Header>
+    <div>
+      <Card.Title>User Profile</Card.Title>
+      <Card.Description>Manage your account settings</Card.Description>
+    </div>
+  </Card.Header>
+  
+  <Card.Content>
+    <InputField label="Name" defaultValue="John Doe" />
+    <InputField label="Email" type="email" defaultValue="john@example.com" />
+  </Card.Content>
+  
+  <Card.Footer>
+    <Button variant="ghost">Cancel</Button>
+    <Button variant="primary">Save Changes</Button>
+  </Card.Footer>
+</Card>
+```
+
+## Best Practices
+
+<Accordion title="Use Semantic Component Names">
+Choose names that describe the component's purpose, not its appearance:
+
+```tsx
+// Good
+<PrimaryButton>Submit</PrimaryButton>
+<DangerButton>Delete</DangerButton>
+
+// Avoid
+<BlueButton>Submit</BlueButton>
+<RedButton>Delete</RedButton>
+```
+</Accordion>
+
+<Accordion title="Maintain Consistent Spacing">
+Use the design system's spacing scale:
+
+```tsx
+// Good - uses consistent spacing
+<div className="flex flex-col gap-3">
+  <Card />
+  <Card />
+</div>
+
+// Avoid - arbitrary values
+<div className="flex flex-col" style={{ gap: '17px' }}>
+  <Card />
+  <Card />
+</div>
+```
+</Accordion>
+
+<Accordion title="Leverage CSS Variables">
+Use theme variables instead of hardcoded values:
+
+```css
+/* Good */
+.custom-component {
+  background: var(--color-lum-card-bg);
+  border-radius: var(--lum-border-radius);
+}
+
+/* Avoid */
+.custom-component {
+  background: #1f2937;
+  border-radius: 8px;
+}
+```
+</Accordion>
+
+<Accordion title="Test Across Themes">
+If supporting multiple themes, test your custom components with different `--lum-depth` and color values to ensure they adapt properly.
+</Accordion>
+
+## Related Resources
+
+- [Utilities Reference](/concepts/tailwind-utilities) - Complete list of available utilities
+- [Theming Guide](/guides/theming-variables) - Customize colors and design tokens
+- [Qwik Components](/components/qwik/dropdown) - Pre-built Qwik component examples
+- [React Components](/components/react/dropdown) - Pre-built React component examples

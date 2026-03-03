@@ -1,0 +1,174 @@
+---
+title: SelectMenu
+description: A custom dropdown select menu with flexible styling and slot support
+---
+
+The SelectMenu component provides a customizable dropdown menu that can replace native select elements. It supports custom rendering, hover interactions, and flexible positioning.
+
+## Import
+
+```typescript
+import { SelectMenu, SelectMenuRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx With Label
+<SelectMenu
+  id="theme"
+  values={[
+    { name: 'Light', value: 'light' },
+    { name: 'Dark', value: 'dark' },
+    { name: 'Auto', value: 'auto' },
+  ]}
+  value={theme.value}
+  onChange$={(e, el) => {
+    theme.value = el.value;
+  }}
+>
+  Theme
+</SelectMenu>
+```
+
+```tsx Custom Dropdown
+<SelectMenuRaw
+  customDropdown
+  values={options}
+>
+  <div q:slot="dropdown">
+    <UserIcon /> {selectedUser.name}
+  </div>
+</SelectMenuRaw>
+```
+</CodeGroup>
+
+## SelectMenu Props
+
+<ParamField path="id" type="string">
+  HTML id for the component. Used to generate dropdown button id as `{id}-dropdown`.
+</ParamField>
+
+<ParamField path="values" type="Array<{ name: JSXChildren, value: string | number }>">
+  Array of options to display in the dropdown menu. Each object has a `name` (displayed label) and `value` (form value).
+</ParamField>
+
+<ParamField path="value" type="string | number">
+  The currently selected value.
+</ParamField>
+
+<ParamField path="align" type="'left' | 'right' | 'center'">
+  Alignment of the dropdown panel relative to the button.
+</ParamField>
+
+<ParamField path="hover" type="boolean">
+  When true, the dropdown opens on hover instead of click.
+</ParamField>
+
+<ParamField path="noblur" type="boolean">
+  Disables the backdrop blur effect on the dropdown panel.
+</ParamField>
+
+<ParamField path="nocloseonclick" type="boolean">
+  Prevents the dropdown from closing when clicking outside.
+</ParamField>
+
+<ParamField path="customDropdown" type="boolean">
+  When true, uses the custom dropdown slot instead of displaying the selected value.
+</ParamField>
+
+<ParamField path="panelClass" type="string" default="lum-bg-lum-input-bg">
+  Custom class for the dropdown panel background.
+</ParamField>
+
+<ParamField path="btnClass" type="string" default="lum-bg-transparent">
+  Custom class for the dropdown option buttons.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling on the dropdown button.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'select'>">
+  All standard HTML select attributes are supported (except `class` and `size`).
+</ParamField>
+
+## Slots
+
+<ParamField path="dropdown" type="slot">
+  Custom content to display in the dropdown button. Used when `customDropdown` is true or when no values are provided.
+</ParamField>
+
+<ParamField path="extra-buttons" type="slot">
+  Additional buttons to append to the dropdown panel below the value options.
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Basic Select
+<SelectMenu
+  id="country"
+  values={[
+    { name: 'United States', value: 'us' },
+    { name: 'Canada', value: 'ca' },
+    { name: 'Mexico', value: 'mx' },
+  ]}
+  value={country.value}
+/>
+```
+
+```tsx Hover to Open
+<SelectMenuRaw
+  hover
+  values={languages}
+  align="right"
+/>
+```
+
+```tsx With Extra Buttons
+<SelectMenu
+  id="filter"
+  values={filterOptions}
+>
+  Filter
+  <button q:slot="extra-buttons" onClick$={clearFilter}>
+    Clear All
+  </button>
+</SelectMenu>
+```
+
+```tsx Custom Rendering
+<SelectMenuRaw
+  customDropdown
+  values={users}
+>
+  <div q:slot="dropdown" class="flex items-center gap-2">
+    <Avatar src={selectedUser.avatar} />
+    <span>{selectedUser.name}</span>
+  </div>
+</SelectMenuRaw>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The component creates a hidden native `<select>` element that syncs with the custom UI. When an option is clicked, it updates the hidden select and dispatches a `change` event. The dropdown auto-closes on selection unless `nocloseonclick` is set.
+</Note>
+
+## Accessibility
+
+- Native select element in the background for form integration
+- Keyboard navigation support (Tab, Enter, Arrow keys)
+- Focus-within state opens dropdown for keyboard users
+- Proper button types prevent form submission
+- `select-none` on dropdown prevents text selection
+
+## Styling Features
+
+- Maximum height of `18rem` (72) with scroll for long lists
+- Smooth scale and opacity transitions
+- Backdrop blur effect (unless `noblur` is set)
+- Z-index of 1000 for proper layering
+- Custom scrollbar styling via `lum-scroll`

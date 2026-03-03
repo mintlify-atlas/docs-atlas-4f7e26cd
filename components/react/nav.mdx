@@ -1,0 +1,159 @@
+---
+title: Nav
+description: A responsive navigation bar component with support for fixed positioning, floating styles, and mobile hamburger menus.
+---
+
+The Nav component provides a flexible navigation bar with built-in responsive behavior, optional backdrop blur, and automatic mobile menu handling.
+
+## Import
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+```
+
+## Usage
+
+```tsx
+import { Nav } from '@luminescent/ui-react';
+
+function Example() {
+  return (
+    <Nav
+      start={<div>Logo</div>}
+      center={<div>Navigation Links</div>}
+      end={<div>User Menu</div>}
+      mobile={<div>Mobile Menu Content</div>}
+    />
+  );
+}
+```
+
+## Props
+
+The Nav component extends all standard HTML `<nav>` element attributes and accepts the following additional props:
+
+<ParamField path="start" type="React.ReactNode">
+  Content displayed on the left side of the navigation bar.
+</ParamField>
+
+<ParamField path="center" type="React.ReactNode">
+  Content displayed in the center of the navigation bar.
+</ParamField>
+
+<ParamField path="end" type="React.ReactNode">
+  Content displayed on the right side of the navigation bar.
+</ParamField>
+
+<ParamField path="mobile" type="React.ReactNode">
+  Content displayed in the mobile hamburger menu (hidden on screens wider than `sm` breakpoint).
+</ParamField>
+
+<ParamField path="fixed" type="boolean" default="false">
+  When true, the navigation bar uses `position: fixed`, otherwise uses `position: absolute`.
+</ParamField>
+
+<ParamField path="floating" type="boolean" default="false">
+  When enabled, the navigation bar has a floating card style with rounded corners and margins.
+</ParamField>
+
+<ParamField path="noblur" type="boolean" default="false">
+  Disables the backdrop blur effect on the navigation bar.
+</ParamField>
+
+<ParamField path="nohamburger" type="boolean" default="false">
+  Hides the hamburger menu button and mobile menu completely.
+</ParamField>
+
+<ParamField path="nodismiss" type="boolean" default="false">
+  Prevents the mobile menu from automatically closing when clicking outside.
+</ParamField>
+
+<ParamField path="colorClass" type="string" default="'lum-bg-lum-card-bg'">
+  CSS class for the background color of the navigation bar.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object of CSS classes with boolean values for conditional styling.
+</ParamField>
+
+## Behavior
+
+- The component is positioned at the top of the page with `z-50`
+- On mobile (below `sm` breakpoint), a hamburger menu icon appears in the top right
+- Clicking the hamburger toggles the mobile menu with smooth animations
+- The mobile menu automatically closes when clicking outside (unless `nodismiss` is true)
+- Elements with the class `nav-ignore-dismiss` will not trigger menu dismissal when clicked
+- The navigation spans full width with content constrained to a `max-w-7xl` container
+
+## Examples
+
+<CodeGroup>
+
+```tsx Basic
+import { Nav } from '@luminescent/ui-react';
+
+function BasicNav() {
+  return (
+    <Nav
+      start={<span className="font-bold">My App</span>}
+      end={
+        <div className="flex gap-4">
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </div>
+      }
+      mobile={
+        <div className="flex flex-col gap-2">
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </div>
+      }
+    />
+  );
+}
+```
+
+```tsx Fixed and Floating
+import { Nav } from '@luminescent/ui-react';
+
+function FloatingNav() {
+  return (
+    <Nav
+      fixed
+      floating
+      start={<span className="font-bold">My App</span>}
+      end={<button className="lum-btn">Sign In</button>}
+      mobile={
+        <button className="lum-btn w-full">Sign In</button>
+      }
+    />
+  );
+}
+```
+
+```tsx No Blur
+import { Nav } from '@luminescent/ui-react';
+
+function SolidNav() {
+  return (
+    <Nav
+      noblur
+      colorClass="bg-slate-900"
+      start={<span className="text-white font-bold">My App</span>}
+      end={
+        <nav className="flex gap-4 text-white">
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/docs">Docs</a>
+        </nav>
+      }
+    />
+  );
+}
+```
+
+</CodeGroup>
+
+<Note>
+  The mobile menu appears below the main navigation bar when opened. Make sure your page content accounts for the navigation height to avoid overlapping, especially when using `fixed` positioning.
+</Note>

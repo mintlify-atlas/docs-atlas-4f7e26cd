@@ -1,80 +1,398 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick Start
+description: Get started with Luminescent UI in 5 minutes
 ---
 
-## Get started in three steps
+## Get Up and Running
 
-Get your documentation site running locally and make your first customization.
-
-### Step 1: Set up your local environment
-
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
-
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
-
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
+This guide will help you build your first component with Luminescent UI. We'll create a simple card with a toggle switch.
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  Make sure you've completed the [installation](/installation) before starting this guide.
 </Note>
+
+---
+
+## Choose Your Framework
+
+<Tabs>
+  <Tab title="Qwik">
+    <Steps>
+      <Step title="Install packages">
+        ```bash
+        pnpm install @luminescent/ui @luminescent/ui-qwik
+        ```
+      </Step>
+
+      <Step title="Configure Tailwind CSS">
+        Add to your CSS file:
+
+        ```css app.css
+        @import "@luminescent/ui";
+        @plugin "@luminescent/ui/lum-bg";
+        @config "@luminescent/ui-qwik/config";
+        @source "../node_modules/@luminescent/ui-qwik";
+        ```
+      </Step>
+
+      <Step title="Create your first component">
+        ```tsx example.tsx
+        import { component$ } from '@builder.io/qwik';
+        import { Toggle } from '@luminescent/ui-qwik';
+
+        export default component$(() => {
+          return (
+            <div class="lum-card p-6">
+              <h2 class="text-2xl font-bold mb-4">Settings</h2>
+              
+              <div class="space-y-4">
+                <Toggle id="notifications">
+                  Enable notifications
+                </Toggle>
+                
+                <Toggle id="dark-mode" checkbox>
+                  Dark mode
+                </Toggle>
+                
+                <Toggle id="beta-features" round>
+                  Beta features
+                </Toggle>
+              </div>
+            </div>
+          );
+        });
+        ```
+      </Step>
+
+      <Step title="Run your app">
+        ```bash
+        pnpm dev
+        ```
+
+        Open your browser and you'll see a card with three different toggle styles.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="React">
+    <Steps>
+      <Step title="Install packages">
+        ```bash
+        pnpm install @luminescent/ui @luminescent/ui-react
+        ```
+      </Step>
+
+      <Step title="Configure Tailwind CSS">
+        Add to your CSS file:
+
+        ```css app.css
+        @import "@luminescent/ui";
+        @plugin "@luminescent/ui/lum-bg";
+        @source "../node_modules/@luminescent/ui-react";
+        ```
+      </Step>
+
+      <Step title="Create your first component">
+        ```tsx Example.tsx
+        import { Toggle } from '@luminescent/ui-react';
+
+        export default function Example() {
+          return (
+            <div className="lum-card p-6">
+              <h2 className="text-2xl font-bold mb-4">Settings</h2>
+              
+              <div className="space-y-4">
+                <Toggle id="notifications">
+                  Enable notifications
+                </Toggle>
+                
+                <Toggle id="dark-mode" checkbox>
+                  Dark mode
+                </Toggle>
+                
+                <Toggle id="beta-features" round>
+                  Beta features
+                </Toggle>
+              </div>
+            </div>
+          );
+        }
+        ```
+      </Step>
+
+      <Step title="Run your app">
+        ```bash
+        pnpm dev
+        ```
+
+        Open your browser and you'll see a card with three different toggle styles.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Tailwind Only">
+    <Steps>
+      <Step title="Install the core package">
+        ```bash
+        pnpm install @luminescent/ui
+        ```
+      </Step>
+
+      <Step title="Configure Tailwind CSS">
+        Add to your CSS file:
+
+        ```css app.css
+        @import "@luminescent/ui";
+        @plugin "@luminescent/ui/lum-bg";
+        ```
+      </Step>
+
+      <Step title="Use utility classes">
+        ```html
+        <div class="lum-card p-6">
+          <h2 class="text-2xl font-bold mb-4 text-lum-text">Welcome</h2>
+          <p class="text-lum-text-secondary">
+            This card uses Luminescent UI utility classes.
+          </p>
+          <button class="lum-btn mt-4">
+            Get Started
+          </button>
+        </div>
+        ```
+      </Step>
+
+      <Step title="Run your app">
+        ```bash
+        pnpm dev
+        ```
+
+        You'll see a styled card with Luminescent UI's design system.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+---
+
+## Understanding the Code
+
+<AccordionGroup>
+  <Accordion title="What is lum-card?" icon="rectangle-wide">
+    `lum-card` is a utility class that applies Luminescent UI's card styling:
+    - Subtle background with blur effect
+    - Rounded corners
+    - Border styling
+    - Hover and focus states
+
+    You can combine it with standard Tailwind classes like `p-6` for padding.
+  </Accordion>
+
+  <Accordion title="Toggle Component Props" icon="toggle-on">
+    The Toggle component accepts these props:
+
+    - **`checkbox`** - Makes it appear as a checkbox instead of a switch
+    - **`round`** - Makes it fully rounded (circular)
+    - **`id`** - Required for label association
+    - All standard checkbox input attributes
+
+    ```tsx
+    <Toggle id="example" checkbox round disabled>
+      Label text
+    </Toggle>
+    ```
+  </Accordion>
+
+  <Accordion title="CSS Custom Properties" icon="swatchbook">
+    Luminescent UI uses CSS variables for theming:
+
+    - `--lum-text` - Primary text color
+    - `--lum-text-secondary` - Secondary text color
+    - `--lum-accent` - Accent color
+    - `--lum-input-bg` - Input background
+    - And many more...
+
+    These can be customized in your CSS to match your brand.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Try More Components
+
+<CardGroup cols={2}>
+  <Card title="Dropdown" icon="chevron-down" href="/components/qwik/dropdown">
+    Create dropdown menus with Luminescent styling
+  </Card>
+  <Card title="SelectMenu" icon="list" href="/components/qwik/select-menu">
+    Build accessible select inputs
+  </Card>
+  <Card title="Nav" icon="bars" href="/components/qwik/nav">
+    Add navigation with active states
+  </Card>
+  <Card title="ColorPicker" icon="palette" href="/components/qwik/color-picker">
+    Let users pick colors (Qwik only)
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<Steps>
+  <Step title="Explore Components">
+    Browse the full component library to see what's available
+  </Step>
+  
+  <Step title="Customize Your Theme">
+    Learn how to [customize colors](/guides/custom-colors) and [theming variables](/guides/theming-variables)
+  </Step>
+  
+  <Step title="Add Markdown Support">
+    Install the optional [markdown formatting](/guides/markdown-formatting) for beautiful content rendering
+  </Step>
+  
+  <Step title="Learn Core Concepts">
+    Understand [Tailwind utilities](/concepts/tailwind-utilities) and [depth effects](/concepts/depth-effects)
+  </Step>
+</Steps>
+
+---
+
+## Common Patterns
+
+### Form with Toggles
+
+<CodeGroup>
+
+```tsx Qwik
+import { component$ } from '@builder.io/qwik';
+import { Toggle } from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <form class="lum-card p-6 max-w-md space-y-6">
+      <h3 class="text-xl font-bold">Preferences</h3>
+      
+      <Toggle id="emails">
+        Email notifications
+      </Toggle>
+      
+      <Toggle id="marketing" checkbox>
+        Marketing emails
+      </Toggle>
+      
+      <button type="submit" class="lum-btn w-full">
+        Save Preferences
+      </button>
+    </form>
+  );
+});
+```
+
+```tsx React
+import { Toggle } from '@luminescent/ui-react';
+
+export default function PreferencesForm() {
+  return (
+    <form className="lum-card p-6 max-w-md space-y-6">
+      <h3 className="text-xl font-bold">Preferences</h3>
+      
+      <Toggle id="emails">
+        Email notifications
+      </Toggle>
+      
+      <Toggle id="marketing" checkbox>
+        Marketing emails
+      </Toggle>
+      
+      <button type="submit" className="lum-btn w-full">
+        Save Preferences
+      </button>
+    </form>
+  );
+}
+```
+
+</CodeGroup>
+
+### Card Grid
+
+```html
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="lum-card p-6">
+    <h3 class="font-bold mb-2">Card 1</h3>
+    <p class="text-lum-text-secondary">Content here</p>
+  </div>
+  
+  <div class="lum-card p-6">
+    <h3 class="font-bold mb-2">Card 2</h3>
+    <p class="text-lum-text-secondary">Content here</p>
+  </div>
+  
+  <div class="lum-card p-6">
+    <h3 class="font-bold mb-2">Card 3</h3>
+    <p class="text-lum-text-secondary">Content here</p>
+  </div>
+</div>
+```
+
+<Tip>
+  **Pro tip:** Combine Luminescent UI classes with standard Tailwind utilities for maximum flexibility.
+</Tip>
+
+---
+
+## Troubleshooting
+
+<Warning>
+  If components aren't rendering correctly, check that:
+  - You've imported the correct CSS configuration
+  - Your Tailwind CSS version is 4.x
+  - You restarted your dev server after installation
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Styles not applying">
+    Make sure your CSS imports are in the correct order:
+    
+    1. `@import "@luminescent/ui";`
+    2. `@plugin "@luminescent/ui/lum-bg";`
+    3. Framework-specific configuration (`@config` or `@source`)
+  </Accordion>
+
+  <Accordion title="Components not found">
+    Check your import paths:
+    
+    ```tsx
+    // Correct
+    import { Toggle } from '@luminescent/ui-qwik';
+    import { Toggle } from '@luminescent/ui-react';
+    
+    // Incorrect
+    import { Toggle } from '@luminescent/ui';
+    ```
+  </Accordion>
+
+  <Accordion title="Type errors in TypeScript">
+    Make sure your TypeScript is configured correctly and the package types are being recognized. The packages include type definitions.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Core Concepts" icon="book" href="/concepts/tailwind-utilities">
+    Learn about Tailwind utilities and theming
+  </Card>
+  <Card title="Qwik Components" icon="code" href="/components/qwik/dropdown">
+    Browse Qwik component documentation
+  </Card>
+  <Card title="React Components" icon="brackets-curly" href="/components/react/dropdown">
+    Browse React component documentation
+  </Card>
+  <Card title="GitHub" icon="github" href="https://github.com/LuminescentDev/ui">
+    Report issues or contribute
+  </Card>
+</CardGroup>

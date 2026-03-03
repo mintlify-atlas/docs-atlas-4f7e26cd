@@ -1,0 +1,141 @@
+---
+title: Toggle
+description: A customizable toggle switch component with checkbox and round variants
+---
+
+The Toggle component provides an accessible switch interface that can be styled as a sliding toggle or checkbox-style toggle. It supports labels and custom styling.
+
+## Import
+
+```typescript
+import { Toggle } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+import { useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const enabled = useSignal(false);
+  
+  return (
+    <Toggle
+      id="notifications"
+      checked={enabled.value}
+      onChange$={(e, el) => {
+        enabled.value = el.checked;
+      }}
+    >
+      Enable Notifications
+    </Toggle>
+  );
+});
+```
+
+## Props
+
+<ParamField path="id" type="string">
+  HTML id for the checkbox input and label association.
+</ParamField>
+
+<ParamField path="checkbox" type="boolean">
+  When true, displays as a checkbox-style toggle where the indicator appears/disappears. When false (default), displays as a sliding toggle.
+</ParamField>
+
+<ParamField path="round" type="boolean">
+  When true, uses fully rounded corners (`rounded-full`). When false (default), uses the theme's standard border radius.
+</ParamField>
+
+<ParamField path="class" type="string">
+  Custom CSS class string (note: this uses a regular string, not an object like other components).
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'input'>">
+  All standard HTML checkbox input attributes are supported (except `type`, `bind:checked`, and standard `class`).
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Sliding Toggle
+<Toggle
+  id="darkMode"
+  checked={darkMode.value}
+  onChange$={(e, el) => darkMode.value = el.checked}
+>
+  Dark Mode
+</Toggle>
+```
+
+```tsx Checkbox Style
+<Toggle
+  id="terms"
+  checkbox
+  checked={agreedToTerms.value}
+  onChange$={(e, el) => agreedToTerms.value = el.checked}
+>
+  I agree to the terms
+</Toggle>
+```
+
+```tsx Round Toggle
+<Toggle
+  id="enabled"
+  round
+  checked={isEnabled.value}
+  onChange$={(e, el) => isEnabled.value = el.checked}
+>
+  Enable Feature
+</Toggle>
+```
+
+```tsx No Label
+<Toggle
+  id="mute"
+  checked={isMuted.value}
+  onChange$={(e, el) => isMuted.value = el.checked}
+/>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The component uses the native checkbox input with custom styling. The actual checkbox is visually hidden with `sr-only` but remains accessible to screen readers. The visual indicator animates smoothly with transitions.
+</Note>
+
+## Visual Variants
+
+**Sliding Toggle (default)**:
+- Width: `3rem` (12)
+- Indicator slides from left to right when checked
+- Uses `translate-x-full` transform
+
+**Checkbox Toggle**:
+- Width: `1.75rem` (7)
+- Indicator fades in/out using opacity
+- Indicator is centered, not sliding
+
+**Round Variant**:
+- Applies `rounded-full` to both container and indicator
+- Works with both sliding and checkbox styles
+
+## Styling
+
+- Height: `1.75rem` (7) for consistent sizing
+- Indicator: `1.25rem` (5) square with borders
+- Smooth transitions (300ms default, 75ms on hover)
+- Background changes color when checked (accent color)
+- Uses peer selectors for checkbox state styling
+- `touch-manipulation` prevents double-tap zoom
+
+## Accessibility
+
+- Native checkbox input for proper semantics
+- Screen reader accessible with `sr-only` class
+- Label associated via `for` attribute
+- Keyboard accessible (Space to toggle)
+- Focus state indicated via `peer-focus` styles
+- `select-none` on label prevents text selection
+- Label hidden when empty with `empty:hidden`

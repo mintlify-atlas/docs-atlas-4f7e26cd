@@ -1,0 +1,270 @@
+---
+title: Custom Tailwind Utilities
+description: Overview of Luminescent UI's custom Tailwind utility classes for backgrounds, buttons, cards, and inputs
+---
+
+Luminescent UI extends Tailwind CSS with custom `@utility` definitions that provide enhanced styling capabilities with built-in depth effects, color mixing, and superellipse borders.
+
+## Background Utilities
+
+### lum-bg-*
+
+The `lum-bg-*` utility creates backgrounds with automatic border color mixing and depth effect support.
+
+```html
+<div class="lum-bg-blue-500">
+  Background with mixed border
+</div>
+
+<div class="lum-bg-red-500/80">
+  Background with 80% opacity
+</div>
+```
+
+**Features:**
+- Automatic border color mixing using `color-mix()` in OKLAB color space
+- Opacity modifiers support (e.g., `/80` for 80% opacity)
+- Focus state changes border to accent color (`--color-lum-accent`)
+- Border fades out when depth is active (`--lum-depth`)
+- Dynamic box shadows based on depth value
+
+<Info>
+  The border color is automatically mixed with `--color-lum-border` at `--lum-border-mix` percentage (default 20%).
+</Info>
+
+### lum-grad-bg-*
+
+Creates gradient backgrounds with the same depth and border features as `lum-bg-*`.
+
+```html
+<div class="lum-grad-bg-purple-600">
+  Gradient background from purple-600 to darker shade
+</div>
+```
+
+**Implementation:**
+```css
+background: linear-gradient(
+  var(--lum-gradient-angle),
+  var(--bg-color),
+  var(--gradient-color)
+);
+```
+
+The gradient color is mixed with `--color-lum-gradient` at `--lum-gradient-mix` percentage (default 20%).
+
+### lum-bg
+
+Base background utility that uses a pre-defined `--bg-color` variable.
+
+```html
+<div style="--bg-color: oklch(0.66 0.241 318.308)" class="lum-bg">
+  Custom OKLCH background
+</div>
+```
+
+### lum-toggle-bg-*
+
+Specialized background utility for toggle/interactive elements with hover and active states.
+
+```html
+<button class="lum-toggle-bg-green-500">
+  Toggle Button
+</button>
+```
+
+On hover and after activation (`:after`, `:hover`), the background lightens by mixing 10% white:
+```css
+background-color: color-mix(in oklab, white 10%, var(--bg-color));
+```
+
+## Component Utilities
+
+### lum-btn
+
+Complete button styling with padding, transitions, and depth effects.
+
+```html
+<button class="lum-btn">
+  Click me
+</button>
+```
+
+**Included styles:**
+- Smart padding based on `--lum-btn-p-x` variable (default: 2)
+- Hover and active scale animation (95% on active)
+- Drop shadow on hover/active
+- Superellipse border radius
+- Background colors: `lum-bg-lum-input-bg` with hover state
+
+<CodeGroup>
+```html Default Button
+<button class="lum-btn">
+  Default Button
+</button>
+```
+
+```html Custom Padding
+<button class="lum-btn-p-3">
+  Larger padding
+</button>
+```
+</CodeGroup>
+
+### lum-input
+
+Styling for input elements with consistent padding and transitions.
+
+```html
+<input type="text" class="lum-input" placeholder="Enter text" />
+```
+
+**Features:**
+- Padding based on `--lum-input-p-x` variable (default: 1.5)
+- Smooth transitions (300ms default, 75ms on hover/active)
+- Disabled state opacity (50%)
+- Superellipse border radius
+
+### lum-card
+
+Card container with flex layout and consistent spacing.
+
+```html
+<div class="lum-card">
+  <h2>Card Title</h2>
+  <p>Card content goes here.</p>
+</div>
+```
+
+**Styles:**
+- Flex column layout with 3-unit gap
+- 7-unit padding
+- Pre-wrap whitespace handling
+- Background: `lum-bg-lum-card-bg`
+
+## Padding Utilities
+
+### lum-btn-p-*
+
+Custom padding utility for buttons with automatic horizontal/vertical ratio.
+
+```html
+<button class="lum-btn-p-3">
+  Custom button padding
+</button>
+```
+
+**Formula:**
+```css
+padding: calc(var(--spacing) * [value])
+         calc(var(--spacing) * [value] * var(--lum-btn-p-x));
+gap: calc(var(--spacing) * [value] * clamp(0.65, 4 / [value], 1));
+```
+
+### lum-input-p-*
+
+Custom padding utility for inputs.
+
+```html
+<input class="lum-input-p-3" />
+```
+
+**Formula:**
+```css
+padding: calc(var(--spacing) * [value])
+         calc(var(--spacing) * [value] * var(--lum-input-p-x));
+```
+
+## Border Utilities
+
+### rounded-lum
+
+Applies the Luminescent border radius with superellipse corner shape.
+
+```html
+<div class="rounded-lum">
+  Superellipse corners
+</div>
+```
+
+**Implementation:**
+```css
+border-radius: var(--lum-border-radius);
+corner-shape: superellipse(var(--lum-border-superellipse));
+```
+
+### rounded-lum-*
+
+Adjusts border radius by subtracting spacing units (useful for nested elements).
+
+```html
+<div class="rounded-lum-1">
+  Slightly smaller radius
+</div>
+```
+
+**Formula:**
+```css
+border-radius: calc(var(--lum-border-radius) - calc(var(--spacing) * [value]));
+```
+
+### border-gradient-*
+
+Creates gradient borders using pseudo-elements.
+
+```html
+<div class="border-gradient-2 from-blue-500 to-purple-600">
+  Gradient border
+</div>
+```
+
+<Warning>
+  This utility uses `::before` pseudo-element with `z-index: -1` and overrides `border-color` to transparent.
+</Warning>
+
+## Utility Utilities
+
+### lum-hoverable
+
+Adds hover and active state scaling with drop shadow.
+
+```html
+<div class="lum-hoverable">
+  Hover over me
+</div>
+```
+
+**Effects:**
+- Scale to 102% on hover/active
+- Drop shadow on hover/active
+- Smooth easing transitions
+
+### lum-loading
+
+Creates a spinning loader animation.
+
+```html
+<div class="lum-loading w-6 h-6"></div>
+```
+
+**Implementation:**
+```css
+@apply animate-spin border-transparent border-l-current border-t-current border-3 rounded-full;
+```
+
+## Usage Best Practices
+
+<Note>
+  All `lum-*` utilities automatically integrate with the theming system and respond to CSS variable changes.
+</Note>
+
+1. **Combine utilities** - Mix Luminescent utilities with standard Tailwind classes
+2. **Use depth effects** - Set `[--lum-depth:1]` for elevated appearance
+3. **Customize variables** - Override CSS variables inline or in your theme
+4. **Leverage color mixing** - All color utilities use OKLCH for perceptually uniform mixing
+
+```html Example
+<button class="lum-btn lum-bg-blue-600 [--lum-depth:1] text-white font-semibold">
+  Elevated Button
+</button>
+```

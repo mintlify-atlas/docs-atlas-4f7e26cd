@@ -1,0 +1,119 @@
+---
+title: ColorPicker
+description: A full-featured color picker with HSV controls, preset colors, and hex input
+---
+
+The ColorPicker component provides an intuitive interface for selecting colors with a saturation/brightness gradient, hue slider, preset color swatches, and hex input field.
+
+## Import
+
+```typescript
+import { ColorPicker } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+import { useSignal } from '@builder.io/qwik';
+
+export default component$(() => {
+  const color = useSignal('#4498DB');
+  
+  return (
+    <ColorPicker
+      value={color.value}
+      onInput$={(newColor) => {
+        color.value = newColor;
+      }}
+    />
+  );
+});
+```
+
+## Props
+
+<ParamField path="value" type="string" default="#000000">
+  The current color value as a hex string (e.g., `#FF5733`).
+</ParamField>
+
+<ParamField path="onInput$" type="QRL<(color: string) => void>">
+  Callback fired when the color changes. Receives the new color as a hex string.
+</ParamField>
+
+<ParamField path="colors" type="string[]">
+  Array of preset color swatches to display. Defaults to a curated set of 14 colors including pastels, vibrant colors, and grayscale.
+</ParamField>
+
+<ParamField path="preview" type="'left' | 'right' | 'top' | 'bottom' | 'full'" default="left">
+  Position of the color preview relative to the hex input field.
+  - `left/right`: Small square preview beside input
+  - `top/bottom`: Thin bar above/below input
+  - `full`: Input background is the color with adaptive text color
+</ParamField>
+
+<ParamField path="horizontal" type="boolean">
+  Layout direction for the color picker. When true, elements are arranged horizontally.
+</ParamField>
+
+<ParamField path="showInput" type="boolean" default="true">
+  Whether to show the hex input field and color preview.
+</ParamField>
+
+<ParamField path="id" type="string">
+  HTML id attribute for the color picker container.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Basic
+<ColorPicker
+  value={color.value}
+  onInput$={(newColor) => color.value = newColor}
+/>
+```
+
+```tsx Custom Colors
+<ColorPicker
+  value={color.value}
+  colors={['#FF0000', '#00FF00', '#0000FF', '#FFFF00']}
+  onInput$={(newColor) => color.value = newColor}
+/>
+```
+
+```tsx Full Preview
+<ColorPicker
+  value={color.value}
+  preview="full"
+  onInput$={(newColor) => color.value = newColor}
+/>
+```
+
+```tsx No Input Field
+<ColorPicker
+  value={color.value}
+  showInput={false}
+  onInput$={(newColor) => color.value = newColor}
+/>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The color picker validates hex input and only accepts valid 6-digit hex colors. Invalid input is ignored. The component uses HSV color space internally for smooth gradient transitions.
+</Note>
+
+## Features
+
+- **Saturation/Brightness Gradient**: Drag to select color saturation and brightness
+- **Hue Slider**: Vertical slider to select the base hue
+- **Preset Swatches**: Click any preset color for instant selection
+- **Random Color Button**: Shuffle icon generates random colors
+- **Hex Input**: Direct hex code entry with validation
+- **Touch Support**: Full touch and mouse event support
+- **Smart Text Color**: In full preview mode, text color adapts based on background brightness

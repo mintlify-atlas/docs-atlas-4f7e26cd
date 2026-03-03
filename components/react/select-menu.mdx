@@ -1,0 +1,209 @@
+---
+title: SelectMenu
+description: A custom select dropdown component with enhanced styling and flexible content options.
+---
+
+The SelectMenu component provides a styled alternative to native select elements with support for custom dropdowns, hover interactions, and flexible value rendering.
+
+## Import
+
+```tsx
+import { SelectMenu, SelectMenuRaw } from '@luminescent/ui-react';
+```
+
+## Usage
+
+```tsx
+import { SelectMenu } from '@luminescent/ui-react';
+
+function Example() {
+  const options = [
+    { name: 'Option 1', value: 1 },
+    { name: 'Option 2', value: 2 },
+    { name: 'Option 3', value: 3 },
+  ];
+
+  return (
+    <SelectMenu
+      id="my-select"
+      values={options}
+      onChange={(e) => console.log(e.target.value)}
+    >
+      Choose an option
+    </SelectMenu>
+  );
+}
+```
+
+## Components
+
+### SelectMenu
+
+The default component that includes a label wrapper. The `children` prop is rendered as the label text above the select menu.
+
+### SelectMenuRaw
+
+A raw version without the label wrapper, useful when you need custom layout or already have a label.
+
+## Props
+
+Both components extend all standard HTML `<select>` element attributes and accept the following additional props:
+
+<ParamField path="values" type="Array<{ name: React.ReactNode, value: string | number }>">
+  Array of options to display in the dropdown menu. Each option has a `name` (displayed label) and `value` (form value).
+</ParamField>
+
+<ParamField path="dropdown" type="React.ReactNode">
+  Custom content to display in the dropdown button. Used when `customDropdown` is true or when `values` is not provided.
+</ParamField>
+
+<ParamField path="customDropdown" type="boolean" default="false">
+  When true, displays the `dropdown` prop content instead of the selected value name.
+</ParamField>
+
+<ParamField path="extra-buttons" type="React.ReactNode">
+  Additional buttons or content to render at the bottom of the dropdown panel.
+</ParamField>
+
+<ParamField path="panelClass" type="string" default="'lum-bg-lum-input-bg'">
+  CSS class for the dropdown panel background.
+</ParamField>
+
+<ParamField path="btnClass" type="string" default="'lum-bg-transparent'">
+  CSS class for the option buttons inside the dropdown.
+</ParamField>
+
+<ParamField path="noblur" type="boolean" default="false">
+  Disables the backdrop blur effect on the dropdown panel.
+</ParamField>
+
+<ParamField path="nocloseonclick" type="boolean" default="false">
+  Prevents the dropdown from automatically closing when clicking outside.
+</ParamField>
+
+<ParamField path="hover" type="boolean" default="false">
+  Opens the dropdown on hover instead of click.
+</ParamField>
+
+<ParamField path="align" type="'left' | 'right' | 'center'">
+  Controls the alignment of the dropdown panel relative to the button.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes for the dropdown button.
+</ParamField>
+
+## Behavior
+
+- Internally renders a hidden native `<select>` element for form compatibility
+- When an option is clicked, the native select is updated and dispatches a `change` event
+- The dropdown panel has a maximum height of `18rem` (72) with scrolling
+- Smooth animations with motion-safe preferences respected
+- Clicking outside the dropdown automatically closes it (unless `nocloseonclick` is true)
+- The selected value persists and is displayed in the button
+
+## Examples
+
+<CodeGroup>
+
+```tsx Basic
+import { SelectMenu } from '@luminescent/ui-react';
+
+function Basic() {
+  const fruits = [
+    { name: 'Apple', value: 'apple' },
+    { name: 'Banana', value: 'banana' },
+    { name: 'Orange', value: 'orange' },
+  ];
+
+  return (
+    <SelectMenu
+      id="fruit-select"
+      values={fruits}
+      onChange={(e) => console.log('Selected:', e.target.value)}
+    >
+      Select a fruit
+    </SelectMenu>
+  );
+}
+```
+
+```tsx Custom Dropdown Content
+import { SelectMenu } from '@luminescent/ui-react';
+
+function CustomContent() {
+  const items = [
+    { name: '🏠 Home', value: 'home' },
+    { name: '⚙️ Settings', value: 'settings' },
+    { name: '👤 Profile', value: 'profile' },
+  ];
+
+  return (
+    <SelectMenu
+      id="nav-select"
+      values={items}
+      customDropdown
+      dropdown={<span className="font-bold">Menu</span>}
+    >
+      Navigation
+    </SelectMenu>
+  );
+}
+```
+
+```tsx Hover with Alignment
+import { SelectMenuRaw } from '@luminescent/ui-react';
+
+function HoverMenu() {
+  const options = [
+    { name: 'Dashboard', value: 'dashboard' },
+    { name: 'Analytics', value: 'analytics' },
+    { name: 'Reports', value: 'reports' },
+  ];
+
+  return (
+    <SelectMenuRaw
+      values={options}
+      hover
+      align="right"
+      className="lum-btn"
+    />
+  );
+}
+```
+
+```tsx With Extra Buttons
+import { SelectMenu } from '@luminescent/ui-react';
+
+function WithActions() {
+  const countries = [
+    { name: 'United States', value: 'us' },
+    { name: 'Canada', value: 'ca' },
+    { name: 'Mexico', value: 'mx' },
+  ];
+
+  return (
+    <SelectMenu
+      id="country-select"
+      values={countries}
+      extra-buttons={
+        <button 
+          type="button" 
+          className="lum-btn lum-bg-transparent rounded-lum-1 mt-2"
+          onClick={() => alert('Add new country')}
+        >
+          + Add New
+        </button>
+      }
+    >
+      Select country
+    </SelectMenu>
+  );
+}
+```
+
+</CodeGroup>
+
+<Note>
+  The SelectMenu maintains compatibility with native forms by using a hidden `<select>` element. This ensures proper form submission and integration with form libraries.
+</Note>

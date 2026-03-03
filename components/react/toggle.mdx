@@ -1,0 +1,168 @@
+---
+title: Toggle
+description: A customizable toggle switch component that supports both switch and checkbox styles.
+---
+
+The Toggle component provides a styled checkbox input with two distinct visual modes: a sliding switch or a checkbox with checkmark animation.
+
+## Import
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+```
+
+## Usage
+
+```tsx
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function Example() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <Toggle
+      checked={enabled}
+      onChange={(e) => setEnabled(e.target.checked)}
+    >
+      Enable notifications
+    </Toggle>
+  );
+}
+```
+
+## Props
+
+The Toggle component extends all standard HTML checkbox input attributes (with `type` locked to `"checkbox"`) and accepts the following additional props:
+
+<ParamField path="children" type="React.ReactNode">
+  Label text or content displayed next to the toggle. The label is automatically linked to the input via the `id` prop.
+</ParamField>
+
+<ParamField path="checkbox" type="boolean" default="false">
+  When true, displays as a checkbox style with a checkmark that fades in. When false (default), displays as a sliding switch.
+</ParamField>
+
+<ParamField path="round" type="boolean" default="false">
+  When true, uses fully rounded corners (`rounded-full`). When false (default), uses the theme's standard border radius (`rounded-lum`).
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the toggle element.
+</ParamField>
+
+## Toggle Modes
+
+### Switch Mode (default)
+
+When `checkbox` is not set or is `false`, the component renders as a sliding switch:
+- Width of `3rem` (48px)
+- Sliding indicator that moves from left to right when checked
+- The indicator translates 100% of its width when checked
+
+### Checkbox Mode
+
+When `checkbox={true}`, the component renders as a checkbox:
+- Square/circular shape with fixed width of `1.75rem` (28px)
+- Checkmark indicator that fades in with opacity when checked
+- More compact than switch mode
+
+## Behavior
+
+- The actual checkbox input is visually hidden but remains accessible to screen readers
+- All interactions work with keyboard navigation and assistive technologies
+- Smooth transitions with `ease-out` timing and motion-safe preferences
+- Hover states reduce transition duration for responsive feel
+- Labels are selectable with `select-none` and automatically hide when empty
+
+## Examples
+
+<CodeGroup>
+
+```tsx Switch Style
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function SwitchExample() {
+  const [enabled, setEnabled] = useState(false);
+
+  return (
+    <Toggle
+      id="notifications"
+      checked={enabled}
+      onChange={(e) => setEnabled(e.target.checked)}
+    >
+      Enable notifications
+    </Toggle>
+  );
+}
+```
+
+```tsx Checkbox Style
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function CheckboxExample() {
+  const [accepted, setAccepted] = useState(false);
+
+  return (
+    <Toggle
+      id="terms"
+      checkbox
+      checked={accepted}
+      onChange={(e) => setAccepted(e.target.checked)}
+    >
+      I accept the terms and conditions
+    </Toggle>
+  );
+}
+```
+
+```tsx Rounded
+import { Toggle } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function RoundedExample() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  return (
+    <Toggle
+      id="dark-mode"
+      round
+      checked={darkMode}
+      onChange={(e) => setDarkMode(e.target.checked)}
+    >
+      Dark mode
+    </Toggle>
+  );
+}
+```
+
+```tsx Controlled with Form
+import { Toggle } from '@luminescent/ui-react';
+
+function FormExample() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    console.log('Subscribe:', formData.get('subscribe'));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Toggle id="subscribe" name="subscribe" defaultChecked>
+        Subscribe to newsletter
+      </Toggle>
+      <button type="submit" className="lum-btn mt-4">
+        Submit
+      </button>
+    </form>
+  );
+}
+```
+
+</CodeGroup>
+
+<Note>
+  The Toggle component always renders as `type="checkbox"` internally. The visual appearance changes with the `checkbox` prop, but the underlying input type remains consistent for form compatibility.
+</Note>

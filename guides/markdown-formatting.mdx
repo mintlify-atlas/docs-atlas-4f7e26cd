@@ -1,0 +1,432 @@
+---
+title: Markdown Formatting
+description: Typography and content formatting styles for Markdown content in Luminescent UI
+---
+
+Luminescent UI provides comprehensive Markdown formatting styles that integrate seamlessly with the component system.
+
+## Setup
+
+Import the formatting styles in your app:
+
+```tsx
+import '@luminescent/ui/formatting';
+```
+
+These styles will automatically apply to standard HTML elements rendered from Markdown.
+
+## Typography
+
+### Headings
+
+All heading levels are styled with responsive sizing and consistent spacing:
+
+<CodeGroup>
+
+```markdown Markdown
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+```
+
+```html HTML
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+```
+
+</CodeGroup>
+
+**Styling:**
+- **H1:** `text-4xl sm:text-5xl font-extrabold`
+- **H2:** `text-3xl sm:text-4xl font-bold`
+- **H3:** `text-2xl sm:text-3xl font-semibold`
+- **H4:** `text-xl sm:text-2xl font-semibold`
+- **H5-H6:** `text-lg sm:text-xl font-semibold`
+- All headings include `scroll-mt-36` for anchor link offset
+
+<Note>
+Headings automatically scale between mobile and desktop breakpoints for optimal readability.
+</Note>
+
+### Paragraphs
+
+Body text uses the secondary text color for comfortable reading:
+
+```markdown
+This is a paragraph with regular text. It uses the secondary text color
+for reduced eye strain during extended reading sessions.
+```
+
+- Color: `text-lum-text-secondary` (gray-400 by default)
+- Standard line height for readability
+
+### Links
+
+Links are styled with hover effects:
+
+```markdown
+[Visit the docs](https://example.com)
+```
+
+**Styling:**
+- Default: `text-blue-400` with no underline
+- Hover: `text-blue-500` with underline
+
+<Tip>
+Links inside `.lum-btn` or `.lum-card` elements maintain the primary text color and remove hover underlines for better visual hierarchy.
+</Tip>
+
+## Lists
+
+### Unordered Lists
+
+```markdown
+- First item
+- Second item
+- Third item
+  - Nested item
+  - Another nested item
+```
+
+**Styling:**
+- Disc bullets
+- Left margin and padding
+- Secondary text color
+
+### Ordered Lists
+
+```markdown
+1. First item
+2. Second item
+3. Third item
+   1. Nested item
+   2. Another nested item
+```
+
+**Styling:**
+- Decimal numbering
+- Same spacing as unordered lists
+
+## Code
+
+### Inline Code
+
+Use backticks for inline code:
+
+```markdown
+The `className` prop accepts any valid CSS class.
+```
+
+**Styling:**
+- Background: `bg-lum-card-bg` (matches card background)
+- Border: Bottom border with subtle color
+- Padding: `py-0.5 px-1`
+- Rounded corners: `rounded-lum`
+- Text selection: `select-all` for easy copying
+- Word break: Responsive breaking on mobile
+
+### Code Blocks
+
+Fenced code blocks with syntax highlighting:
+
+````markdown
+```tsx
+export function Component() {
+  return <div>Hello World</div>;
+}
+```
+````
+
+**Styling:**
+- Uses `.lum-card` styling
+- Overflow scrolling for long lines
+- No border on internal `<code>` elements
+- Preserves syntax highlighting from Shiki or similar
+
+<Note>
+Code blocks automatically use the `lum-card` style for consistent appearance with other UI elements.
+</Note>
+
+## Blockquotes
+
+Blockquotes are styled as cards with a colored left border:
+
+```markdown
+> This is a blockquote.
+> It can span multiple lines.
+```
+
+**Styling:**
+- Uses `.lum-card` base styling
+- Blue left border: `border-l-6 border-l-blue-400`
+- Removes extra margin from first/last paragraphs
+- Vertical margin: `my-4`
+
+## Tables
+
+Tables are formatted with consistent padding:
+
+```markdown
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Row 1    | Data     | More     |
+| Row 2    | Data     | More     |
+```
+
+**Styling:**
+- Cell padding: `p-2`
+- Vertical alignment: Top
+- No padding on first/last cells for edge alignment
+- Margin: `my-5`
+
+## Horizontal Rules
+
+Create visual breaks with horizontal rules:
+
+```markdown
+---
+```
+
+**Styling:**
+- Subtle border: `border-t-1 border-t-lum-border/20`
+- Generous margin: `my-8`
+
+## Images
+
+Images automatically receive rounded corners:
+
+```markdown
+![Alt text](/path/to/image.jpg)
+```
+
+**Styling:**
+- Rounded corners: `rounded-lum`
+- Overflow hidden for clean edges
+
+## Complete Example
+
+Here's how all formatting styles work together:
+
+```markdown
+# Getting Started
+
+Welcome to **Luminescent UI**! This guide will help you get started.
+
+## Installation
+
+Install the package using your preferred package manager:
+
+```bash
+npm install @luminescent/ui
+```
+
+### Configuration
+
+Add the import to your main file:
+
+```tsx
+import '@luminescent/ui/formatting';
+```
+
+> **Note:** Make sure to import the formatting styles after your base styles.
+
+## Features
+
+Luminescent UI includes:
+
+- Modern component library
+- Responsive design utilities
+- Dark theme optimized
+- Full TypeScript support
+
+For more information, visit the [documentation](https://example.com).
+
+---
+
+© 2024 Luminescent UI
+```
+
+## Custom Styling
+
+### Override Default Styles
+
+You can override the formatting styles by defining your own CSS after importing:
+
+```css
+@import '@luminescent/ui/formatting';
+
+/* Custom heading colors */
+h1, h2, h3 {
+  color: var(--color-luminescent-500);
+}
+
+/* Custom link styling */
+a {
+  text-decoration: underline;
+  color: var(--color-lum-accent);
+}
+
+/* Custom code block background */
+pre {
+  background: var(--color-lum-input-bg);
+}
+```
+
+### Scope to Specific Containers
+
+Apply formatting only to specific containers:
+
+```tsx
+<article className="prose">
+  {/* Markdown content here */}
+</article>
+```
+
+```css
+.prose h1 {
+  /* Custom h1 styles */
+}
+
+.prose a {
+  /* Custom link styles */
+}
+```
+
+## Accessibility
+
+### Heading Hierarchy
+
+Always use proper heading hierarchy:
+
+```markdown
+# Page Title (H1)
+
+## Main Section (H2)
+
+### Subsection (H3)
+
+#### Detail (H4)
+```
+
+<Note>
+Skipping heading levels (e.g., H1 to H3) can confuse screen readers and hurt SEO.
+</Note>
+
+### Link Text
+
+Use descriptive link text:
+
+```markdown
+<!-- Good -->
+[Read the installation guide](https://example.com/install)
+
+<!-- Bad -->
+[Click here](https://example.com/install)
+```
+
+### Code Language
+
+Specify language for syntax highlighting and accessibility:
+
+````markdown
+```tsx
+// TypeScript React code
+```
+
+```bash
+# Shell commands
+```
+````
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Consistent Hierarchy" icon="list">
+    Use headings in order (H1 → H2 → H3) without skipping levels.
+  </Card>
+  <Card title="Code Highlighting" icon="code">
+    Always specify language in code blocks for better readability.
+  </Card>
+  <Card title="Alt Text" icon="image">
+    Provide descriptive alt text for all images.
+  </Card>
+  <Card title="Link Context" icon="link">
+    Make link text descriptive of the destination.
+  </Card>
+</CardGroup>
+
+## Framework Integration
+
+### React
+
+```tsx
+import '@luminescent/ui/formatting';
+import { marked } from 'marked';
+
+export function MarkdownContent({ content }: { content: string }) {
+  const html = marked(content);
+  
+  return (
+    <article 
+      className="max-w-4xl mx-auto p-8"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+```
+
+### Qwik
+
+```tsx
+import '@luminescent/ui/formatting';
+import { component$ } from '@builder.io/qwik';
+
+export default component$(({ content }: { content: string }) => {
+  return (
+    <article class="max-w-4xl mx-auto p-8">
+      {/* Render markdown content */}
+    </article>
+  );
+});
+```
+
+### MDX
+
+```mdx
+import '@luminescent/ui/formatting';
+
+# My Article
+
+Content goes here with automatic formatting applied.
+```
+
+## Style Reference
+
+Complete CSS class reference for all formatted elements:
+
+| Element | Classes Applied |
+|---------|----------------|
+| `<a>` | `text-blue-400 no-underline hover:text-blue-500 hover:underline` |
+| `<blockquote>` | `lum-card border-l-6 border-l-blue-400 my-4` |
+| `<h1>` | `text-4xl sm:text-5xl font-extrabold relative scroll-mt-36` |
+| `<h2>` | `text-3xl sm:text-4xl font-bold relative scroll-mt-36` |
+| `<h3>` | `text-2xl sm:text-3xl font-semibold relative scroll-mt-36` |
+| `<h4>` | `text-xl sm:text-2xl font-semibold relative scroll-mt-36` |
+| `<h5>`, `<h6>` | `text-lg sm:text-xl font-semibold relative scroll-mt-36` |
+| `<p>` | `text-lum-text-secondary` |
+| `<ul>`, `<ol>` | `my-4 ml-10 text-lum-text-secondary list-disc` |
+| `<ol>` | Additional: `list-decimal` |
+| `<li>` | `my-1 pl-2` |
+| `<pre>` | `overflow-auto p-4 lum-card my-2` |
+| `<code>` | `bg-lum-card-bg py-0.5 px-1 rounded-lum select-all border-b-2 border-b-lum-border/20` |
+| `<table>` | `my-5` |
+| `<th>`, `<td>` | `p-2 align-top` |
+| `<img>` | `rounded-lum overflow-hidden` |
+| `<hr>` | `my-8 border-t-1 border-t-lum-border/20` |

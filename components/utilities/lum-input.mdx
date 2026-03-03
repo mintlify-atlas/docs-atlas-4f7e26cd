@@ -1,0 +1,376 @@
+---
+title: "Input Utility"
+description: "Styled input fields with smooth animations and hover effects"
+---
+
+## Overview
+
+The `lum-input` utility creates consistently styled input fields with smooth transitions, hover effects, and smart padding.
+
+## CSS Implementation
+
+```css
+@utility lum-input {
+  @apply flex 
+         motion-safe:transition duration-300 hover:duration-75 active:duration-75 ease-out 
+         disabled:opacity-50 
+         hover:drop-shadow-lg active:drop-shadow-lg 
+         whitespace-nowrap touch-manipulation select-none 
+         lum-input-p-2 
+         lum-bg-lum-input-bg 
+         hover:lum-bg-lum-input-hover-bg 
+         active:lum-bg-lum-input-hover-bg;
+  border-radius: var(--lum-border-radius);
+  corner-shape: superellipse(var(--lum-border-superellipse));
+}
+```
+
+## Usage
+
+<CodeGroup>
+
+```html Text Input
+<input type="text" class="lum-input" placeholder="Enter text..." />
+```
+
+```html Email Input
+<input type="email" class="lum-input" placeholder="you@example.com" />
+```
+
+```html Password Input
+<input type="password" class="lum-input" placeholder="••••••••" />
+```
+
+```html Number Input
+<input type="number" class="lum-input" placeholder="0" />
+```
+
+```html Textarea
+<textarea class="lum-input resize-none" rows="4" placeholder="Enter description..."></textarea>
+```
+
+```html Search Input
+<div class="relative">
+  <input type="search" class="lum-input pl-10" placeholder="Search..." />
+  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+  </svg>
+</div>
+```
+
+</CodeGroup>
+
+## Applied Classes
+
+The `lum-input` utility applies the following Tailwind classes:
+
+### Layout
+- `flex` - Flexbox display
+
+### Animation
+- `motion-safe:transition` - Smooth transitions (respects reduced-motion)
+- `duration-300` - 300ms transition by default
+- `hover:duration-75` - Faster 75ms transition on hover
+- `active:duration-75` - Faster 75ms transition on active
+- `ease-out` - Easing function
+
+### Effects
+- `hover:drop-shadow-lg` - Large drop shadow on hover
+- `active:drop-shadow-lg` - Large drop shadow on active/focus
+- `disabled:opacity-50` - 50% opacity when disabled
+
+### Interaction
+- `whitespace-nowrap` - Prevents text wrapping (for single-line inputs)
+- `touch-manipulation` - Optimized for touch devices
+- `select-none` - Prevents text selection of the input container (not the value)
+
+### Styling
+- `lum-input-p-2` - Smart padding utility (see below)
+- `lum-bg-lum-input-bg` - Background color
+- `hover:lum-bg-lum-input-hover-bg` - Hover background
+- `active:lum-bg-lum-input-hover-bg` - Active/focus background
+- `border-radius: var(--lum-border-radius)` - Rounded corners
+- `corner-shape: superellipse` - Smooth superellipse corners
+
+## lum-input-p-* (Padding Utility)
+
+Smart padding utility for inputs with a 1.5:1 horizontal to vertical ratio.
+
+### CSS Implementation
+
+```css
+@utility lum-input-p-* {
+  padding: calc(var(--spacing) * --value(integer))
+    calc(var(--spacing) * --value(integer) * var(--lum-input-p-x))
+    calc(var(--spacing) * --value(integer))
+    calc(var(--spacing) * --value(integer) * var(--lum-input-p-x));
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Small Input
+<input type="text" class="lum-input lum-input-p-1" placeholder="Small" />
+```
+
+```html Default Input
+<input type="text" class="lum-input lum-input-p-2" placeholder="Default" />
+```
+
+```html Large Input
+<input type="text" class="lum-input lum-input-p-3" placeholder="Large" />
+```
+
+```html Extra Large Input
+<input type="text" class="lum-input lum-input-p-4" placeholder="Extra Large" />
+```
+
+</CodeGroup>
+
+### Padding Scale
+
+<ParamField path="lum-input-p-1" type="utility">
+  Small: 0.25rem vertical, 0.375rem horizontal (4px/6px)
+</ParamField>
+
+<ParamField path="lum-input-p-2" type="utility">
+  Default: 0.5rem vertical, 0.75rem horizontal (8px/12px)
+</ParamField>
+
+<ParamField path="lum-input-p-3" type="utility">
+  Large: 0.75rem vertical, 1.125rem horizontal (12px/18px)
+</ParamField>
+
+<ParamField path="lum-input-p-4" type="utility">
+  Extra Large: 1rem vertical, 1.5rem horizontal (16px/24px)
+</ParamField>
+
+## CSS Variables
+
+<ParamField path="--lum-input-p-x" type="number" default="1.5">
+  Horizontal padding multiplier (creates 1.5:1 horizontal to vertical ratio)
+</ParamField>
+
+<ParamField path="--lum-border-radius" type="length" default="var(--radius-lg)">
+  Border radius for input corners
+</ParamField>
+
+<ParamField path="--lum-border-superellipse" type="number" default="1">
+  Superellipse corner smoothing (0 = circle, 1 = squircle, 2+ = rounded square)
+</ParamField>
+
+<ParamField path="--color-lum-input-bg" type="color" default="var(--color-gray-800)">
+  Default input background color
+</ParamField>
+
+<ParamField path="--color-lum-input-hover-bg" type="color" default="var(--color-gray-700)">
+  Hover and active background color
+</ParamField>
+
+<ParamField path="--color-lum-accent" type="color" default="var(--color-blue-500)">
+  Border color on focus state (from lum-bg utility)
+</ParamField>
+
+## States
+
+### Hover State
+
+```html
+<input type="text" class="lum-input" placeholder="Hover me" />
+<!-- On hover: -->
+<!-- - Lighter background (gray-700) -->
+<!-- - Drop shadow appears -->
+<!-- - Faster 75ms transition -->
+```
+
+### Focus State
+
+```html
+<input type="text" class="lum-input" placeholder="Focus me" />
+<!-- On focus: -->
+<!-- - Accent border appears (from lum-bg utility) -->
+<!-- - Lighter background (gray-700) -->
+<!-- - Drop shadow appears -->
+<!-- - No outline -->
+```
+
+### Disabled State
+
+```html
+<input type="text" class="lum-input" placeholder="Disabled" disabled />
+<!-- When disabled: -->
+<!-- - 50% opacity -->
+<!-- - No hover/focus effects -->
+<!-- - Cursor: not-allowed (browser default) -->
+```
+
+### Error State
+
+```html
+<input type="text" class="lum-input lum-bg-red-900/30 border-red-500" placeholder="Invalid input" />
+<!-- Custom error styling -->
+```
+
+<Warning>
+  The input inherits focus styles from the `lum-bg` utility, which provides an accent border. Don't remove this without providing alternative focus indicators for accessibility.
+</Warning>
+
+## Form Examples
+
+<CodeGroup>
+
+```html Simple Form
+<form class="space-y-4">
+  <div>
+    <label class="block text-sm font-medium mb-2">Name</label>
+    <input type="text" class="lum-input w-full" placeholder="John Doe" />
+  </div>
+  <div>
+    <label class="block text-sm font-medium mb-2">Email</label>
+    <input type="email" class="lum-input w-full" placeholder="john@example.com" />
+  </div>
+  <button type="submit" class="lum-btn lum-bg-blue-600">
+    Submit
+  </button>
+</form>
+```
+
+```html Input with Icon
+<div class="relative">
+  <input type="email" class="lum-input w-full pl-10" placeholder="Email" />
+  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+  </svg>
+</div>
+```
+
+```html Input with Button
+<div class="flex gap-2">
+  <input type="text" class="lum-input flex-1" placeholder="Search..." />
+  <button class="lum-btn lum-bg-blue-600">
+    Search
+  </button>
+</div>
+```
+
+```html Input Group
+<div class="flex">
+  <span class="lum-bg-gray-700 px-4 flex items-center rounded-l-lum border-r border-gray-600">
+    https://
+  </span>
+  <input type="text" class="lum-input flex-1 rounded-l-none" placeholder="example.com" />
+</div>
+```
+
+```html Validation States
+<!-- Success -->
+<div>
+  <input type="email" class="lum-input w-full lum-bg-green-900/20 border-green-500" 
+         value="valid@email.com" />
+  <p class="text-sm text-green-500 mt-1">Email is valid</p>
+</div>
+
+<!-- Error -->
+<div>
+  <input type="email" class="lum-input w-full lum-bg-red-900/20 border-red-500" 
+         value="invalid-email" />
+  <p class="text-sm text-red-500 mt-1">Please enter a valid email</p>
+</div>
+```
+
+```html Textarea with Counter
+<div>
+  <textarea class="lum-input w-full resize-none" rows="4" 
+            placeholder="Description (max 500 characters)"></textarea>
+  <p class="text-sm text-gray-400 text-right mt-1">0 / 500</p>
+</div>
+```
+
+```html Select Dropdown
+<select class="lum-input w-full">
+  <option>Select an option</option>
+  <option>Option 1</option>
+  <option>Option 2</option>
+  <option>Option 3</option>
+</select>
+```
+
+</CodeGroup>
+
+## Customization
+
+### Width
+
+```html
+<input type="text" class="lum-input w-full" /> <!-- Full width -->
+<input type="text" class="lum-input w-64" />  <!-- Fixed width -->
+<input type="text" class="lum-input max-w-sm" /> <!-- Max width -->
+```
+
+### Colors
+
+```html
+<!-- Light background -->
+<input type="text" class="lum-input lum-bg-gray-700 hover:lum-bg-gray-600" />
+
+<!-- Accent color -->
+<input type="text" class="lum-input lum-bg-blue-900/30 hover:lum-bg-blue-900/50" />
+
+<!-- Transparent -->
+<input type="text" class="lum-input lum-bg-transparent border border-gray-700" />
+```
+
+### Typography
+
+```html
+<input type="text" class="lum-input text-lg" placeholder="Large text" />
+<input type="text" class="lum-input text-sm" placeholder="Small text" />
+<input type="text" class="lum-input font-mono" placeholder="Monospace" />
+```
+
+### Remove Animations
+
+```html
+<input type="text" class="lum-input transition-none hover:drop-shadow-none" />
+```
+
+## Textarea Customization
+
+```html
+<!-- Fixed height -->
+<textarea class="lum-input resize-none" rows="4"></textarea>
+
+<!-- Vertical resize only -->
+<textarea class="lum-input resize-y" rows="4"></textarea>
+
+<!-- Auto-expanding (requires JavaScript) -->
+<textarea class="lum-input resize-none overflow-hidden" 
+          oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"></textarea>
+```
+
+## Accessibility
+
+<Note>
+  The `lum-input` utility includes several accessibility features:
+  - Respects `prefers-reduced-motion` with `motion-safe:` variants
+  - Touch-optimized with `touch-manipulation`
+  - Includes disabled state with visual feedback
+  - Inherits focus styles from `lum-bg` utility with accent border
+  - Maintains proper color contrast for readability
+</Note>
+
+## Best Practices
+
+1. Always include a `<label>` element for each input (visual or `aria-label`)
+2. Use appropriate `type` attributes (email, password, number, etc.)
+3. Provide helpful `placeholder` text
+4. Include validation feedback for error states
+5. Use `autocomplete` attributes for better UX
+6. Set `required` and `aria-required` for mandatory fields
+7. Provide clear error messages near the input
+8. Consider using `aria-describedby` to link inputs with help text
+9. For textareas, consider adding `resize-none` to prevent layout issues
+10. Use `w-full` for inputs in forms to ensure consistent width

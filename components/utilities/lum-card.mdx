@@ -1,0 +1,322 @@
+---
+title: "Card Utility"
+description: "Flexible card container with consistent spacing and styling"
+---
+
+## Overview
+
+The `lum-card` utility creates a consistent card component with automatic spacing, background styling, and smooth rounded corners.
+
+## CSS Implementation
+
+```css
+@utility lum-card {
+  @apply flex flex-col gap-3 whitespace-pre-wrap lum-bg-lum-card-bg p-7;
+  border-radius: var(--lum-border-radius);
+  corner-shape: superellipse(var(--lum-border-superellipse));
+}
+```
+
+## Usage
+
+<CodeGroup>
+
+```html Basic Card
+<div class="lum-card">
+  <h3 class="text-xl font-bold">Card Title</h3>
+  <p>Card content goes here.</p>
+</div>
+```
+
+```html Card with Multiple Sections
+<div class="lum-card">
+  <div>
+    <h3 class="text-xl font-bold">Title</h3>
+    <p class="text-gray-400">Subtitle</p>
+  </div>
+  <p>Main content with automatic spacing between sections.</p>
+  <button class="lum-btn">Action</button>
+</div>
+```
+
+```html Card with Custom Background
+<div class="lum-card lum-bg-blue-900">
+  <h3 class="text-xl font-bold">Featured Card</h3>
+  <p>Custom background color.</p>
+</div>
+```
+
+```html Card with Gradient
+<div class="lum-card lum-grad-bg-purple-900">
+  <h3 class="text-xl font-bold">Premium Feature</h3>
+  <p>Gradient background card.</p>
+</div>
+```
+
+</CodeGroup>
+
+## Applied Classes
+
+The `lum-card` utility applies the following Tailwind classes:
+
+### Layout
+- `flex flex-col` - Vertical flexbox layout
+- `gap-3` - 0.75rem (12px) spacing between child elements
+
+### Typography
+- `whitespace-pre-wrap` - Preserves whitespace and line breaks while allowing wrapping
+
+### Styling
+- `lum-bg-lum-card-bg` - Background color using Luminescent theme
+- `p-7` - 1.75rem (28px) padding on all sides
+- `border-radius: var(--lum-border-radius)` - Rounded corners
+- `corner-shape: superellipse` - Smooth superellipse corners
+
+## CSS Variables
+
+<ParamField path="--color-lum-card-bg" type="color" default="var(--color-gray-900)">
+  Default card background color
+</ParamField>
+
+<ParamField path="--lum-border-radius" type="length" default="var(--radius-lg)">
+  Border radius for card corners
+</ParamField>
+
+<ParamField path="--lum-border-superellipse" type="number" default="1">
+  Superellipse corner smoothing (0 = circle, 1 = squircle, 2+ = rounded square)
+</ParamField>
+
+<ParamField path="--lum-depth" type="number" default="0">
+  Depth effect intensity (inherited from lum-bg utility)
+</ParamField>
+
+## Customization
+
+### Padding
+
+Override the default padding with Tailwind utilities:
+
+```html
+<div class="lum-card p-4">Smaller padding</div>
+<div class="lum-card p-10">Larger padding</div>
+<div class="lum-card px-8 py-4">Asymmetric padding</div>
+```
+
+### Gap
+
+Adjust spacing between child elements:
+
+```html
+<div class="lum-card gap-6">Larger gaps</div>
+<div class="lum-card gap-2">Smaller gaps</div>
+<div class="lum-card gap-0">No gaps</div>
+```
+
+### Background
+
+Change the background color:
+
+<CodeGroup>
+
+```html Solid Color
+<div class="lum-card lum-bg-slate-800">
+  Custom solid background
+</div>
+```
+
+```html Gradient
+<div class="lum-card lum-grad-bg-indigo-900">
+  Gradient background
+</div>
+```
+
+```html Transparent
+<div class="lum-card lum-bg-transparent border border-gray-700">
+  Transparent with border
+</div>
+```
+
+</CodeGroup>
+
+### Depth Effect
+
+Add depth shadows to the card:
+
+```html
+<div class="lum-card [--lum-depth:1]">
+  Card with depth effect
+</div>
+```
+
+## Examples
+
+<CodeGroup>
+
+```html Profile Card
+<div class="lum-card max-w-sm">
+  <div class="flex items-center gap-4">
+    <img src="avatar.jpg" class="w-16 h-16 rounded-full" />
+    <div>
+      <h3 class="text-lg font-bold">John Doe</h3>
+      <p class="text-gray-400">@johndoe</p>
+    </div>
+  </div>
+  <p>Software engineer passionate about building beautiful UIs.</p>
+  <button class="lum-btn lum-bg-blue-600">Follow</button>
+</div>
+```
+
+```html Stats Card
+<div class="lum-card">
+  <h3 class="text-sm font-medium text-gray-400 uppercase">Total Users</h3>
+  <p class="text-4xl font-bold">1,234</p>
+  <p class="text-sm text-green-500">+12% from last month</p>
+</div>
+```
+
+```html Feature Card
+<div class="lum-card lum-grad-bg-purple-900 max-w-md">
+  <div class="w-12 h-12 rounded-lum lum-bg-purple-600 flex items-center justify-center">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+    </svg>
+  </div>
+  <h3 class="text-2xl font-bold">Advanced Features</h3>
+  <p class="text-gray-300">
+    Unlock powerful capabilities with our premium plan.
+  </p>
+  <button class="lum-btn lum-bg-purple-600 hover:lum-bg-purple-500 active:lum-bg-purple-500">
+    Learn More
+  </button>
+</div>
+```
+
+```html List Card
+<div class="lum-card">
+  <h3 class="text-xl font-bold">Recent Activity</h3>
+  <ul class="space-y-2">
+    <li class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-green-500"></span>
+      <span>Deployed to production</span>
+    </li>
+    <li class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+      <span>Merged pull request #123</span>
+    </li>
+    <li class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+      <span>Build started</span>
+    </li>
+  </ul>
+</div>
+```
+
+```html Form Card
+<div class="lum-card max-w-md">
+  <h2 class="text-2xl font-bold">Sign In</h2>
+  <form class="flex flex-col gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">Email</label>
+      <input type="email" class="lum-input w-full" placeholder="you@example.com" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">Password</label>
+      <input type="password" class="lum-input w-full" placeholder="••••••••" />
+    </div>
+    <button type="submit" class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-500 active:lum-bg-blue-500">
+      Sign In
+    </button>
+  </form>
+</div>
+```
+
+```html Pricing Card
+<div class="lum-card text-center max-w-xs">
+  <h3 class="text-lg font-medium text-gray-400">Pro Plan</h3>
+  <div class="flex items-baseline justify-center gap-1">
+    <span class="text-5xl font-bold">$29</span>
+    <span class="text-gray-400">/month</span>
+  </div>
+  <ul class="text-sm text-gray-300 space-y-2">
+    <li>Unlimited projects</li>
+    <li>Advanced analytics</li>
+    <li>Priority support</li>
+    <li>Custom domain</li>
+  </ul>
+  <button class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-500 active:lum-bg-blue-500 w-full">
+    Get Started
+  </button>
+</div>
+```
+
+</CodeGroup>
+
+## Responsive Design
+
+<CodeGroup>
+
+```html Responsive Padding
+<div class="lum-card p-4 md:p-7 lg:p-10">
+  Adaptive padding based on screen size
+</div>
+```
+
+```html Responsive Layout
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="lum-card">Card 1</div>
+  <div class="lum-card">Card 2</div>
+  <div class="lum-card">Card 3</div>
+</div>
+```
+
+```html Responsive Gap
+<div class="lum-card gap-2 md:gap-3 lg:gap-4">
+  <h3 class="text-xl font-bold">Title</h3>
+  <p>Content with responsive spacing</p>
+</div>
+```
+
+</CodeGroup>
+
+## Interactions
+
+### Hoverable Card
+
+```html
+<div class="lum-card lum-hoverable cursor-pointer">
+  <h3 class="text-xl font-bold">Interactive Card</h3>
+  <p>Hover to see scale and shadow effect</p>
+</div>
+```
+
+### Clickable Card
+
+```html
+<a href="#" class="lum-card hover:scale-102 transition-transform">
+  <h3 class="text-xl font-bold">Clickable Card</h3>
+  <p>Entire card is clickable</p>
+</a>
+```
+
+### Card with Depth on Hover
+
+```html
+<div class="lum-card hover:[--lum-depth:0.5] transition-all duration-300">
+  <h3 class="text-xl font-bold">Depth Effect</h3>
+  <p>Hover to see depth shadow appear</p>
+</div>
+```
+
+<Note>
+  The `gap-3` spacing automatically creates consistent vertical rhythm between all child elements. This works well for headings, paragraphs, buttons, and other content.
+</Note>
+
+## Best Practices
+
+1. Use `lum-card` for grouping related content
+2. Keep card content focused on a single topic or action
+3. Use consistent padding across cards in the same context
+4. Consider max-width to prevent cards from becoming too wide
+5. Use `gap-*` utilities to adjust spacing for different content densities
+6. Combine with `lum-hoverable` for interactive cards
+7. Use semantic HTML inside cards (headings, lists, etc.)

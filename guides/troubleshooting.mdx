@@ -1,0 +1,735 @@
+---
+title: Troubleshooting
+description: Common issues and solutions when working with Luminescent UI
+---
+
+## Overview
+
+This guide covers common problems you might encounter when using Luminescent UI and their solutions.
+
+## Installation Issues
+
+### Package Not Found
+
+<Accordion title="Error: Cannot find package '@luminescent/ui'">
+**Problem:**
+```bash
+Error: Cannot find package '@luminescent/ui'
+```
+
+**Solution:**
+
+<Steps>
+  <Step title="Verify package name">
+    Ensure you're using the correct package name:
+    
+    ```bash
+    npm install @luminescent/ui
+    ```
+    
+    For Qwik-specific components:
+    ```bash
+    npm install @luminescent/ui-qwik
+    ```
+  </Step>
+  
+  <Step title="Clear npm cache">
+    ```bash
+    npm cache clean --force
+    npm install
+    ```
+  </Step>
+  
+  <Step title="Check npm registry">
+    Ensure you're connected to npm registry:
+    ```bash
+    npm config get registry
+    # Should return: https://registry.npmjs.org/
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Peer Dependency Warnings
+
+<Accordion title="Warning: Peer dependency version mismatch">
+**Problem:**
+```bash
+WARNING: peer dependencies not met
+```
+
+**Solution:**
+
+Luminescent UI requires Tailwind CSS v4. Update your dependencies:
+
+```bash
+npm install tailwindcss@next @tailwindcss/postcss@next
+```
+
+If using Qwik:
+```bash
+npm install @builder.io/qwik@latest
+```
+</Accordion>
+
+## Tailwind CSS v4 Issues
+
+### Utilities Not Working
+
+<Accordion title="lum-bg-* or other utilities not applying">
+**Problem:**
+Luminescent UI utilities like `lum-bg-*`, `lum-btn`, or `lum-card` are not being applied.
+
+**Solution:**
+
+<Steps>
+  <Step title="Verify Tailwind CSS v4">
+    Ensure you're using Tailwind CSS v4:
+    
+    ```json package.json
+    {
+      "dependencies": {
+        "tailwindcss": "^4.0.0",
+        "@tailwindcss/postcss": "^4.0.0"
+      }
+    }
+    ```
+  </Step>
+  
+  <Step title="Check CSS imports">
+    Verify your CSS file includes the correct import:
+    
+    ```css global.css
+    @import '@luminescent/ui/css';
+    ```
+    
+    <Warning>
+    For versions before 4.0.0, you also needed:
+    ```css
+    @plugin '@luminescent/ui/lum-bg';
+    ```
+    This is no longer required in v4.0.0+
+    </Warning>
+  </Step>
+  
+  <Step title="Configure PostCSS">
+    Ensure PostCSS is configured:
+    
+    ```js postcss.config.js
+    export default {
+      plugins: {
+        '@tailwindcss/postcss': {},
+      },
+    };
+    ```
+  </Step>
+  
+  <Step title="Restart dev server">
+    After configuration changes, restart your development server:
+    
+    ```bash
+    # Stop the server (Ctrl+C)
+    npm run dev
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### CSS Import Errors
+
+<Accordion title="Error: Cannot find module '@luminescent/ui/css'">
+**Problem:**
+```bash
+Error: Cannot find module '@luminescent/ui/css'
+```
+
+**Solution:**
+
+<Steps>
+  <Step title="Check package installation">
+    ```bash
+    npm list @luminescent/ui
+    ```
+    
+    If not installed:
+    ```bash
+    npm install @luminescent/ui
+    ```
+  </Step>
+  
+  <Step title="Verify import path">
+    The correct import for v4.0.0+ is:
+    
+    ```css
+    @import '@luminescent/ui/css';
+    ```
+    
+    For v3.x:
+    ```css
+    @import '@luminescent/ui';
+    ```
+  </Step>
+  
+  <Step title="Clear build cache">
+    ```bash
+    rm -rf node_modules/.cache
+    rm -rf .next  # or your build directory
+    npm run dev
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Theme Variables Not Applied
+
+<Accordion title="Custom theme variables not working">
+**Problem:**
+Custom theme variables defined in `@theme` are not being applied.
+
+**Solution:**
+
+<Steps>
+  <Step title="Use @theme directive">
+    With Tailwind CSS v4, use the `@theme` directive:
+    
+    ```css global.css
+    @import '@luminescent/ui/css';
+    
+    @theme {
+      --lum-border-radius: 12px;
+      --color-lum-card-bg: var(--color-gray-900);
+      --lum-depth: 1;
+    }
+    ```
+  </Step>
+  
+  <Step title="Don't use :root">
+    <Warning>
+    In Tailwind CSS v4, don't use `:root` for theme variables:
+    
+    ```css Wrong
+    :root {
+      --lum-border-radius: 12px; /* Won't work */
+    }
+    ```
+    </Warning>
+  </Step>
+  
+  <Step title="Check variable names">
+    Ensure you're using the correct variable names. See available variables:
+    
+    ```css
+    @theme {
+      /* Spacing & Layout */
+      --lum-btn-p-x: 2;
+      --lum-input-p-x: 1.5;
+      --lum-border-radius: var(--radius-lg);
+      --lum-border-superellipse: 1;
+      
+      /* Visual Effects */
+      --lum-border-mix: 20%;
+      --lum-depth: 0;
+      --lum-gradient-mix: 20%;
+      --lum-gradient-angle: 180deg;
+      
+      /* Colors */
+      --color-lum-border: var(--color-gray-300);
+      --color-lum-gradient: var(--color-gray-950);
+      --color-lum-card-bg: var(--color-gray-900);
+      --color-lum-input-bg: var(--color-gray-800);
+      --color-lum-input-hover-bg: var(--color-gray-700);
+      --color-lum-accent: var(--color-blue-500);
+      --color-lum-text: var(--color-gray-50);
+      --color-lum-text-secondary: var(--color-gray-400);
+    }
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+## Component Issues
+
+### Components Not Rendering
+
+<Accordion title="Component imports not working">
+**Problem:**
+```tsx
+import { Button } from '@luminescent/ui';
+// Error: Module not found
+```
+
+**Solution:**
+
+<Steps>
+  <Step title="Use framework-specific packages">
+    Luminescent UI components are framework-specific. For Qwik:
+    
+    ```tsx Qwik
+    import { Toggle, SelectMenu } from '@luminescent/ui-qwik';
+    ```
+    
+    <Note>
+    The base `@luminescent/ui` package only provides CSS utilities, not React/Qwik components.
+    </Note>
+  </Step>
+  
+  <Step title="Build your own components">
+    Alternatively, build custom components using the utilities:
+    
+    ```tsx
+    export function Button({ children, ...props }) {
+      return (
+        <button className="lum-btn rounded-lum" {...props}>
+          {children}
+        </button>
+      );
+    }
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Toggle Component Issues
+
+<Accordion title="Toggle not working after upgrade">
+**Problem:**
+Toggle component stopped working after upgrading to v5.2.0+
+
+**Solution:**
+
+The `label` prop was changed to use children in v5.2.0:
+
+```tsx Before (v5.1.x)
+<Toggle id="my-toggle" label="Enable feature" />
+```
+
+```tsx After (v5.2.0+)
+<Toggle id="my-toggle">
+  Enable feature
+</Toggle>
+```
+
+For v4.0.0, Toggle also requires utility classes:
+
+```tsx v4.0.0+
+<Toggle 
+  id="my-toggle"
+  className="lum-toggle-bg-gray-600 peer-checked:lum-toggle-bg-blue-600"
+>
+  Enable feature
+</Toggle>
+```
+</Accordion>
+
+### SelectMenu Styling Issues
+
+<Accordion title="SelectMenu taking full width unexpectedly">
+**Problem:**
+After upgrading to v4.2.0, SelectMenu takes full width.
+
+**Solution:**
+
+This is intentional behavior in v4.2.0+. To restore auto width:
+
+```tsx
+<SelectMenu className="w-auto" options={options} />
+```
+
+Or set a specific width:
+
+```tsx
+<SelectMenu className="w-64" options={options} />
+```
+</Accordion>
+
+## Styling Issues
+
+### Styles Not Applied
+
+<Accordion title="Utility classes not working">
+**Problem:**
+Utility classes like `lum-btn`, `lum-card`, etc. have no effect.
+
+**Solution:**
+
+<Steps>
+  <Step title="Ensure CSS is imported">
+    Check that your global CSS file is imported in your app:
+    
+    ```tsx _app.tsx / layout.tsx
+    import './globals.css';
+    ```
+  </Step>
+  
+  <Step title="Verify import order">
+    Luminescent UI CSS should be imported before your custom styles:
+    
+    ```css globals.css
+    @import '@luminescent/ui/css';
+    
+    @theme {
+      /* Your customizations */
+    }
+    
+    /* Your custom CSS */
+    .my-custom-class {
+      /* ... */
+    }
+    ```
+  </Step>
+  
+  <Step title="Check for CSS conflicts">
+    Ensure no other CSS is overriding Luminescent UI styles:
+    
+    ```css
+    /* Bad - too specific, will override lum-btn */
+    button.my-button {
+      padding: 10px;
+    }
+    
+    /* Good - use utility classes */
+    <button className="lum-btn my-button" />
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Border Radius Not Applied
+
+<Accordion title="rounded-lum not working">
+**Problem:**
+The `rounded-lum` utility is not applying border radius.
+
+**Solution:**
+
+<Steps>
+  <Step title="Set border radius variable">
+    Ensure `--lum-border-radius` is defined:
+    
+    ```css global.css
+    @theme {
+      --lum-border-radius: var(--radius-lg);
+    }
+    ```
+  </Step>
+  
+  <Step title="Check browser support">
+    The `corner-shape: superellipse()` property may not be supported in all browsers. It degrades gracefully to regular border-radius.
+  </Step>
+  
+  <Step title="Verify class application">
+    Use browser DevTools to check if the class is applied:
+    
+    ```css
+    .rounded-lum {
+      border-radius: var(--lum-border-radius);
+      corner-shape: superellipse(var(--lum-border-superellipse));
+    }
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Depth Effects Not Visible
+
+<Accordion title="Depth effects not showing">
+**Problem:**
+Depth effects (shadows, borders) are not visible on components.
+
+**Solution:**
+
+Depth is disabled by default. Enable it:
+
+```css global.css
+@theme {
+  --lum-depth: 1; /* Enable depth effects */
+}
+```
+
+To disable:
+```css
+@theme {
+  --lum-depth: 0; /* Disable depth effects */
+}
+```
+
+<Note>
+Depth effects include:
+- Fading borders
+- Inset shadows
+- Drop shadows for elevation
+</Note>
+</Accordion>
+
+## Build & Production Issues
+
+### Production Build Failures
+
+<Accordion title="Build fails with Tailwind CSS errors">
+**Problem:**
+```bash
+Error: PostCSS plugin @tailwindcss/postcss failed
+```
+
+**Solution:**
+
+<Steps>
+  <Step title="Verify PostCSS config">
+    ```js postcss.config.js
+    export default {
+      plugins: {
+        '@tailwindcss/postcss': {},
+      },
+    };
+    ```
+  </Step>
+  
+  <Step title="Check for version conflicts">
+    ```bash
+    npm list tailwindcss
+    # Should show only v4.x
+    ```
+    
+    If multiple versions:
+    ```bash
+    npm dedupe
+    ```
+  </Step>
+  
+  <Step title="Clear cache and rebuild">
+    ```bash
+    rm -rf node_modules/.cache
+    rm -rf .next  # or your build directory
+    npm run build
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+### Purged CSS in Production
+
+<Accordion title="Styles work in dev but not production">
+**Problem:**
+Styles work in development but are missing in production builds.
+
+**Solution:**
+
+<Steps>
+  <Step title="Check dynamic class names">
+    Avoid dynamic class names:
+    
+    ```tsx Bad
+    const color = 'blue';
+    <div className={`lum-bg-${color}-600`} /> {/* Won't work */}
+    ```
+    
+    ```tsx Good
+    const colorClass = color === 'blue' 
+      ? 'lum-bg-blue-600' 
+      : 'lum-bg-gray-600';
+    <div className={colorClass} />
+    ```
+  </Step>
+  
+  <Step title="Use safelist for dynamic classes">
+    If you must use dynamic classes, add them to safelist:
+    
+    ```js tailwind.config.js
+    export default {
+      safelist: [
+        'lum-bg-blue-600',
+        'lum-bg-green-600',
+        'lum-bg-red-600',
+      ],
+    };
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+## TypeScript Issues
+
+### Type Errors
+
+<Accordion title="TypeScript errors for component props">
+**Problem:**
+```tsx
+Property 'customProp' does not exist on type 'IntrinsicAttributes'
+```
+
+**Solution:**
+
+<Steps>
+  <Step title="Check component props">
+    Ensure you're passing valid props. Check component documentation for available props.
+  </Step>
+  
+  <Step title="Extend component types">
+    For custom components, properly type your props:
+    
+    ```tsx
+    interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+      variant?: 'default' | 'primary' | 'danger';
+      size?: 'sm' | 'md' | 'lg';
+    }
+    
+    export function Button({ variant = 'default', size = 'md', ...props }: ButtonProps) {
+      // ...
+    }
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+## Framework-Specific Issues
+
+### Qwik Issues
+
+<Accordion title="Hoverable effect not working">
+**Problem:**
+The `lum-hoverable` mouse tracking effect doesn't work.
+
+**Solution:**
+
+<Note>
+The mouse-tracking hover effect is **Qwik-only**. It requires Qwik's signal system.
+</Note>
+
+```tsx Qwik Only
+import { Hoverable } from '@luminescent/ui-qwik';
+
+<div 
+  className="lum-card lum-hoverable" 
+  onMouseMove$={(e, el) => Hoverable.onMouseMove$(e, el)} 
+  onMouseLeave$={(e, el) => Hoverable.onMouseLeave$(e, el)}
+>
+  Content
+</div>
+```
+
+For React/Next.js, use the CSS-only `lum-hoverable` class which provides a simple scale effect.
+</Accordion>
+
+### Next.js Issues
+
+<Accordion title="Styles flashing on page load">
+**Problem:**
+Unstyled content flashes before styles are applied.
+
+**Solution:**
+
+<Steps>
+  <Step title="Ensure CSS is in layout">
+    Import CSS in your root layout:
+    
+    ```tsx app/layout.tsx
+    import './globals.css';
+    
+    export default function RootLayout({ children }) {
+      return (
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      );
+    }
+    ```
+  </Step>
+  
+  <Step title="Use CSS modules for critical styles">
+    For above-the-fold content, consider CSS modules to ensure styles are bundled.
+  </Step>
+</Steps>
+</Accordion>
+
+## Performance Issues
+
+### Slow Build Times
+
+<Accordion title="Tailwind CSS build is slow">
+**Problem:**
+Build times are significantly slower after adding Luminescent UI.
+
+**Solution:**
+
+<Steps>
+  <Step title="Limit content scanning">
+    In `tailwind.config.js`, only scan necessary files:
+    
+    ```js
+    export default {
+      content: [
+        './src/**/*.{js,ts,jsx,tsx}',
+        // Don't scan node_modules unnecessarily
+      ],
+    };
+    ```
+  </Step>
+  
+  <Step title="Enable JIT mode">
+    Tailwind CSS v4 uses JIT by default, but ensure it's not disabled.
+  </Step>
+  
+  <Step title="Consider caching">
+    Use build caching in your CI/CD pipeline:
+    
+    ```yaml .github/workflows/build.yml
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    ```
+  </Step>
+</Steps>
+</Accordion>
+
+## Still Having Issues?
+
+<Tip>
+**Enable Debug Mode**
+
+Add debug output to see what Tailwind is processing:
+
+```bash
+DEBUG=* npm run dev
+```
+</Tip>
+
+<Tip>
+**Check Browser Console**
+
+Open browser DevTools (F12) and check:
+- Console for errors
+- Network tab for failed CSS loads
+- Elements tab to inspect applied styles
+</Tip>
+
+<Tip>
+**Minimal Reproduction**
+
+Create a minimal example to isolate the issue:
+
+1. Start with a fresh project
+2. Install only Luminescent UI
+3. Add the minimal code that reproduces your issue
+4. Share the reproduction when asking for help
+</Tip>
+
+## Getting Help
+
+If you've tried these solutions and still have issues:
+
+1. **Search existing issues**: Check [GitHub Issues](https://github.com/LuminescentDev/ui/issues)
+2. **Create a new issue**: Include:
+   - Luminescent UI version
+   - Framework and version (Qwik, Next.js, etc.)
+   - Minimal code reproduction
+   - Error messages
+   - Steps to reproduce
+3. **Join the community**: Ask in community forums or discussions
+
+## Related Resources
+
+- [Installation Guide](/installation) - Initial setup
+- [Migration Guide](/guides/migration) - Version upgrade instructions
+- [GitHub Issues](https://github.com/LuminescentDev/ui/issues) - Report bugs

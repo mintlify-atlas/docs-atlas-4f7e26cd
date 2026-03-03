@@ -1,0 +1,262 @@
+---
+title: Custom Colors
+description: Learn how to customize the color palette and accent colors in Luminescent UI
+---
+
+Luminescent UI uses CSS custom properties (variables) to make color customization simple and consistent across your application.
+
+## Color System
+
+The framework includes a custom Luminescent color palette and semantic color tokens for theming.
+
+### Luminescent Palette
+
+The signature Luminescent color scale uses OKLCH color space for perceptually uniform colors:
+
+<CardGroup cols={2}>
+  <Card title="Luminescent Colors">
+    A full 50-950 scale optimized for modern interfaces with consistent lightness progression.
+  </Card>
+  <Card title="OKLCH Color Space">
+    Provides better perceptual uniformity and more vibrant colors compared to traditional RGB.
+  </Card>
+</CardGroup>
+
+## Semantic Color Variables
+
+Luminescent UI defines semantic color variables that adapt to your theme:
+
+```css
+--color-lum-border      /* Border colors for components */
+--color-lum-gradient    /* Gradient overlay colors */
+--color-lum-card-bg     /* Background for cards */
+--color-lum-input-bg    /* Background for inputs */
+--color-lum-input-hover-bg  /* Hover state for inputs */
+--color-lum-accent      /* Primary accent color */
+--color-lum-text        /* Primary text color */
+--color-lum-text-secondary  /* Secondary text color */
+```
+
+## Customizing Colors
+
+### Changing the Accent Color
+
+The accent color is used for focus states, primary actions, and highlights:
+
+<CodeGroup>
+
+```css Global CSS
+@theme {
+  --color-lum-accent: var(--color-purple-500);
+}
+```
+
+```tsx Inline Styles
+<div style={{ '--color-lum-accent': 'oklch(0.7 0.2 330)' }}>
+  {/* Components here will use purple accent */}
+</div>
+```
+
+```css Tailwind Config
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'lum-accent': 'var(--color-purple-500)'
+      }
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+<Note>
+Changes to `--color-lum-accent` affect focus rings, active states, and accent elements throughout your UI.
+</Note>
+
+### Customizing Component Backgrounds
+
+Adjust the background colors for different component types:
+
+```css
+@theme {
+  /* Lighter card backgrounds */
+  --color-lum-card-bg: var(--color-gray-800);
+  
+  /* Darker input backgrounds */
+  --color-lum-input-bg: var(--color-gray-900);
+  
+  /* Subtle hover state */
+  --color-lum-input-hover-bg: var(--color-gray-850);
+}
+```
+
+### Text Colors
+
+Customize primary and secondary text colors:
+
+```css
+@theme {
+  --color-lum-text: var(--color-gray-50);
+  --color-lum-text-secondary: var(--color-gray-400);
+}
+```
+
+## Using Luminescent Colors
+
+### With Tailwind Utilities
+
+Luminescent colors are available as Tailwind utilities:
+
+```tsx
+<div className="bg-luminescent-500 text-white">
+  Luminescent colored background
+</div>
+
+<button className="bg-luminescent-600 hover:bg-luminescent-700">
+  Click me
+</button>
+```
+
+### Full Color Scale
+
+The complete Luminescent palette (50-950):
+
+```tsx
+<div className="space-y-2">
+  <div className="bg-luminescent-50 p-4">50</div>
+  <div className="bg-luminescent-100 p-4">100</div>
+  <div className="bg-luminescent-200 p-4">200</div>
+  <div className="bg-luminescent-300 p-4">300</div>
+  <div className="bg-luminescent-400 p-4">400</div>
+  <div className="bg-luminescent-500 p-4">500</div>
+  <div className="bg-luminescent-600 p-4">600</div>
+  <div className="bg-luminescent-700 p-4">700</div>
+  <div className="bg-luminescent-800 p-4">800</div>
+  <div className="bg-luminescent-900 p-4">900</div>
+  <div className="bg-luminescent-950 p-4">950</div>
+</div>
+```
+
+## Border & Gradient Mixing
+
+Control how borders and gradients blend with component backgrounds:
+
+```css
+@theme {
+  /* Border mixing - percentage of border color mixed in */
+  --lum-border-mix: 20%;
+  
+  /* Gradient mixing - percentage of gradient color mixed in */
+  --lum-gradient-mix: 20%;
+  
+  /* Gradient direction */
+  --lum-gradient-angle: 180deg;
+}
+```
+
+<Tip>
+Increase `--lum-border-mix` for more prominent borders, or decrease for subtler edges.
+</Tip>
+
+## Custom Color Utilities
+
+Luminescent UI provides custom utilities for component styling:
+
+### lum-bg-*
+
+Apply any color as a background with automatic border generation:
+
+```tsx
+<div className="lum-bg-blue-600 p-4 rounded-lum">
+  Blue background with matching border
+</div>
+```
+
+### lum-grad-bg-*
+
+Create gradient backgrounds that fade to darkness:
+
+```tsx
+<div className="lum-grad-bg-purple-600 p-8 rounded-lum">
+  Gradient from purple to darker shade
+</div>
+```
+
+### lum-toggle-bg-*
+
+Interactive backgrounds that brighten on hover:
+
+```tsx
+<button className="lum-toggle-bg-green-600 p-4 rounded-lum">
+  Hover to see effect
+</button>
+```
+
+## Color Opacity
+
+All color utilities support opacity modifiers:
+
+```tsx
+<div className="lum-bg-blue-500/50 p-4">
+  50% opacity blue background
+</div>
+
+<div className="text-luminescent-600/75">
+  75% opacity text
+</div>
+```
+
+## Dark Mode Considerations
+
+Luminescent UI is designed for dark themes by default. For light mode support:
+
+```css
+@theme {
+  --color-lum-card-bg: var(--color-gray-900);
+  --color-lum-text: var(--color-gray-50);
+}
+
+@media (prefers-color-scheme: light) {
+  @theme {
+    --color-lum-card-bg: var(--color-gray-50);
+    --color-lum-text: var(--color-gray-900);
+  }
+}
+```
+
+## Examples
+
+### Themed Section
+
+```tsx
+<section 
+  style={{ 
+    '--color-lum-accent': 'oklch(0.75 0.25 150)',
+    '--color-lum-card-bg': 'oklch(0.2 0.05 150)'
+  }}
+  className="p-8 space-y-4"
+>
+  <div className="lum-card">
+    <h2>Green-themed card</h2>
+    <button className="lum-btn lum-bg-lum-accent">
+      Accent button
+    </button>
+  </div>
+</section>
+```
+
+### Custom Accent System
+
+```tsx
+// Define brand colors
+const brandColors = {
+  primary: 'oklch(0.65 0.24 318)',
+  secondary: 'oklch(0.70 0.20 260)',
+};
+
+<div style={{ '--color-lum-accent': brandColors.primary }}>
+  {/* All components use primary brand color */}
+</div>
+```

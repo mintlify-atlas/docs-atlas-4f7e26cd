@@ -1,122 +1,122 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Luminescent UI",
+  "theme": "willow",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#c084fc",
+    "light": "#e9d5ff",
+    "dark": "#7e22ce"
   },
-  "favicon": "/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/LuminescentDev/ui"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/LuminescentDev/ui"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Get Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduction",
+              "installation",
+              "quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Core Concepts",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "concepts/tailwind-utilities",
+              "concepts/theming",
+              "concepts/color-system",
+              "concepts/depth-effects"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Framework Integration",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "frameworks/qwik",
+              "frameworks/react"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Components",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Utilities",
             "pages": [
-              "api-reference/introduction"
+              "components/utilities/lum-bg",
+              "components/utilities/lum-btn",
+              "components/utilities/lum-card",
+              "components/utilities/lum-input",
+              "components/utilities/borders",
+              "components/utilities/loading"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Qwik Components",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "components/qwik/anchor",
+              "components/qwik/blobs",
+              "components/qwik/color-picker",
+              "components/qwik/dropdown",
+              "components/qwik/nav",
+              "components/qwik/number-input",
+              "components/qwik/range-input",
+              "components/qwik/select-menu",
+              "components/qwik/sidebar",
+              "components/qwik/toggle"
+            ]
+          },
+          {
+            "group": "React Components",
+            "pages": [
+              "components/react/dropdown",
+              "components/react/nav",
+              "components/react/select-menu",
+              "components/react/toggle"
+            ]
+          },
+          {
+            "group": "Logos",
+            "pages": [
+              "components/logos/overview"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Styling",
+            "pages": [
+              "guides/custom-colors",
+              "guides/theming-variables",
+              "guides/responsive-design",
+              "guides/markdown-formatting"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "guides/custom-components",
+              "guides/migration",
+              "guides/troubleshooting"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

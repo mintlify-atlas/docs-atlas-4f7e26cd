@@ -1,0 +1,119 @@
+---
+title: Dropdown
+description: A button component with an animated chevron icon that indicates expandable content.
+---
+
+The Dropdown component is a button that displays a chevron icon that rotates when opened. It's commonly used as a trigger for dropdowns, accordions, and expandable menus.
+
+## Import
+
+```tsx
+import { Dropdown } from '@luminescent/ui-react';
+```
+
+## Usage
+
+```tsx
+import { Dropdown } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function Example() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <Dropdown 
+      opened={opened}
+      onClick={() => setOpened(!opened)}
+    >
+      Select an option
+    </Dropdown>
+  );
+}
+```
+
+## Props
+
+The Dropdown component extends all standard HTML button attributes except `type` and accepts the following additional props:
+
+<ParamField path="children" type="React.ReactNode">
+  The content to display inside the button.
+</ParamField>
+
+<ParamField path="opened" type="boolean" default="false">
+  Controls whether the chevron icon is rotated (indicating the dropdown is open).
+</ParamField>
+
+<ParamField path="hover" type="boolean" default="false">
+  When enabled, the chevron rotates on hover instead of only when `opened` is true.
+</ParamField>
+
+<ParamField path="className" type="string">
+  Additional CSS classes to apply to the button element.
+</ParamField>
+
+## Behavior
+
+- The component automatically applies the `lum-btn` class and renders as a button with `type="button"`
+- The chevron icon rotates 180 degrees when `opened` is true
+- When `hover` is enabled, the chevron rotates on hover with smooth transitions
+- Focus states also trigger the chevron rotation
+- All transitions use `ease-out` timing with motion-safe preferences respected
+
+## Examples
+
+<CodeGroup>
+
+```tsx Basic
+import { Dropdown } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function Basic() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <Dropdown 
+      opened={opened}
+      onClick={() => setOpened(!opened)}
+    >
+      Click to toggle
+    </Dropdown>
+  );
+}
+```
+
+```tsx Hover
+import { Dropdown } from '@luminescent/ui-react';
+
+function HoverExample() {
+  return (
+    <Dropdown hover>
+      Hover over me
+    </Dropdown>
+  );
+}
+```
+
+```tsx Custom Styling
+import { Dropdown } from '@luminescent/ui-react';
+import { useState } from 'react';
+
+function Styled() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+    <Dropdown 
+      opened={opened}
+      onClick={() => setOpened(!opened)}
+      className="bg-blue-500 text-white"
+    >
+      Custom styled dropdown
+    </Dropdown>
+  );
+}
+```
+
+</CodeGroup>
+
+<Note>
+  The Dropdown component only handles the button UI and chevron animation. You'll need to implement the actual dropdown panel separately and control its visibility using the same state that controls the `opened` prop.
+</Note>

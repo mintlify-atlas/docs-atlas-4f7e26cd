@@ -1,0 +1,307 @@
+---
+title: React Integration
+description: Learn how to integrate Luminescent UI components into your React applications with full TypeScript support and modern React patterns.
+---
+
+Luminescent UI provides a React component library built with React 19, offering pre-built components, utility functions, and logo icons with full TypeScript support.
+
+## Installation
+
+<Steps>
+  <Step title="Install dependencies">
+    Install both the core Luminescent UI package and the React-specific package:
+
+    <CodeGroup>
+      ```bash pnpm
+      pnpm install @luminescent/ui @luminescent/ui-react
+      ```
+
+      ```bash npm
+      npm install @luminescent/ui @luminescent/ui-react
+      ```
+
+      ```bash yarn
+      yarn add @luminescent/ui @luminescent/ui-react
+      ```
+    </CodeGroup>
+
+    <Note>
+      The React package requires Node.js >= 23.11.0 and React >= 19.2.3
+    </Note>
+  </Step>
+
+  <Step title="Configure Tailwind CSS">
+    Add the Luminescent UI imports to your Tailwind CSS file:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    
+    @source "../node_modules/@luminescent/ui-react";
+    ```
+
+    <Note>
+      The `@source` directive enables JIT compilation for component classes from the React package.
+    </Note>
+  </Step>
+
+  <Step title="Optional: Add Markdown formatting">
+    For automatic formatting of Markdown elements, add this import:
+
+    ```css app.css
+    @import "@luminescent/ui/formatting";
+    ```
+  </Step>
+</Steps>
+
+## Available Components
+
+Luminescent UI for React exports three main categories:
+
+### Elements
+
+Interactive UI components with React hooks support:
+
+- **Dropdown** - Dropdown menu with keyboard navigation
+- **Nav** - Navigation component with responsive behavior
+- **SelectMenu** - Custom select dropdown
+- **Toggle** - Checkbox and toggle switch component
+
+### Functions
+
+Utility functions for enhanced functionality:
+
+- **getClasses** - Conditional className builder utility
+
+### Logos
+
+Pre-built SVG logo components using lucide-react:
+
+- Birdflop, Discord, Fabric, Forge, Luminescent, Paper, Pterodactyl, Purpur, Velocity, Waterfall
+
+## Import Patterns
+
+<CodeGroup>
+  ```typescript Named Imports
+  import { Toggle, Nav, Dropdown } from '@luminescent/ui-react';
+  import { getClasses } from '@luminescent/ui-react';
+  import { Discord, Luminescent } from '@luminescent/ui-react';
+  ```
+
+  ```typescript Namespace Import
+  import * as LumUI from '@luminescent/ui-react';
+  
+  // Use as:
+  <LumUI.Toggle />
+  ```
+
+  ```typescript Type Imports
+  import type React from 'react';
+  import { Toggle } from '@luminescent/ui-react';
+  ```
+</CodeGroup>
+
+## Usage Examples
+
+### Toggle Component
+
+Create toggle switches with optional labels using React hooks:
+
+```tsx Component.tsx
+import { useState } from 'react';
+import { Toggle } from '@luminescent/ui-react';
+
+export function FeatureToggle() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  
+  return (
+    <div>
+      <Toggle
+        id="feature-toggle"
+        checked={isEnabled}
+        onChange={(e) => setIsEnabled(e.target.checked)}
+      >
+        Enable Feature
+      </Toggle>
+      
+      {/* Checkbox variant */}
+      <Toggle
+        id="checkbox-toggle"
+        checkbox
+        checked={isEnabled}
+        onChange={(e) => setIsEnabled(e.target.checked)}
+      >
+        Checkbox Style
+      </Toggle>
+      
+      {/* Round variant */}
+      <Toggle
+        id="round-toggle"
+        round
+        checked={isEnabled}
+        onChange={(e) => setIsEnabled(e.target.checked)}
+      >
+        Round Toggle
+      </Toggle>
+    </div>
+  );
+}
+```
+
+### Navigation Component
+
+Build responsive navigation menus:
+
+```tsx Navigation.tsx
+import { Nav } from '@luminescent/ui-react';
+
+export function Navigation() {
+  return (
+    <Nav>
+      <a href="/">Home</a>
+      <a href="/docs">Documentation</a>
+      <a href="/components">Components</a>
+    </Nav>
+  );
+}
+```
+
+### getClasses Utility
+
+Conditionally combine class names with the `getClasses` helper:
+
+```tsx Button.tsx
+import { getClasses } from '@luminescent/ui-react';
+
+interface ButtonProps {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+export function Button({ variant = 'primary', size = 'md', disabled, children }: ButtonProps) {
+  return (
+    <button
+      className={getClasses({
+        'lum-btn': true,
+        'lum-btn-primary': variant === 'primary',
+        'lum-btn-secondary': variant === 'secondary',
+        'text-sm px-3 py-1': size === 'sm',
+        'text-base px-4 py-2': size === 'md',
+        'text-lg px-6 py-3': size === 'lg',
+        'opacity-50 cursor-not-allowed': disabled,
+      })}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+<Note>
+  The `getClasses` function filters out falsy values and joins the remaining class names into a single string.
+</Note>
+
+### Logo Components
+
+Use pre-built logo SVGs with customizable sizing:
+
+```tsx Logos.tsx
+import { Luminescent, Discord, Paper } from '@luminescent/ui-react';
+
+export function BrandLogos() {
+  return (
+    <div className="flex gap-4 items-center">
+      <Luminescent className="h-8 w-8" />
+      <Discord className="h-8 w-8" />
+      <Paper className="h-8 w-8" />
+    </div>
+  );
+}
+```
+
+### Custom Component with getClasses
+
+Build your own components using Luminescent UI utilities:
+
+```tsx Card.tsx
+import { getClasses } from '@luminescent/ui-react';
+import type React from 'react';
+
+interface CardProps {
+  variant?: 'default' | 'highlighted';
+  className?: string;
+  children: React.ReactNode;
+}
+
+export function Card({ variant = 'default', className, children }: CardProps) {
+  return (
+    <div
+      className={getClasses({
+        'lum-card p-6 rounded-lum': true,
+        'border-2 border-lum-accent': variant === 'highlighted',
+        [className ?? '']: !!className,
+      })}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+## TypeScript Support
+
+All components include full TypeScript definitions with proper React types:
+
+```typescript types.ts
+import type React from 'react';
+
+// Toggle extends React.InputHTMLAttributes<HTMLInputElement>
+interface ToggleProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement> & { type: 'checkbox' },
+    'bind:checked' | 'type' | 'children'
+  > {
+  children?: React.ReactNode;
+  checkbox?: boolean;
+  round?: boolean;
+}
+```
+
+## React 19 Features
+
+Luminescent UI for React leverages modern React 19 features:
+
+- Full support for React Server Components
+- Compatible with `use client` directives
+- Optimized for concurrent rendering
+- TypeScript 5.9+ support with strict mode
+
+```tsx ServerComponent.tsx
+'use client';
+
+import { useState } from 'react';
+import { Toggle } from '@luminescent/ui-react';
+
+export function ClientToggle() {
+  const [enabled, setEnabled] = useState(false);
+  
+  return (
+    <Toggle
+      id="client-toggle"
+      checked={enabled}
+      onChange={(e) => setEnabled(e.target.checked)}
+    >
+      Client-side Toggle
+    </Toggle>
+  );
+}
+```
+
+## Next Steps
+
+- Explore the [Component Documentation](https://ui.luminescent.dev/docs) for detailed usage
+- View [Markdown Formatting](https://ui.luminescent.dev/docs/markdown) examples
+- Check out the [Tailwind Classes](https://ui.luminescent.dev/docs/classes) reference

@@ -1,0 +1,356 @@
+---
+title: Responsive Design
+description: Best practices and patterns for building responsive interfaces with Luminescent UI
+---
+
+Luminescent UI is built on Tailwind CSS, giving you powerful responsive design capabilities out of the box.
+
+## Breakpoint System
+
+Tailwind's default breakpoints are available:
+
+| Prefix | Min Width | Description |
+|--------|-----------|-------------|
+| `sm:` | 640px | Small tablets and large phones |
+| `md:` | 768px | Tablets |
+| `lg:` | 1024px | Small laptops |
+| `xl:` | 1280px | Desktops |
+| `2xl:` | 1536px | Large desktops |
+
+<Note>
+Breakpoints are mobile-first. Classes without prefixes apply to all screen sizes, and prefixed classes override them at larger sizes.
+</Note>
+
+## Responsive Patterns
+
+### Responsive Layouts
+
+<CodeGroup>
+
+```tsx Stack to Grid
+<div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div className="lum-card">Card 1</div>
+  <div className="lum-card">Card 2</div>
+  <div className="lum-card">Card 3</div>
+</div>
+```
+
+```tsx Responsive Columns
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {items.map(item => (
+    <div key={item.id} className="lum-card">
+      {item.content}
+    </div>
+  ))}
+</div>
+```
+
+```tsx Sidebar Layout
+<div className="flex flex-col lg:flex-row gap-6">
+  <aside className="lg:w-64 lum-card">
+    Sidebar
+  </aside>
+  <main className="flex-1 lum-card">
+    Main content
+  </main>
+</div>
+```
+
+</CodeGroup>
+
+### Responsive Typography
+
+Adjust text sizes across breakpoints:
+
+```tsx
+<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+  Responsive Heading
+</h1>
+
+<p className="text-sm sm:text-base md:text-lg text-lum-text-secondary">
+  Body text that scales with screen size
+</p>
+```
+
+<Tip>
+Luminescent UI's formatting styles include responsive typography built-in. Headings automatically scale from mobile to desktop.
+</Tip>
+
+### Responsive Spacing
+
+Scale padding and margins:
+
+```tsx
+<div className="p-4 sm:p-6 md:p-8 lg:p-12">
+  <section className="space-y-4 sm:space-y-6 md:space-y-8">
+    {/* Content */}
+  </section>
+</div>
+```
+
+### Responsive Components
+
+#### Buttons
+
+```tsx
+<button className="lum-btn lum-bg-blue-600 w-full sm:w-auto">
+  Full width on mobile, auto on desktop
+</button>
+
+<div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+  <button className="lum-btn lum-bg-blue-600">Primary</button>
+  <button className="lum-btn lum-bg-gray-700">Secondary</button>
+</div>
+```
+
+#### Cards
+
+```tsx
+<div className="lum-card p-4 sm:p-6 md:p-8">
+  <h2 className="text-xl sm:text-2xl md:text-3xl">Card Title</h2>
+  <div className="flex flex-col sm:flex-row gap-4 mt-4">
+    <button className="lum-btn lum-bg-blue-600 flex-1">
+      Action
+    </button>
+  </div>
+</div>
+```
+
+#### Inputs
+
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <input 
+    className="lum-input w-full" 
+    placeholder="First Name"
+  />
+  <input 
+    className="lum-input w-full" 
+    placeholder="Last Name"
+  />
+</div>
+```
+
+## Responsive Utilities
+
+### Show/Hide Content
+
+```tsx
+{/* Hide on mobile, show on desktop */}
+<div className="hidden md:block">
+  Desktop-only content
+</div>
+
+{/* Show on mobile, hide on desktop */}
+<div className="block md:hidden">
+  Mobile-only content
+</div>
+
+{/* Show only on tablets */}
+<div className="hidden md:block lg:hidden">
+  Tablet-only content
+</div>
+```
+
+### Responsive Flex Direction
+
+```tsx
+<div className="flex flex-col sm:flex-row items-center gap-4">
+  <LogoLuminescent size={48} />
+  <div className="text-center sm:text-left">
+    <h3>Luminescent UI</h3>
+    <p className="text-lum-text-secondary">Modern component library</p>
+  </div>
+</div>
+```
+
+### Container Queries
+
+For component-level responsiveness:
+
+```tsx
+<div className="@container">
+  <div className="@md:grid @md:grid-cols-2 gap-4">
+    {/* Responds to container size, not viewport */}
+  </div>
+</div>
+```
+
+## Navigation Patterns
+
+### Responsive Header
+
+```tsx
+export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  return (
+    <header className="lum-card p-4">
+      <div className="flex items-center justify-between">
+        <LogoLuminescent size={40} />
+        
+        {/* Desktop navigation */}
+        <nav className="hidden md:flex gap-4">
+          <a href="#" className="lum-btn lum-bg-gray-700">Home</a>
+          <a href="#" className="lum-btn lum-bg-gray-700">Docs</a>
+          <a href="#" className="lum-btn lum-bg-gray-700">About</a>
+        </nav>
+        
+        {/* Mobile menu button */}
+        <button 
+          className="md:hidden lum-btn lum-bg-gray-700"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          Menu
+        </button>
+      </div>
+      
+      {/* Mobile navigation */}
+      {mobileMenuOpen && (
+        <nav className="md:hidden mt-4 flex flex-col gap-2">
+          <a href="#" className="lum-btn lum-bg-gray-700">Home</a>
+          <a href="#" className="lum-btn lum-bg-gray-700">Docs</a>
+          <a href="#" className="lum-btn lum-bg-gray-700">About</a>
+        </nav>
+      )}
+    </header>
+  );
+}
+```
+
+### Responsive Sidebar
+
+```tsx
+export function Layout({ children }) {
+  return (
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      {/* Sidebar - horizontal scroll on mobile, fixed on desktop */}
+      <aside className="lg:w-64 lg:sticky lg:top-0 lg:h-screen overflow-auto">
+        <nav className="flex lg:flex-col gap-2 p-4 overflow-x-auto lg:overflow-x-visible">
+          <a href="#" className="lum-btn lum-bg-gray-700 whitespace-nowrap">Dashboard</a>
+          <a href="#" className="lum-btn lum-bg-gray-700 whitespace-nowrap">Settings</a>
+          <a href="#" className="lum-btn lum-bg-gray-700 whitespace-nowrap">Profile</a>
+        </nav>
+      </aside>
+      
+      {/* Main content */}
+      <main className="flex-1 p-4 lg:p-8">
+        {children}
+      </main>
+    </div>
+  );
+}
+```
+
+## Responsive Images & Media
+
+### Responsive Logo Sizing
+
+```tsx
+<LogoLuminescent 
+  size={32}
+  className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+/>
+```
+
+### Responsive Images
+
+```tsx
+<img 
+  src="/image.jpg" 
+  alt="Description"
+  className="w-full h-48 sm:h-64 md:h-80 object-cover rounded-lum"
+/>
+```
+
+### Aspect Ratios
+
+```tsx
+<div className="aspect-square sm:aspect-video lum-card overflow-hidden">
+  <img src="/image.jpg" alt="Description" className="w-full h-full object-cover" />
+</div>
+```
+
+## Performance Considerations
+
+<CardGroup cols={2}>
+  <Card title="Mobile-First Approach" icon="mobile">
+    Start with mobile styles and enhance for larger screens. This ensures fast loading on mobile devices.
+  </Card>
+  <Card title="Conditional Rendering" icon="code">
+    Use CSS visibility over conditional JS rendering when possible for better performance.
+  </Card>
+  <Card title="Responsive Images" icon="image">
+    Use appropriate image sizes for each breakpoint to reduce bandwidth usage.
+  </Card>
+  <Card title="Touch Targets" icon="hand">
+    Ensure interactive elements are at least 44x44px on mobile for accessibility.
+  </Card>
+</CardGroup>
+
+## Testing Responsive Design
+
+### Browser DevTools
+
+1. Open Chrome/Firefox DevTools
+2. Toggle device toolbar (Cmd+Shift+M or Ctrl+Shift+M)
+3. Test various device presets
+4. Use responsive mode to test custom sizes
+
+<Tip>
+Test with actual devices when possible. Emulators don't always reflect real performance and touch interactions.
+</Tip>
+
+## Common Patterns
+
+### Hero Section
+
+```tsx
+<section className="lum-card p-6 sm:p-12 md:p-16 lg:p-24">
+  <div className="max-w-4xl mx-auto text-center">
+    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold">
+      Welcome to Luminescent UI
+    </h1>
+    <p className="mt-4 text-base sm:text-lg md:text-xl text-lum-text-secondary">
+      Build beautiful interfaces with ease
+    </p>
+    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+      <button className="lum-btn lum-bg-blue-600 text-lg">Get Started</button>
+      <button className="lum-btn lum-bg-gray-700 text-lg">Learn More</button>
+    </div>
+  </div>
+</section>
+```
+
+### Feature Grid
+
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+  {features.map(feature => (
+    <div key={feature.id} className="lum-card p-4 sm:p-6">
+      <h3 className="text-lg sm:text-xl font-semibold">{feature.title}</h3>
+      <p className="mt-2 text-sm sm:text-base text-lum-text-secondary">
+        {feature.description}
+      </p>
+    </div>
+  ))}
+</div>
+```
+
+### Responsive Form
+
+```tsx
+<form className="lum-card p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
+  <div className="space-y-4 sm:space-y-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <input className="lum-input" placeholder="First Name" />
+      <input className="lum-input" placeholder="Last Name" />
+    </div>
+    <input className="lum-input w-full" placeholder="Email" />
+    <textarea className="lum-input w-full h-32" placeholder="Message" />
+    <button className="lum-btn lum-bg-blue-600 w-full sm:w-auto">
+      Submit
+    </button>
+  </div>
+</form>
+```

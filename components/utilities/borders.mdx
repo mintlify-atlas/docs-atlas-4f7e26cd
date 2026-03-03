@@ -1,0 +1,357 @@
+---
+title: "Border Utilities"
+description: "Rounded corners and gradient borders with superellipse smoothing"
+---
+
+## Overview
+
+Luminescent UI provides border utilities for creating smooth, superellipse-based rounded corners and gradient borders.
+
+## rounded-lum
+
+Applies the Luminescent border radius with superellipse corner smoothing.
+
+### CSS Implementation
+
+```css
+@utility rounded-lum {
+  border-radius: var(--lum-border-radius);
+  corner-shape: superellipse(var(--lum-border-superellipse));
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Basic
+<div class="rounded-lum bg-gray-800 p-4">
+  Smooth rounded corners
+</div>
+```
+
+```html With Card
+<div class="lum-card rounded-lum">
+  Card with rounded corners (already applied by default)
+</div>
+```
+
+```html With Button
+<button class="lum-btn rounded-lum">
+  Button (already applied by default)
+</button>
+```
+
+```html Custom Element
+<img src="avatar.jpg" class="rounded-lum w-24 h-24" />
+```
+
+</CodeGroup>
+
+### CSS Variables
+
+<ParamField path="--lum-border-radius" type="length" default="var(--radius-lg)">
+  The border radius value. Typically corresponds to Tailwind's `lg` size (~8px).
+</ParamField>
+
+<ParamField path="--lum-border-superellipse" type="number" default="1">
+  Superellipse corner smoothing factor:
+  - `0` = Perfect circle
+  - `1` = Squircle (smooth, Apple-style corners)
+  - `2+` = Approaching rounded square
+</ParamField>
+
+<Note>
+  The `corner-shape: superellipse()` property creates smoother, more aesthetically pleasing corners than standard border-radius. This is the same corner style used by Apple in iOS and macOS.
+</Note>
+
+## rounded-lum-*
+
+Applies a calculated border radius that's reduced by a spacing multiplier, useful for nested elements.
+
+### CSS Implementation
+
+```css
+@utility rounded-lum-* {
+  border-radius: calc(var(--lum-border-radius) - calc(var(--spacing) * --value(integer)));
+  corner-shape: superellipse(var(--lum-border-superellipse));
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Nested Elements
+<div class="rounded-lum lum-card">
+  <div class="rounded-lum-1 bg-gray-800 p-4">
+    Inner element with reduced radius
+  </div>
+</div>
+```
+
+```html Multiple Nesting Levels
+<div class="rounded-lum lum-card p-4">
+  <div class="rounded-lum-1 bg-gray-800 p-3">
+    <div class="rounded-lum-2 bg-gray-700 p-2">
+      Deeply nested element
+    </div>
+  </div>
+</div>
+```
+
+```html Card Header
+<div class="rounded-lum lum-card overflow-hidden">
+  <div class="rounded-lum-1 bg-blue-900 p-4">
+    Header
+  </div>
+  <div class="p-4">
+    Content
+  </div>
+</div>
+```
+
+</CodeGroup>
+
+### Values
+
+<ParamField path="rounded-lum-1" type="utility">
+  Radius reduced by 1 spacing unit (~4px)
+</ParamField>
+
+<ParamField path="rounded-lum-2" type="utility">
+  Radius reduced by 2 spacing units (~8px)
+</ParamField>
+
+<ParamField path="rounded-lum-3" type="utility">
+  Radius reduced by 3 spacing units (~12px)
+</ParamField>
+
+<ParamField path="rounded-lum-4" type="utility">
+  Radius reduced by 4 spacing units (~16px)
+</ParamField>
+
+<Note>
+  Use `rounded-lum-*` utilities when you have nested rounded containers. This ensures the inner element's corners align perfectly with the outer element's corners by accounting for the padding.
+</Note>
+
+## border-gradient-*
+
+Creates a gradient border effect using a pseudo-element.
+
+### CSS Implementation
+
+```css
+@utility border-gradient-* {
+  @apply relative box-border bg-clip-padding;
+  border-width: calc(--value(integer) * 1px);
+  border-color: transparent !important;
+  &::before {
+    @apply bg-gradient-to-br content-[''] absolute inset-0 z-[-1];
+    margin: calc(--value(integer) * -1px);
+    border-radius: inherit;
+  }
+}
+```
+
+### Usage
+
+<CodeGroup>
+
+```html Basic Gradient Border
+<div class="border-gradient-2 rounded-lum bg-gray-900 p-4">
+  2px gradient border
+</div>
+```
+
+```html Thick Gradient Border
+<div class="border-gradient-4 rounded-lum bg-gray-900 p-6">
+  4px gradient border
+</div>
+```
+
+```html Custom Gradient
+<div class="border-gradient-2 rounded-lum bg-gray-900 p-4 
+            [&::before]:bg-gradient-to-r [&::before]:from-blue-500 [&::before]:to-purple-500">
+  Custom gradient colors
+</div>
+```
+
+```html Card with Gradient Border
+<div class="border-gradient-3 rounded-lum lum-card">
+  <h3 class="text-xl font-bold">Premium Card</h3>
+  <p>Beautiful gradient border effect</p>
+</div>
+```
+
+</CodeGroup>
+
+### Border Widths
+
+<ParamField path="border-gradient-1" type="utility">
+  1px gradient border
+</ParamField>
+
+<ParamField path="border-gradient-2" type="utility">
+  2px gradient border (recommended)
+</ParamField>
+
+<ParamField path="border-gradient-3" type="utility">
+  3px gradient border
+</ParamField>
+
+<ParamField path="border-gradient-4" type="utility">
+  4px gradient border
+</ParamField>
+
+### How It Works
+
+1. Sets a transparent border with the specified width
+2. Creates a `::before` pseudo-element behind the content
+3. Applies a gradient background to the pseudo-element
+4. Offsets the pseudo-element by negative margin to show through the transparent border
+5. Inherits the border-radius for consistent corner shapes
+
+<Warning>
+  The `border-gradient-*` utility uses `z-index: -1` on the pseudo-element. Make sure the parent element has a background color, or the gradient will appear behind all content.
+</Warning>
+
+## Customizing Gradients
+
+The default gradient is `bg-gradient-to-br` (bottom-right diagonal). You can customize it:
+
+<CodeGroup>
+
+```html Gradient Directions
+<!-- Top to bottom -->
+<div class="border-gradient-2 [&::before]:bg-gradient-to-b"></div>
+
+<!-- Left to right -->
+<div class="border-gradient-2 [&::before]:bg-gradient-to-r"></div>
+
+<!-- Radial gradient -->
+<div class="border-gradient-2 [&::before]:bg-gradient-radial"></div>
+```
+
+```html Custom Colors
+<div class="border-gradient-2 rounded-lum bg-gray-900 p-4
+            [&::before]:from-pink-500 [&::before]:to-yellow-500">
+  Pink to yellow gradient
+</div>
+```
+
+```html Multiple Color Stops
+<div class="border-gradient-2 rounded-lum bg-gray-900 p-4
+            [&::before]:bg-gradient-to-r 
+            [&::before]:from-blue-500 
+            [&::before]:via-purple-500 
+            [&::before]:to-pink-500">
+  Rainbow gradient
+</div>
+```
+
+```html Animated Gradient
+<div class="border-gradient-2 rounded-lum bg-gray-900 p-4
+            [&::before]:bg-gradient-to-r 
+            [&::before]:from-blue-500 
+            [&::before]:to-purple-500
+            [&::before]:animate-gradient">
+  Animated gradient border
+</div>
+```
+
+</CodeGroup>
+
+## Examples
+
+<CodeGroup>
+
+```html Premium Card
+<div class="border-gradient-3 rounded-lum lum-card max-w-md
+            [&::before]:from-blue-500 [&::before]:to-purple-500">
+  <h3 class="text-2xl font-bold">Pro Plan</h3>
+  <p class="text-gray-300">Unlock all premium features</p>
+  <button class="lum-btn lum-bg-blue-600">Upgrade Now</button>
+</div>
+```
+
+```html Featured Section
+<section class="border-gradient-2 rounded-lum bg-gray-900 p-8
+                [&::before]:from-emerald-500 [&::before]:to-blue-500">
+  <h2 class="text-3xl font-bold mb-4">Featured Content</h2>
+  <p>This section stands out with a gradient border.</p>
+</section>
+```
+
+```html Avatar with Gradient Ring
+<div class="border-gradient-3 rounded-full inline-block
+            [&::before]:from-pink-500 [&::before]:to-orange-500">
+  <img src="avatar.jpg" class="w-24 h-24 rounded-full" />
+</div>
+```
+
+```html Nested Rounded Elements
+<div class="rounded-lum lum-card p-6">
+  <div class="rounded-lum-1 bg-blue-900/30 p-4 mb-4">
+    <h3 class="text-lg font-bold">Section 1</h3>
+    <div class="rounded-lum-2 bg-blue-800/50 p-3 mt-2">
+      Nested content with perfect corner alignment
+    </div>
+  </div>
+  <div class="rounded-lum-1 bg-purple-900/30 p-4">
+    <h3 class="text-lg font-bold">Section 2</h3>
+  </div>
+</div>
+```
+
+```html Button with Gradient Border
+<button class="border-gradient-2 rounded-lum bg-gray-900 px-6 py-3 font-medium
+               hover:bg-gray-800 transition-colors
+               [&::before]:from-blue-500 [&::before]:to-cyan-500">
+  Get Started
+</button>
+```
+
+</CodeGroup>
+
+## Superellipse Corner Shape
+
+The `corner-shape: superellipse()` property creates smoother corners:
+
+<CodeGroup>
+
+```html Default Superellipse
+<div class="rounded-lum [--lum-border-superellipse:1] bg-gray-800 w-32 h-32">
+  Squircle
+</div>
+```
+
+```html More Circular
+<div class="rounded-lum [--lum-border-superellipse:0.5] bg-gray-800 w-32 h-32">
+  Rounder
+</div>
+```
+
+```html More Square
+<div class="rounded-lum [--lum-border-superellipse:1.5] bg-gray-800 w-32 h-32">
+  Squarer
+</div>
+```
+
+```html Perfect Circle
+<div class="rounded-lum [--lum-border-superellipse:0] bg-gray-800 w-32 h-32">
+  Circle
+</div>
+```
+
+</CodeGroup>
+
+## Best Practices
+
+1. Use `rounded-lum` for all Luminescent UI components to maintain consistency
+2. Use `rounded-lum-*` for nested elements to align inner corners with outer corners
+3. Always set a background color when using `border-gradient-*`
+4. Consider combining `border-gradient-*` with hover effects for interactive elements
+5. Keep `--lum-border-superellipse` at `1` for the signature Luminescent look
+6. Use gradient borders sparingly to highlight important or premium elements
+7. Ensure gradient colors have sufficient contrast with the background

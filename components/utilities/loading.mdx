@@ -1,0 +1,351 @@
+---
+title: "Loading Spinner Utility"
+description: "Animated loading spinner with customizable size and color"
+---
+
+## Overview
+
+The `lum-loading` utility creates a smooth, animated loading spinner using pure CSS.
+
+## CSS Implementation
+
+```css
+@utility lum-loading {
+  @apply animate-spin border-transparent border-l-current border-t-current border-3 rounded-full;
+}
+```
+
+## Usage
+
+<CodeGroup>
+
+```html Basic Spinner
+<div class="lum-loading w-8 h-8"></div>
+```
+
+```html Small Spinner
+<div class="lum-loading w-4 h-4"></div>
+```
+
+```html Large Spinner
+<div class="lum-loading w-12 h-12"></div>
+```
+
+```html Colored Spinner
+<div class="lum-loading w-8 h-8 text-blue-500"></div>
+```
+
+</CodeGroup>
+
+## Applied Classes
+
+The `lum-loading` utility applies the following Tailwind classes:
+
+- `animate-spin` - Rotates the element 360 degrees continuously
+- `border-transparent` - Makes all borders transparent by default
+- `border-l-current` - Left border uses current text color
+- `border-t-current` - Top border uses current text color
+- `border-3` - 3px border width
+- `rounded-full` - Circular shape
+
+## How It Works
+
+The spinner works by:
+1. Creating a circular element with `rounded-full`
+2. Setting all borders to transparent
+3. Making the left and top borders visible using the current text color
+4. Continuously rotating the element with `animate-spin`
+
+This creates the classic "partial circle" loading spinner effect.
+
+## Customization
+
+### Size
+
+Control the spinner size with width and height utilities:
+
+<CodeGroup>
+
+```html Size Variants
+<!-- Extra small: 16px -->
+<div class="lum-loading w-4 h-4"></div>
+
+<!-- Small: 20px -->
+<div class="lum-loading w-5 h-5"></div>
+
+<!-- Medium: 32px -->
+<div class="lum-loading w-8 h-8"></div>
+
+<!-- Large: 48px -->
+<div class="lum-loading w-12 h-12"></div>
+
+<!-- Extra large: 64px -->
+<div class="lum-loading w-16 h-16"></div>
+```
+
+```html Custom Size
+<div class="lum-loading" style="width: 40px; height: 40px;"></div>
+```
+
+</CodeGroup>
+
+### Color
+
+Change the spinner color using text color utilities (since it uses `currentColor`):
+
+<CodeGroup>
+
+```html Color Variants
+<!-- Default (inherits text color) -->
+<div class="lum-loading w-8 h-8"></div>
+
+<!-- Blue -->
+<div class="lum-loading w-8 h-8 text-blue-500"></div>
+
+<!-- Green -->
+<div class="lum-loading w-8 h-8 text-green-500"></div>
+
+<!-- Purple -->
+<div class="lum-loading w-8 h-8 text-purple-500"></div>
+
+<!-- Red -->
+<div class="lum-loading w-8 h-8 text-red-500"></div>
+
+<!-- White -->
+<div class="lum-loading w-8 h-8 text-white"></div>
+
+<!-- Gray -->
+<div class="lum-loading w-8 h-8 text-gray-400"></div>
+```
+
+```html Luminescent Brand Color
+<div class="lum-loading w-8 h-8 text-luminescent-500"></div>
+```
+
+</CodeGroup>
+
+### Border Width
+
+Adjust the thickness of the spinner:
+
+```html
+<!-- Thin: 1px -->
+<div class="lum-loading w-8 h-8 border"></div>
+
+<!-- Default: 3px -->
+<div class="lum-loading w-8 h-8 border-3"></div>
+
+<!-- Thick: 4px -->
+<div class="lum-loading w-8 h-8 border-4"></div>
+
+<!-- Extra thick: 8px -->
+<div class="lum-loading w-8 h-8 border-8"></div>
+```
+
+### Animation Speed
+
+Customize the rotation speed:
+
+<CodeGroup>
+
+```html Speed Variants
+<!-- Slower -->
+<div class="lum-loading w-8 h-8 [animation-duration:2s]"></div>
+
+<!-- Default (1s) -->
+<div class="lum-loading w-8 h-8"></div>
+
+<!-- Faster -->
+<div class="lum-loading w-8 h-8 [animation-duration:0.5s]"></div>
+```
+
+```html Custom Duration
+<div class="lum-loading w-8 h-8" style="animation-duration: 1.5s;"></div>
+```
+
+</CodeGroup>
+
+## Usage Examples
+
+<CodeGroup>
+
+```html Loading Button
+<button class="lum-btn" disabled>
+  <div class="lum-loading w-5 h-5"></div>
+  Loading...
+</button>
+```
+
+```html Loading State
+<div class="lum-card text-center">
+  <div class="lum-loading w-12 h-12 mx-auto mb-4 text-blue-500"></div>
+  <p class="text-gray-400">Loading data...</p>
+</div>
+```
+
+```html Inline Spinner
+<p class="flex items-center gap-2">
+  <span class="lum-loading w-4 h-4"></span>
+  Processing your request
+</p>
+```
+
+```html Full Page Loading
+<div class="fixed inset-0 bg-gray-900/80 backdrop-blur flex items-center justify-center z-50">
+  <div class="text-center">
+    <div class="lum-loading w-16 h-16 mx-auto mb-4 text-luminescent-500"></div>
+    <p class="text-lg">Loading application...</p>
+  </div>
+</div>
+```
+
+```html Loading Overlay
+<div class="relative lum-card">
+  <div class="absolute inset-0 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center rounded-lum">
+    <div class="lum-loading w-10 h-10 text-blue-500"></div>
+  </div>
+  <h3 class="text-xl font-bold">Card Content</h3>
+  <p>This content is obscured by the loading overlay</p>
+</div>
+```
+
+```html Small Button Spinner
+<button class="lum-btn lum-btn-p-1 gap-2" disabled>
+  <div class="lum-loading w-3 h-3"></div>
+  <span class="text-sm">Saving</span>
+</button>
+```
+
+```html Multiple Spinners
+<div class="flex gap-4 items-center">
+  <div class="lum-loading w-4 h-4 text-red-500"></div>
+  <div class="lum-loading w-6 h-6 text-yellow-500"></div>
+  <div class="lum-loading w-8 h-8 text-green-500"></div>
+  <div class="lum-loading w-10 h-10 text-blue-500"></div>
+  <div class="lum-loading w-12 h-12 text-purple-500"></div>
+</div>
+```
+
+</CodeGroup>
+
+## Loading States in Components
+
+<CodeGroup>
+
+```html Input with Loading
+<div class="relative">
+  <input type="text" class="lum-input w-full pr-10" placeholder="Search..." />
+  <div class="absolute right-3 top-1/2 -translate-y-1/2">
+    <div class="lum-loading w-5 h-5 text-gray-400"></div>
+  </div>
+</div>
+```
+
+```html Submit Button Loading
+<button class="lum-btn lum-bg-blue-600 hover:lum-bg-blue-500" disabled>
+  <div class="lum-loading w-5 h-5"></div>
+  Submitting...
+</button>
+```
+
+```html Card Loading State
+<div class="lum-card min-h-[200px] flex items-center justify-center">
+  <div class="text-center">
+    <div class="lum-loading w-10 h-10 mx-auto mb-3 text-luminescent-500"></div>
+    <p class="text-sm text-gray-400">Loading content...</p>
+  </div>
+</div>
+```
+
+```html List Item Loading
+<div class="lum-card">
+  <div class="flex items-center justify-between py-2">
+    <div class="flex items-center gap-3">
+      <div class="lum-loading w-5 h-5 text-blue-500"></div>
+      <span>Processing item...</span>
+    </div>
+    <span class="text-sm text-gray-400">35%</span>
+  </div>
+</div>
+```
+
+</CodeGroup>
+
+## Conditional Rendering
+
+Example pattern for showing/hiding the spinner based on loading state:
+
+```html
+<!-- React/Vue/etc example -->
+<button class="lum-btn" :disabled="isLoading">
+  <div v-if="isLoading" class="lum-loading w-5 h-5"></div>
+  <span v-else>Submit</span>
+</button>
+
+<!-- Alpine.js example -->
+<button class="lum-btn" x-bind:disabled="loading">
+  <div x-show="loading" class="lum-loading w-5 h-5"></div>
+  <span x-show="!loading">Submit</span>
+</button>
+
+<!-- Plain JavaScript example -->
+<button class="lum-btn" id="submit-btn">
+  <div class="lum-loading w-5 h-5 hidden" id="spinner"></div>
+  <span id="btn-text">Submit</span>
+</button>
+
+<script>
+function setLoading(isLoading) {
+  document.getElementById('spinner').classList.toggle('hidden', !isLoading);
+  document.getElementById('btn-text').classList.toggle('hidden', isLoading);
+  document.getElementById('submit-btn').disabled = isLoading;
+}
+</script>
+```
+
+## Accessibility
+
+<Note>
+  When using loading spinners, always consider accessibility:
+  - Add `aria-label` or `aria-labelledby` to describe what's loading
+  - Use `role="status"` or `aria-live="polite"` for screen reader announcements
+  - Disable interactive elements during loading
+  - Provide text alternatives for the loading state
+</Note>
+
+<CodeGroup>
+
+```html With ARIA Label
+<div class="lum-loading w-8 h-8" 
+     role="status" 
+     aria-label="Loading content"></div>
+```
+
+```html With Hidden Text
+<div role="status">
+  <div class="lum-loading w-8 h-8"></div>
+  <span class="sr-only">Loading, please wait...</span>
+</div>
+```
+
+```html Live Region
+<div role="status" aria-live="polite" class="flex items-center gap-2">
+  <div class="lum-loading w-5 h-5"></div>
+  <span>Uploading file: 45%</span>
+</div>
+```
+
+</CodeGroup>
+
+## Best Practices
+
+1. Always disable interactive elements (buttons, inputs) while loading
+2. Provide text feedback alongside the spinner when possible
+3. Use appropriate sizes: small spinners (w-4/w-5) for buttons, larger (w-8+) for page loading
+4. Match the spinner color to your action (blue for primary, red for destructive, etc.)
+5. Consider using `backdrop-blur` for overlay loading states
+6. Add `aria-label` or alternative text for screen readers
+7. Use `motion-safe:` variants if you want to respect reduced-motion preferences
+8. Don't use multiple large spinners on the same page
+9. Provide loading progress percentage when possible
+10. Show estimated time for long-running operations

@@ -1,0 +1,150 @@
+---
+title: NumberInput
+description: A number input with increment/decrement buttons and optional display field
+---
+
+The NumberInput component provides an accessible number input with plus/minus buttons. It includes a labeled wrapper and a raw version for more control.
+
+## Import
+
+```typescript
+import { NumberInput, NumberInputRaw } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+<CodeGroup>
+```tsx With Label
+<NumberInput
+  id="quantity"
+  value={quantity.value}
+  min={0}
+  max={100}
+  step={1}
+  input
+  onIncrement$={(e, btn, input) => {
+    quantity.value = parseInt(input?.value || '0');
+  }}
+  onDecrement$={(e, btn, input) => {
+    quantity.value = parseInt(input?.value || '0');
+  }}
+>
+  Quantity
+</NumberInput>
+```
+
+```tsx Raw (No Label)
+<NumberInputRaw
+  value={count.value}
+  step={5}
+  input
+  onIncrement$={(e, btn, input) => {
+    count.value += 5;
+  }}
+  onDecrement$={(e, btn, input) => {
+    count.value -= 5;
+  }}
+/>
+```
+</CodeGroup>
+
+## NumberInput Props
+
+<ParamField path="id" type="string" required>
+  HTML id for the input field and label association.
+</ParamField>
+
+<ParamField path="value" type="number" default="0">
+  The current numeric value.
+</ParamField>
+
+<ParamField path="min" type="number">
+  Minimum allowed value. Decrement button is disabled when value reaches min.
+</ParamField>
+
+<ParamField path="max" type="number">
+  Maximum allowed value. Increment button is disabled when value reaches max.
+</ParamField>
+
+<ParamField path="step" type="number" default="1">
+  The amount to increment/decrement by.
+</ParamField>
+
+<ParamField path="input" type="boolean">
+  When true, displays a text input field between the buttons. When false, only shows increment/decrement buttons.
+</ParamField>
+
+<ParamField path="onIncrement$" type="QRL<(event, element, inputElement?) => void>" required>
+  Callback fired when the increment button is clicked. Receives the event, button element, and optionally the input element if `input` is true.
+</ParamField>
+
+<ParamField path="onDecrement$" type="QRL<(event, element, inputElement?) => void>" required>
+  Callback fired when the decrement button is clicked. Receives the event, button element, and optionally the input element if `input` is true.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'input'>">
+  All standard HTML input attributes are supported (except `type` and standard `class`).
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Buttons Only
+<NumberInputRaw
+  value={score.value}
+  onIncrement$={() => score.value++}
+  onDecrement$={() => score.value--}
+/>
+```
+
+```tsx With Constraints
+<NumberInput
+  id="age"
+  value={age.value}
+  min={0}
+  max={120}
+  step={1}
+  input
+  onIncrement$={(e, btn, input) => {
+    age.value = Math.min(120, age.value + 1);
+  }}
+  onDecrement$={(e, btn, input) => {
+    age.value = Math.max(0, age.value - 1);
+  }}
+>
+  Age
+</NumberInput>
+```
+
+```tsx Large Steps
+<NumberInputRaw
+  value={price.value}
+  step={10}
+  input
+  onIncrement$={(e, btn, input) => {
+    price.value += 10;
+  }}
+  onDecrement$={(e, btn, input) => {
+    price.value -= 10;
+  }}
+/>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  When `input` is true, the increment/decrement callbacks receive the input element as the third parameter. The component automatically calls `stepUp()` and `stepDown()` on the input element before firing the callbacks. Browser default spin buttons are hidden via CSS.
+</Note>
+
+## Accessibility
+
+- Buttons have `aria-label` attributes ("Increment" and "Decrement")
+- Buttons are properly disabled when min/max limits are reached
+- Label is associated with input via `for` attribute
+- `touch-manipulation` prevents double-tap zoom on mobile
+- Number input has type="number" for proper keyboard on mobile devices

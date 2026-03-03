@@ -1,0 +1,186 @@
+---
+title: Logo Components
+description: Complete collection of logo components available in Luminescent UI for React and Qwik
+---
+
+Luminescent UI provides a comprehensive set of logo components for popular Minecraft server platforms and community tools. All logos are available as SVG components in both React and Qwik packages.
+
+## Available Logos
+
+All logo components accept standard SVG props and support custom sizing through the `size` prop.
+
+<CardGroup cols={2}>
+  <Card title="Birdflop" icon="bird">
+    Community performance optimization tools
+  </Card>
+  <Card title="Discord" icon="discord">
+    Popular community chat platform
+  </Card>
+  <Card title="Fabric" icon="cube">
+    Lightweight modding framework
+  </Card>
+  <Card title="Forge" icon="hammer">
+    Popular modding platform for Minecraft
+  </Card>
+  <Card title="Luminescent" icon="sparkles">
+    Luminescent branding logos (icon and full)
+  </Card>
+  <Card title="Paper" icon="scroll">
+    High-performance Minecraft server software
+  </Card>
+  <Card title="Pterodactyl" icon="server">
+    Game server management panel
+  </Card>
+  <Card title="Purpur" icon="gem">
+    Feature-rich Paper fork
+  </Card>
+  <Card title="Velocity" icon="bolt">
+    Modern Minecraft proxy
+  </Card>
+  <Card title="Waterfall" icon="water">
+    BungeeCord fork for proxying
+  </Card>
+</CardGroup>
+
+## Usage
+
+<CodeGroup>
+
+```tsx React
+import { 
+  LogoBirdflop,
+  LogoDiscord,
+  LogoFabric,
+  LogoForge,
+  LogoLuminescent,
+  LogoLuminescentFull,
+  LogoPaper,
+  LogoPterodactyl,
+  LogoPurpur,
+  LogoVelocity,
+  LogoWaterfall
+} from '@luminescent/ui-react';
+
+export function MyComponent() {
+  return (
+    <div className="flex gap-4 items-center">
+      <LogoLuminescent size={48} />
+      <LogoPaper size={48} />
+      <LogoVelocity size={48} />
+    </div>
+  );
+}
+```
+
+```tsx Qwik
+import { 
+  LogoBirdflop,
+  LogoDiscord,
+  LogoFabric,
+  LogoForge,
+  LogoLuminescent,
+  LogoLuminescentFull,
+  LogoPaper,
+  LogoPterodactyl,
+  LogoPurpur,
+  LogoVelocity,
+  LogoWaterfall
+} from '@luminescent/ui-qwik';
+
+export default component$(() => {
+  return (
+    <div class="flex gap-4 items-center">
+      <LogoLuminescent size={48} />
+      <LogoPaper size={48} />
+      <LogoVelocity size={48} />
+    </div>
+  );
+});
+```
+
+</CodeGroup>
+
+## Props
+
+All logo components accept the following props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `number` | - | Width and height of the logo in pixels |
+| `...props` | `SVGAttributes` | - | All standard SVG element attributes |
+
+<Note>
+Logos inherit the current text color via `fill="currentColor"`. Use text color utilities to style them:
+
+```tsx
+<LogoPaper size={48} className="text-blue-500" />
+```
+</Note>
+
+## Special Variants
+
+### Luminescent Logos
+
+The Luminescent branding includes two variants:
+
+- **LogoLuminescent** - Icon-only logo (square aspect ratio)
+- **LogoLuminescentFull** - Full wordmark logo (wide aspect ratio)
+
+```tsx
+<LogoLuminescent size={64} />
+<LogoLuminescentFull size={64} />
+```
+
+<Tip>
+For the full wordmark logo, the `size` prop sets the height. The width scales automatically to maintain aspect ratio.
+</Tip>
+
+## Accessibility
+
+When using logos, consider adding accessible labels:
+
+```tsx
+<LogoPaper 
+  size={48} 
+  aria-label="Paper Server Software"
+  role="img"
+/>
+```
+
+## Examples
+
+### Logo Grid
+
+```tsx
+<div className="grid grid-cols-5 gap-6 p-8">
+  <LogoBirdflop size={64} />
+  <LogoDiscord size={64} />
+  <LogoFabric size={64} />
+  <LogoForge size={64} />
+  <LogoPaper size={64} />
+  <LogoPterodactyl size={64} />
+  <LogoPurpur size={64} />
+  <LogoVelocity size={64} />
+  <LogoWaterfall size={64} />
+  <LogoLuminescent size={64} />
+</div>
+```
+
+### Colored Logos
+
+```tsx
+<div className="flex gap-4">
+  <LogoPaper size={48} className="text-amber-500" />
+  <LogoPurpur size={48} className="text-purple-500" />
+  <LogoVelocity size={48} className="text-cyan-500" />
+</div>
+```
+
+### Responsive Sizing
+
+```tsx
+<LogoLuminescent 
+  size={48}
+  className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20"
+/>
+```

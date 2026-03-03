@@ -1,0 +1,308 @@
+---
+title: Installation
+description: Install Luminescent UI packages for Tailwind CSS, Qwik, or React
+---
+
+## Overview
+
+Luminescent UI offers three packages depending on your needs:
+
+- **@luminescent/ui** - Core Tailwind CSS utilities (required for all installations)
+- **@luminescent/ui-qwik** - Qwik components (requires @luminescent/ui)
+- **@luminescent/ui-react** - React components (requires @luminescent/ui)
+
+<Note>
+  All packages require **pnpm** as the package manager and **Tailwind CSS v4**.
+</Note>
+
+## Prerequisites
+
+Before installing, ensure you have:
+
+<CardGroup cols={2}>
+  <Card title="Node.js" icon="node-js">
+    Version **23.11.0** or higher
+  </Card>
+  <Card title="pnpm" icon="box">
+    Version **10.10.0** or higher
+  </Card>
+  <Card title="Tailwind CSS" icon="palette">
+    Version **4.1.18** or compatible v4.x
+  </Card>
+  <Card title="Framework" icon="code">
+    Qwik **1.18+** or React **19+** (for components)
+  </Card>
+</CardGroup>
+
+---
+
+## Core Package Installation
+
+<Steps>
+  <Step title="Install @luminescent/ui">
+    The core package provides Tailwind CSS utilities and is required for all Luminescent UI installations.
+
+    ```bash
+    pnpm install @luminescent/ui
+    ```
+  </Step>
+
+  <Step title="Configure Tailwind CSS">
+    Add the Luminescent UI imports to your Tailwind CSS file:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    ```
+
+    <Tip>
+      The `lum-bg` plugin provides special background utilities for creating luminescent effects.
+    </Tip>
+  </Step>
+
+  <Step title="Optional: Add Markdown Formatting" icon="file-lines">
+    If you want to use Luminescent UI's default formatting for Markdown elements, add this import:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    @import "@luminescent/ui/formatting";
+    ```
+
+    <Note>
+      The formatting styles are designed for rendering Markdown content with beautiful typography and spacing. [See it in action →](https://ui.luminescent.dev/docs/markdown)
+    </Note>
+  </Step>
+</Steps>
+
+---
+
+## Qwik Components Installation
+
+<Steps>
+  <Step title="Install packages">
+    Install both the core package and Qwik components:
+
+    ```bash
+    pnpm install @luminescent/ui @luminescent/ui-qwik
+    ```
+  </Step>
+
+  <Step title="Configure Tailwind CSS">
+    Add the Qwik-specific configuration to your Tailwind CSS file:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    @config "@luminescent/ui-qwik/config";
+    @source "../node_modules/@luminescent/ui-qwik";
+    ```
+
+    <Warning>
+      Make sure to add the Qwik configuration **after** the core imports.
+    </Warning>
+  </Step>
+
+  <Step title="Import components">
+    Import Qwik components in your `.tsx` files:
+
+    ```tsx
+    import { Toggle, Dropdown, SelectMenu } from '@luminescent/ui-qwik';
+    ```
+  </Step>
+</Steps>
+
+### Available Qwik Components
+
+The `@luminescent/ui-qwik` package includes:
+
+- **Toggle** - Checkbox and switch toggles
+- **Dropdown** - Dropdown menus
+- **SelectMenu** - Select inputs
+- **Nav** - Navigation components
+- **Sidebar** - Sidebar navigation
+- **ColorPicker** - Color selection
+- **NumberInput** - Numeric inputs
+- **RangeInput** - Range sliders
+- **Anchor** - Enhanced links
+- **Blobs** - Decorative blob shapes
+- **Logos** - Brand logo components
+
+---
+
+## React Components Installation
+
+<Steps>
+  <Step title="Install packages">
+    Install both the core package and React components:
+
+    ```bash
+    pnpm install @luminescent/ui @luminescent/ui-react
+    ```
+  </Step>
+
+  <Step title="Configure Tailwind CSS">
+    Add the React-specific configuration to your Tailwind CSS file:
+
+    ```css app.css
+    @import "@luminescent/ui";
+    @plugin "@luminescent/ui/lum-bg";
+    @source "../node_modules/@luminescent/ui-react";
+    ```
+
+    <Warning>
+      Make sure to add the React source **after** the core imports.
+    </Warning>
+  </Step>
+
+  <Step title="Import components">
+    Import React components in your `.tsx` or `.jsx` files:
+
+    ```tsx
+    import { Toggle, Dropdown, SelectMenu } from '@luminescent/ui-react';
+    ```
+  </Step>
+</Steps>
+
+### Available React Components
+
+The `@luminescent/ui-react` package includes:
+
+- **Toggle** - Checkbox and switch toggles
+- **Dropdown** - Dropdown menus
+- **SelectMenu** - Select inputs
+- **Nav** - Navigation components
+- **Logos** - Brand logo components
+
+<Note>
+  React components use **Lucide React** for icons, which is included as a dependency.
+</Note>
+
+---
+
+## Complete Configuration Examples
+
+<CodeGroup>
+
+```css Tailwind Only
+/* app.css */
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+```
+
+```css Qwik + Tailwind
+/* app.css */
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@config "@luminescent/ui-qwik/config";
+@source "../node_modules/@luminescent/ui-qwik";
+```
+
+```css React + Tailwind
+/* app.css */
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@source "../node_modules/@luminescent/ui-react";
+```
+
+```css With Markdown Formatting
+/* app.css */
+@import "@luminescent/ui";
+@plugin "@luminescent/ui/lum-bg";
+@import "@luminescent/ui/formatting";
+@config "@luminescent/ui-qwik/config";
+@source "../node_modules/@luminescent/ui-qwik";
+```
+
+</CodeGroup>
+
+---
+
+## Verification
+
+To verify your installation is working:
+
+<Steps>
+  <Step title="Start your dev server">
+    ```bash
+    pnpm dev
+    ```
+  </Step>
+
+  <Step title="Test a utility class">
+    Add a Luminescent UI class to any element:
+
+    ```html
+    <div class="lum-card">
+      Hello Luminescent UI!
+    </div>
+    ```
+  </Step>
+
+  <Step title="Test a component (if installed)">
+    <CodeGroup>
+    ```tsx Qwik
+    import { component$ } from '@builder.io/qwik';
+    import { Toggle } from '@luminescent/ui-qwik';
+
+    export default component$(() => {
+      return (
+        <Toggle id="test-toggle">
+          Test Toggle
+        </Toggle>
+      );
+    });
+    ```
+
+    ```tsx React
+    import { Toggle } from '@luminescent/ui-react';
+
+    export default function App() {
+      return (
+        <Toggle id="test-toggle">
+          Test Toggle
+        </Toggle>
+      );
+    }
+    ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+<Tip>
+  **Next steps:** Check out the [Quick Start guide](/quickstart) to start building with Luminescent UI.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Styles not applying">
+    Make sure:
+    - Your Tailwind CSS file includes the `@import` statements
+    - You're using Tailwind CSS v4.x
+    - Your build process is processing the CSS file
+    - The import order is correct (core imports before framework-specific)
+  </Accordion>
+
+  <Accordion title="Components not found">
+    Verify:
+    - You've installed the correct package (`@luminescent/ui-qwik` or `@luminescent/ui-react`)
+    - The package is listed in your `package.json` dependencies
+    - You've restarted your dev server after installation
+  </Accordion>
+
+  <Accordion title="pnpm errors">
+    Luminescent UI requires pnpm. If you're using npm or yarn:
+    ```bash
+    npm install -g pnpm
+    pnpm install
+    ```
+  </Accordion>
+
+  <Accordion title="Tailwind v4 compatibility">
+    Luminescent UI is designed for Tailwind CSS v4. If you're on v3, you'll need to upgrade:
+    ```bash
+    pnpm add -D tailwindcss@^4
+    ```
+  </Accordion>
+</AccordionGroup>

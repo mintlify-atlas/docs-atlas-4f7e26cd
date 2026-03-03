@@ -1,0 +1,69 @@
+---
+title: Blobs
+description: Animated gradient blob background effect with customizable colors and blur
+---
+
+The Blobs component creates an animated background effect with three overlapping circular blobs that move in random patterns. Perfect for hero sections and decorative backgrounds.
+
+## Import
+
+```typescript
+import { Blobs } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+<div class="relative">
+  <Blobs color="blue" blur="xl" />
+  <div class="relative z-10">
+    {/* Your content here */}
+  </div>
+</div>
+```
+
+## Props
+
+<ParamField path="color" type="keyof typeof blobColorClasses | [string, string, string]" default="darkgray">
+  Color scheme for the blobs. Can be a preset color name or an array of three custom Tailwind color classes.
+  
+  Available presets: `slate`, `gray`, `darkgray`, `darkergray`, `zinc`, `neutral`, `stone`, `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`
+</ParamField>
+
+<ParamField path="blur" type="'xs' | 'sm' | 'md' | 'lg' | 'xl'" default="xl">
+  The amount of blur applied to the blobs.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="style" type="{ [key: string]: string | number }">
+  Inline styles to apply to the container.
+</ParamField>
+
+## Color Options
+
+<CodeGroup>
+```tsx Single Color
+<Blobs color="blue" />
+```
+
+```tsx Custom Colors
+<Blobs color={['bg-red-400', 'bg-pink-500', 'bg-purple-600']} />
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The blobs automatically fade in with a 2-second animation. The animation is hidden for users with `prefers-reduced-motion` enabled. Each blob has randomized animation timing for natural movement.
+</Note>
+
+## Implementation Details
+
+- Uses container query units (`cqw`) for responsive sizing
+- Three blobs with staggered animation delays (-5s and -10s)
+- 20% opacity for subtle background effect
+- Random animation selection from 7 different blob animations
+- `absolute inset-0` positioning fills the parent container

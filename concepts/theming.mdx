@@ -1,0 +1,279 @@
+---
+title: Theming System
+description: Customize Luminescent UI's appearance using CSS variables and the @theme configuration
+---
+
+Luminescent UI uses a CSS variable-based theming system defined in the `@theme` block. All variables can be customized globally or overridden per-component using inline styles or Tailwind's arbitrary properties.
+
+## Theme Variables
+
+### Color Variables
+
+Luminescent UI defines a custom color palette using OKLCH color space:
+
+```css
+--color-luminescent-50: oklch(97.1% 0.014 379.198);
+--color-luminescent-100: oklch(94.8% 0.028 306.258);
+--color-luminescent-200: oklch(89.9% 0.061 307.231);
+--color-luminescent-300: oklch(82.3% 0.12 310.018);
+--color-luminescent-400: oklch(71.8% 0.202 313.761);
+--color-luminescent-500: oklch(0.66 0.241 318.308);
+--color-luminescent-600: oklch(59.2% 0.249 324.584);
+--color-luminescent-700: oklch(52.5% 0.223 327.958);
+--color-luminescent-800: oklch(45.9% 0.187 327.815);
+--color-luminescent-900: oklch(40.8% 0.153 326.432);
+--color-luminescent-950: oklch(28.4% 0.109 327.907);
+```
+
+<Info>
+  These colors can be used in Tailwind like any other color: `bg-luminescent-500`, `text-luminescent-700`, etc.
+</Info>
+
+### Semantic Color Variables
+
+These variables define the semantic colors used throughout components:
+
+| Variable | Default | Purpose |
+|----------|---------|----------|
+| `--color-lum-border` | `var(--color-gray-300)` | Default border color for mixing |
+| `--color-lum-gradient` | `var(--color-gray-950)` | Gradient end color for `lum-grad-bg-*` |
+| `--color-lum-card-bg` | `var(--color-gray-900)` | Card background color |
+| `--color-lum-input-bg` | `var(--color-gray-800)` | Input/button default background |
+| `--color-lum-input-hover-bg` | `var(--color-gray-700)` | Input/button hover background |
+| `--color-lum-accent` | `var(--color-blue-500)` | Focus/accent color |
+| `--color-lum-text` | `var(--color-gray-50)` | Primary text color |
+| `--color-lum-text-secondary` | `var(--color-gray-400)` | Secondary text color |
+
+```html Example
+<div class="[--color-lum-accent:theme(colors.purple.500)]">
+  <button class="lum-btn">Purple accent on focus</button>
+</div>
+```
+
+### Layout Variables
+
+| Variable | Default | Purpose |
+|----------|---------|----------|
+| `--lum-btn-p-x` | `2` | Button horizontal padding multiplier |
+| `--lum-input-p-x` | `1.5` | Input horizontal padding multiplier |
+| `--lum-border-radius` | `var(--radius-lg)` | Base border radius |
+| `--lum-border-superellipse` | `1` | Superellipse intensity (0-1) |
+
+### Effect Variables
+
+| Variable | Default | Purpose |
+|----------|---------|----------|
+| `--lum-depth` | `0` | Depth effect intensity (0 or 1) |
+| `--lum-border-mix` | `20%` | Border color mixing percentage |
+| `--lum-gradient-mix` | `20%` | Gradient color mixing percentage |
+| `--lum-gradient-angle` | `180deg` | Gradient direction |
+
+## Customizing the Theme
+
+### Global Customization
+
+Override theme variables in your global CSS:
+
+```css styles.css
+@layer base {
+  :root {
+    /* Change accent color */
+    --color-lum-accent: oklch(0.7 0.25 350);
+    
+    /* Increase border radius */
+    --lum-border-radius: 1rem;
+    
+    /* Adjust superellipse intensity */
+    --lum-border-superellipse: 0.75;
+  }
+}
+```
+
+### Dark Mode Support
+
+Define different values for dark mode:
+
+```css styles.css
+@layer base {
+  :root {
+    --color-lum-card-bg: theme(colors.gray.100);
+    --color-lum-text: theme(colors.gray.900);
+  }
+  
+  .dark {
+    --color-lum-card-bg: theme(colors.gray.900);
+    --color-lum-text: theme(colors.gray.50);
+  }
+}
+```
+
+### Component-Level Customization
+
+Use Tailwind's arbitrary property syntax to override variables per-component:
+
+<CodeGroup>
+```html Inline Override
+<button class="lum-btn [--lum-depth:1]">
+  Elevated button
+</button>
+```
+
+```html Multiple Variables
+<div class="lum-card [--lum-border-radius:2rem] [--lum-border-superellipse:0.5]">
+  Highly rounded card
+</div>
+```
+
+```html Custom Colors
+<button class="lum-btn [--color-lum-input-bg:theme(colors.indigo.600)]">
+  Indigo button
+</button>
+```
+</CodeGroup>
+
+## Theme Presets
+
+Create reusable theme classes:
+
+```css styles.css
+@layer components {
+  .theme-warm {
+    --color-lum-accent: oklch(0.65 0.22 50);
+    --color-lum-gradient: oklch(0.3 0.15 40);
+    --lum-gradient-angle: 135deg;
+  }
+  
+  .theme-cool {
+    --color-lum-accent: oklch(0.65 0.22 250);
+    --color-lum-gradient: oklch(0.3 0.15 260);
+    --lum-gradient-angle: 225deg;
+  }
+  
+  .theme-depth {
+    --lum-depth: 1;
+    --lum-border-mix: 30%;
+  }
+}
+```
+
+Usage:
+```html
+<div class="theme-warm">
+  <button class="lum-btn lum-grad-bg-red-500">Warm Theme</button>
+</div>
+
+<div class="theme-cool theme-depth">
+  <button class="lum-btn lum-grad-bg-blue-500">Cool + Depth</button>
+</div>
+```
+
+## Padding System
+
+The padding utilities use multiplier variables for consistent spacing ratios:
+
+```html
+<!-- Default: 2x horizontal padding -->
+<button class="lum-btn-p-3">Default</button>
+
+<!-- Custom ratio: 3x horizontal padding -->
+<button class="lum-btn-p-3 [--lum-btn-p-x:3]">Wider</button>
+```
+
+The gap between button contents is automatically calculated:
+```css
+gap: calc(var(--spacing) * [value] * clamp(0.65, 4 / [value], 1));
+```
+
+<Note>
+  Smaller padding values get proportionally larger gaps for better visual balance.
+</Note>
+
+## Gradient System
+
+Control gradient appearance with theme variables:
+
+```html
+<div class="lum-grad-bg-purple-600 [--lum-gradient-angle:90deg] [--lum-gradient-mix:40%]">
+  Horizontal gradient with stronger mixing
+</div>
+```
+
+**Common angles:**
+- `0deg` - Bottom to top
+- `90deg` - Left to right
+- `180deg` - Top to bottom (default)
+- `270deg` - Right to left
+- `135deg` - Diagonal top-left to bottom-right
+
+## Border Mixing
+
+Adjust how much the border color mixes with the background:
+
+<Tabs>
+  <Tab title="Subtle">
+    ```html
+    <div class="lum-bg-blue-500 [--lum-border-mix:10%]">
+      Subtle border
+    </div>
+    ```
+  </Tab>
+  <Tab title="Default">
+    ```html
+    <div class="lum-bg-blue-500">
+      Default 20% border mix
+    </div>
+    ```
+  </Tab>
+  <Tab title="Strong">
+    ```html
+    <div class="lum-bg-blue-500 [--lum-border-mix:40%]">
+      Strong border contrast
+    </div>
+    ```
+  </Tab>
+</Tabs>
+
+## Superellipse Borders
+
+Control the superellipse corner shape intensity:
+
+```html
+<!-- Sharp corners (0) -->
+<div class="rounded-lum [--lum-border-superellipse:0]">
+  No superellipse
+</div>
+
+<!-- Medium (0.5) -->
+<div class="rounded-lum [--lum-border-superellipse:0.5]">
+  Subtle superellipse
+</div>
+
+<!-- Full superellipse (1) -->
+<div class="rounded-lum [--lum-border-superellipse:1]">
+  Maximum superellipse
+</div>
+```
+
+<Warning>
+  Superellipse support requires a browser that supports the `corner-shape` CSS property. Fallback is standard border-radius.
+</Warning>
+
+## Best Practices
+
+1. **Use semantic variables** - Prefer `--color-lum-accent` over hardcoded colors for better theme consistency
+2. **Test dark mode** - Always define appropriate values for both light and dark themes
+3. **Leverage OKLCH** - Use OKLCH colors for perceptually uniform color mixing
+4. **Create presets** - Define theme classes for common variations
+5. **Document custom variables** - If adding new variables, document their purpose and expected values
+
+```html Complete Example
+<div class="theme-depth dark">
+  <div class="lum-card [--color-lum-card-bg:theme(colors.slate.800)]">
+    <h2 class="text-lum-text text-2xl font-bold">Themed Card</h2>
+    <p class="text-lum-text-secondary">With depth effects and custom background.</p>
+    <button class="lum-btn lum-grad-bg-luminescent-600 [--lum-gradient-angle:135deg]">
+      Gradient Button
+    </button>
+  </div>
+</div>
+```

@@ -1,0 +1,134 @@
+---
+title: Nav
+description: A responsive navigation bar with optional hamburger menu and multiple content slots
+---
+
+The Nav component provides a flexible navigation bar with support for fixed/floating positioning, backdrop blur, responsive hamburger menu, and three content areas (start, center, end).
+
+## Import
+
+```typescript
+import { Nav } from '@luminescent/ui-qwik';
+```
+
+## Usage
+
+```tsx
+<Nav fixed>
+  <div q:slot="start">
+    <Logo />
+  </div>
+  <div q:slot="center">
+    <NavLinks />
+  </div>
+  <div q:slot="end">
+    <ThemeToggle />
+  </div>
+  <div q:slot="mobile">
+    <MobileMenu />
+  </div>
+</Nav>
+```
+
+## Props
+
+<ParamField path="fixed" type="boolean">
+  When true, the nav uses `position: fixed` instead of `position: absolute`.
+</ParamField>
+
+<ParamField path="floating" type="boolean">
+  When true, the nav appears as a floating card with rounded corners and borders instead of full-width.
+</ParamField>
+
+<ParamField path="noblur" type="boolean">
+  Disables the backdrop blur effect.
+</ParamField>
+
+<ParamField path="nohamburger" type="boolean">
+  Hides the hamburger menu button and mobile menu panel.
+</ParamField>
+
+<ParamField path="nodismiss" type="boolean">
+  Prevents the mobile menu from auto-closing when clicking outside of it.
+</ParamField>
+
+<ParamField path="colorClass" type="string" default="lum-bg-lum-card-bg">
+  Custom background color class for the navigation bar.
+</ParamField>
+
+<ParamField path="class" type="{ [key: string]: boolean }">
+  Object-based class names for conditional styling.
+</ParamField>
+
+<ParamField path="...props" type="PropsOf<'nav'>">
+  All standard HTML nav attributes are supported.
+</ParamField>
+
+## Slots
+
+<ParamField path="start" type="slot">
+  Content aligned to the left side of the nav (e.g., logo).
+</ParamField>
+
+<ParamField path="center" type="slot">
+  Content centered in the nav (e.g., main navigation links).
+</ParamField>
+
+<ParamField path="end" type="slot">
+  Content aligned to the right side (e.g., theme toggle, user menu).
+</ParamField>
+
+<ParamField path="mobile" type="slot">
+  Content shown in the mobile menu dropdown (hidden on sm+ screens).
+</ParamField>
+
+## Examples
+
+<CodeGroup>
+```tsx Fixed Navigation
+<Nav fixed>
+  <div q:slot="start">
+    <h1>My App</h1>
+  </div>
+  <div q:slot="end">
+    <button>Login</button>
+  </div>
+</Nav>
+```
+
+```tsx Floating Navigation
+<Nav floating noblur>
+  <div q:slot="center">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+  </div>
+</Nav>
+```
+
+```tsx No Hamburger Menu
+<Nav nohamburger>
+  <div q:slot="start">Logo</div>
+  <div q:slot="end">Links</div>
+</Nav>
+```
+</CodeGroup>
+
+## Behavior
+
+<Note>
+  The mobile menu automatically closes when clicking outside unless `nodismiss` is enabled. Elements with the class `nav-ignore-dismiss` will not trigger the menu to close. The hamburger menu is hidden on screens sm (640px) and larger.
+</Note>
+
+## Responsive Design
+
+- Mobile menu appears below the nav bar with smooth transitions
+- Hamburger button only visible on screens smaller than `sm` breakpoint
+- Desktop slots (start, center, end) always visible
+- Mobile slot only visible when menu is opened and screen is below `sm`
+
+## Styling Features
+
+- Backdrop blur effect (unless `noblur` is set)
+- Max width of `7xl` with auto margins for centered layout
+- Smooth transitions with scale and opacity animations
+- Z-index of 50 for proper layering
