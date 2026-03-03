@@ -1,0 +1,148 @@
+{
+  "projectType": "frontend",
+  "projectName": "Luminescent UI",
+  "projectDescription": "A comprehensive Tailwind CSS component library with Qwik and React integrations",
+  "theme": "willow",
+  "primaryColor": "#c084fc",
+  "lightColor": "#e9d5ff",
+  "darkColor": "#7e22ce",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/tailwind-utilities",
+              "concepts/theming",
+              "concepts/color-system",
+              "concepts/depth-effects"
+            ]
+          },
+          {
+            "group": "Framework Integration",
+            "pages": [
+              "frameworks/qwik",
+              "frameworks/react"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Components",
+        "groups": [
+          {
+            "group": "Utilities",
+            "pages": [
+              "components/utilities/lum-bg",
+              "components/utilities/lum-btn",
+              "components/utilities/lum-card",
+              "components/utilities/lum-input",
+              "components/utilities/borders",
+              "components/utilities/loading"
+            ]
+          },
+          {
+            "group": "Qwik Components",
+            "pages": [
+              "components/qwik/anchor",
+              "components/qwik/blobs",
+              "components/qwik/color-picker",
+              "components/qwik/dropdown",
+              "components/qwik/nav",
+              "components/qwik/number-input",
+              "components/qwik/range-input",
+              "components/qwik/select-menu",
+              "components/qwik/sidebar",
+              "components/qwik/toggle"
+            ]
+          },
+          {
+            "group": "React Components",
+            "pages": [
+              "components/react/dropdown",
+              "components/react/nav",
+              "components/react/select-menu",
+              "components/react/toggle"
+            ]
+          },
+          {
+            "group": "Logos",
+            "pages": [
+              "components/logos/overview"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Styling",
+            "pages": [
+              "guides/custom-colors",
+              "guides/theming-variables",
+              "guides/responsive-design",
+              "guides/markdown-formatting"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "guides/custom-components",
+              "guides/migration",
+              "guides/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Custom Tailwind CSS utilities with lum-bg, lum-btn, lum-card, and lum-input classes",
+    "Advanced color mixing with OKLCH color space support",
+    "Depth effects with configurable shadows and borders",
+    "Superellipse border radius for modern UI aesthetics",
+    "Pre-built components for Qwik and React frameworks",
+    "Gradient backgrounds with customizable angles and mixing",
+    "Toggle, dropdown, and navigation components",
+    "Built-in markdown formatting styles",
+    "Customizable theming with CSS variables",
+    "Ready-to-use SVG logos for popular platforms"
+  ],
+  "publicApiSurface": [
+    "@luminescent/ui - Base Tailwind CSS utilities and styles",
+    "@luminescent/ui/formatting - Markdown formatting styles",
+    "@luminescent/ui-qwik - Qwik component library",
+    "@luminescent/ui-react - React component library",
+    "lum-bg-* utility - Background color with depth effects",
+    "lum-grad-bg-* utility - Gradient background with depth effects",
+    "lum-btn utility - Button styling with hover and active states",
+    "lum-card utility - Card container with consistent styling",
+    "lum-input utility - Input field styling",
+    "lum-toggle-bg-* utility - Toggle switch background colors",
+    "rounded-lum utility - Border radius with superellipse shape",
+    "border-gradient-* utility - Gradient borders",
+    "lum-hoverable utility - Hover scale and shadow effects",
+    "lum-loading utility - Loading spinner animation",
+    "Dropdown component - Expandable dropdown with chevron",
+    "Toggle component - Checkbox/switch toggle",
+    "Nav component - Navigation bar",
+    "SelectMenu component - Dropdown select menu",
+    "ColorPicker component - Color selection input",
+    "NumberInput component - Numeric input with controls",
+    "RangeInput component - Slider input with ticks",
+    "Sidebar component - Collapsible sidebar navigation",
+    "Anchor component - Styled anchor links",
+    "Blobs component - Decorative blob shapes"
+  ]
+}
